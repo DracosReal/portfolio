@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jim Folliard — Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    /* ── Gradient text fallback for mobile ── */
+    .gradient-text {
+      /* Fallback color in case gradient doesn't work */
+      color: #93c5fd;
+      background: linear-gradient(to right, #93c5fd, #67e8f9);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    /* If background-clip isn't supported, show the fallback color */
+    @supports not (background-clip: text) or not (-webkit-background-clip: text) {
+      .gradient-text {
+        -webkit-text-fill-color: currentColor;
+      }
+    }
+
+    /* ── Skip link ── */
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 1rem;
+      background: #93c5fd;
+      color: #000;
+      padding: 0.5rem 1rem;
+      border-radius: 0 0 0.5rem 0.5rem;
+      font-weight: 600;
+      z-index: 9999;
+      transition: top 0.2s;
+      text-decoration: none;
+    }
+    .skip-link:focus {
+      top: 0;
+      outline: 3px solid #fff;
+      outline-offset: 2px;
+    }
+
+    /* ── Focus rings — visible for ALL keyboard users ── */
+    :focus-visible {
+      outline: 3px solid #93c5fd;
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    /* ── Card flip ── */
+    .card-container {
+      perspective: 1000px;
+    }
+    .card-flipper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+      /* Prevent double-tap zoom on mobile */
+      touch-action: manipulation;
+    }
+    .card-container.flipped .card-flipper {
+      transform: rotateY(180deg);
+    }
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 0.5rem;
+      /* Better touch handling */
+      -webkit-tap-highlight-color: transparent;
+    }
+    .card-back {
+      transform: rotateY(180deg);
+    }
+
+    /* Mobile: shorter cards so they fit on screen */
+    @media (max-width: 768px) {
+      .card-container {
+        height: 22rem !important; /* compact on mobile */
+      }
+    }
+
+    /* ── Respect reduced motion ── */
+    @media (prefers-reduced-motion: reduce) {
+      .card-flipper {
+        transition: none;
+      }
+      .animate-fadeIn {
+        animation: none;
+      }
+      * {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn {
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    details summary {
+      list-style: none;
+    }
+    details summary::-webkit-details-marker {
+      display: none;
+    }
+
+    /* ── Cursor blink ── */
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+    .cursor {
+      animation: blink 1.06s step-start infinite;
+      margin-left: 2px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cursor { animation: none; opacity: 1; }
+    }
+  </style>
+</head>
+<body class="bg-black">
+
+  <!-- Skip to main content — first thing a keyboard user hits -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <div id="root"></div>
+
+  <!-- Live region: screen readers announce stage changes -->
+  <div
+    id="live-region"
+    aria-live="polite"
+    aria-atomic="true"
+    style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;"
+  ></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // Announce to screen readers without moving focus
+    function announce(msg) {
+      const el = document.getElementById('live-region');
+      if (el) { el.textContent = ''; setTimeout(() => { el.textContent = msg; }, 50); }
+    }
+
+    // Update browser tab title on navigation
+    function setTitle(t) {
+      document.title = t ? `${t} — Jim Folliard` : 'Jim Folliard — Portfolio';
+    }
+
+    // ── Icon components — aria-hidden because buttons have labels ──
+    const HomeIcon = () => (
+      <svg aria-hidden="true" focusable="false" className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+      </svg>
+    );
+    const ArrowIcon = () => (
+      <svg aria-hidden="true" focusable="false" className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+    );
+
+    // ── Stained Glass Art — decorative, hidden from screen readers ──
+    const UXGlass = () => (
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 300 400" className="w-full h-full">
+        <defs>
+          <linearGradient id="ux-g1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   style={{stopColor:'#60a5fa',stopOpacity:0.8}}/>
+            <stop offset="100%" style={{stopColor:'#3b82f6',stopOpacity:0.9}}/>
+          </linearGradient>
+          <linearGradient id="ux-g2" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   style={{stopColor:'#93c5fd',stopOpacity:0.7}}/>
+            <stop offset="100%" style={{stopColor:'#67e8f9',stopOpacity:0.8}}/>
+          </linearGradient>
+        </defs>
+        <rect x="20"  y="20"  width="80"  height="120" fill="url(#ux-g1)" stroke="#1e3a8a" strokeWidth="3"/>
+        <rect x="110" y="20"  width="80"  height="80"  fill="url(#ux-g2)" stroke="#1e3a8a" strokeWidth="3"/>
+        <rect x="200" y="20"  width="80"  height="120" fill="url(#ux-g1)" stroke="#1e3a8a" strokeWidth="3"/>
+        <rect x="20"  y="150" width="120" height="100" fill="url(#ux-g2)" stroke="#1e3a8a" strokeWidth="3"/>
+        <rect x="150" y="150" width="130" height="100" fill="url(#ux-g1)" stroke="#1e3a8a" strokeWidth="3"/>
+        <rect x="110" y="110" width="80"  height="30"  fill="url(#ux-g2)" stroke="#1e3a8a" strokeWidth="3"/>
+        <circle cx="150" cy="310" r="60"               fill="url(#ux-g1)" stroke="#1e3a8a" strokeWidth="3"/>
+        <rect x="20"  y="260" width="100" height="120" fill="url(#ux-g2)" stroke="#1e3a8a" strokeWidth="3"/>
+        <rect x="200" y="260" width="80"  height="120" fill="url(#ux-g1)" stroke="#1e3a8a" strokeWidth="3"/>
+      </svg>
+    );
+    const NarrativeGlass = () => (
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 300 400" className="w-full h-full">
+        <defs>
+          <linearGradient id="narr-g1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   style={{stopColor:'#c084fc',stopOpacity:0.8}}/>
+            <stop offset="100%" style={{stopColor:'#a855f7',stopOpacity:0.9}}/>
+          </linearGradient>
+          <linearGradient id="narr-g2" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%"   style={{stopColor:'#f0abfc',stopOpacity:0.7}}/>
+            <stop offset="100%" style={{stopColor:'#f9a8d4',stopOpacity:0.8}}/>
+          </linearGradient>
+        </defs>
+        <path d="M 20 50 Q 80 20,150 50 T 280 50"  fill="url(#narr-g1)" stroke="#581c87" strokeWidth="3"/>
+        <path d="M 20 120 Q 100 80,150 120 T 280 120" fill="url(#narr-g2)" stroke="#581c87" strokeWidth="3"/>
+        <ellipse cx="70"  cy="200" rx="50" ry="80" fill="url(#narr-g1)" stroke="#581c87" strokeWidth="3"/>
+        <ellipse cx="230" cy="200" rx="50" ry="80" fill="url(#narr-g2)" stroke="#581c87" strokeWidth="3"/>
+        <path d="M 20 280 Q 80 240,150 280 T 280 280" fill="url(#narr-g1)" stroke="#581c87" strokeWidth="3"/>
+        <circle cx="150" cy="330" r="50"              fill="url(#narr-g2)" stroke="#581c87" strokeWidth="3"/>
+        <path d="M 20 160 L 280 160" stroke="#581c87" strokeWidth="3" fill="none"/>
+        <path d="M 150 20 L 150 380" stroke="#581c87" strokeWidth="3" fill="none"/>
+      </svg>
+    );
+    const UIGlass = () => (
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 300 400" className="w-full h-full">
+        <defs>
+          <linearGradient id="ui-g1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   style={{stopColor:'#34d399',stopOpacity:0.8}}/>
+            <stop offset="100%" style={{stopColor:'#10b981',stopOpacity:0.9}}/>
+          </linearGradient>
+          <linearGradient id="ui-g2" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   style={{stopColor:'#5eead4',stopOpacity:0.7}}/>
+            <stop offset="100%" style={{stopColor:'#2dd4bf',stopOpacity:0.8}}/>
+          </linearGradient>
+        </defs>
+        <polygon points="150,20 220,90 150,160 80,90"   fill="url(#ui-g1)" stroke="#064e3b" strokeWidth="3"/>
+        <polygon points="20,140 90,70 90,210"            fill="url(#ui-g2)" stroke="#064e3b" strokeWidth="3"/>
+        <polygon points="280,140 210,70 210,210"         fill="url(#ui-g2)" stroke="#064e3b" strokeWidth="3"/>
+        <polygon points="150,180 220,250 150,320 80,250" fill="url(#ui-g1)" stroke="#064e3b" strokeWidth="3"/>
+        <rect x="90" y="230" width="120" height="60"    fill="url(#ui-g2)" stroke="#064e3b" strokeWidth="3"/>
+        <circle cx="60"  cy="350" r="40"                fill="url(#ui-g1)" stroke="#064e3b" strokeWidth="3"/>
+        <circle cx="240" cy="350" r="40"                fill="url(#ui-g1)" stroke="#064e3b" strokeWidth="3"/>
+        <polygon points="150,300 180,340 120,340"        fill="url(#ui-g2)" stroke="#064e3b" strokeWidth="3"/>
+      </svg>
+    );
+    const TechnicalGlass = () => (
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 300 400" className="w-full h-full">
+        <defs>
+          <linearGradient id="tech-g1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   style={{stopColor:'#fbbf24',stopOpacity:0.8}}/>
+            <stop offset="100%" style={{stopColor:'#f59e0b',stopOpacity:0.9}}/>
+          </linearGradient>
+          <linearGradient id="tech-g2" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%"   style={{stopColor:'#fcd34d',stopOpacity:0.7}}/>
+            <stop offset="100%" style={{stopColor:'#fb923c',stopOpacity:0.8}}/>
+          </linearGradient>
+        </defs>
+        <rect x="20"  y="20"  width="260" height="60"  fill="url(#tech-g1)" stroke="#78350f" strokeWidth="3"/>
+        <rect x="20"  y="90"  width="120" height="100" fill="url(#tech-g2)" stroke="#78350f" strokeWidth="3"/>
+        <rect x="160" y="90"  width="120" height="100" fill="url(#tech-g1)" stroke="#78350f" strokeWidth="3"/>
+        <rect x="20"  y="200" width="80"  height="80"  fill="url(#tech-g1)" stroke="#78350f" strokeWidth="3"/>
+        <rect x="110" y="200" width="80"  height="80"  fill="url(#tech-g2)" stroke="#78350f" strokeWidth="3"/>
+        <rect x="200" y="200" width="80"  height="80"  fill="url(#tech-g1)" stroke="#78350f" strokeWidth="3"/>
+        <rect x="20"  y="290" width="260" height="90"  fill="url(#tech-g2)" stroke="#78350f" strokeWidth="3"/>
+        <line x1="150" y1="20"  x2="150" y2="80"  stroke="#78350f" strokeWidth="2"/>
+        <line x1="20"  y1="240" x2="280" y2="240" stroke="#78350f" strokeWidth="2"/>
+      </svg>
+    );
+    const GameGlass = () => (
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 300 400" className="w-full h-full">
+        <defs>
+          <linearGradient id="game-g1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   style={{stopColor:'#f87171',stopOpacity:0.8}}/>
+            <stop offset="100%" style={{stopColor:'#ef4444',stopOpacity:0.9}}/>
+          </linearGradient>
+          <linearGradient id="game-g2" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%"   style={{stopColor:'#fda4af',stopOpacity:0.7}}/>
+            <stop offset="100%" style={{stopColor:'#fb7185',stopOpacity:0.8}}/>
+          </linearGradient>
+        </defs>
+        <rect x="30" y="30" width="240" height="80" rx="10" fill="url(#game-g1)" stroke="#7f1d1d" strokeWidth="3"/>
+        <polygon points="150,130 200,180 150,230 100,180"   fill="url(#game-g2)" stroke="#7f1d1d" strokeWidth="3"/>
+        <circle cx="60"  cy="180" r="35"                   fill="url(#game-g1)" stroke="#7f1d1d" strokeWidth="3"/>
+        <circle cx="240" cy="180" r="35"                   fill="url(#game-g1)" stroke="#7f1d1d" strokeWidth="3"/>
+        <rect x="80" y="250" width="140" height="60" rx="30" fill="url(#game-g2)" stroke="#7f1d1d" strokeWidth="3"/>
+        <polygon points="150,320 180,350 150,380 120,350"   fill="url(#game-g1)" stroke="#7f1d1d" strokeWidth="3"/>
+        <circle cx="50"  cy="320" r="25"                   fill="url(#game-g2)" stroke="#7f1d1d" strokeWidth="3"/>
+        <circle cx="250" cy="320" r="25"                   fill="url(#game-g2)" stroke="#7f1d1d" strokeWidth="3"/>
+      </svg>
+    );
+
+    // ── Nav buttons shared across pages ──
+    const NavBar = ({ onBack, onHome, backLabel }) => (
+      <nav aria-label="Page navigation" className="flex items-center gap-3 mb-12">
+        {onBack && (
+          <button
+            onClick={onBack}
+            aria-label={backLabel || 'Go back'}
+            className="flex items-center gap-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+          >
+            <ArrowIcon /> <span className="text-sm">Back</span>
+          </button>
+        )}
+        <button
+          onClick={onHome}
+          aria-label="Go to home — Choose your path"
+          className="flex items-center gap-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+        >
+          <HomeIcon /> <span className="text-sm">Home</span>
+        </button>
+      </nav>
+    );
+
+    // ── Main app ──
+    const PortfolioWebsite = () => {
+      const [stage, setStage]                 = useState('intro');
+      const [typedText, setTypedText]         = useState('');
+      const [flippedCards, setFlippedCards]   = useState([]);
+      const [currentDiscipline, setCurrentDiscipline] = useState(null);
+      const [currentProject, setCurrentProject]       = useState(null);
+      const [lightbox, setLightbox] = useState(null); // { src, alt }
+      const lightboxRef = useRef(null);
+
+      // Lightbox: close on Escape, trap focus
+      useEffect(() => {
+        if (!lightbox) return;
+        const prev = document.activeElement;
+        if (lightboxRef.current) lightboxRef.current.focus();
+        const onKey = (e) => {
+          if (e.key === 'Escape') setLightbox(null);
+        };
+        document.addEventListener('keydown', onKey);
+        return () => {
+          document.removeEventListener('keydown', onKey);
+          if (prev) prev.focus();
+        };
+      }, [lightbox]);
+
+      // Focus management — move focus to heading when stage changes
+      const mainHeadingRef = useRef(null);
+      useEffect(() => {
+        if (mainHeadingRef.current) mainHeadingRef.current.focus();
+      }, [stage, currentDiscipline, currentProject]);
+
+      // ── CONTENT — edit here ──
+      const yourName      = "Jim";
+      const welcomeMessage = `I'm ${yourName}. Welcome to my world.`;
+
+      const disciplines = [
+        {
+          id: 'ux', title: 'UX', subtitle: 'The Architect',
+          color: 'from-blue-400 to-cyan-300',
+          glassColor: 'bg-blue-500/20', borderColor: 'border-blue-400/50',
+          artComponent: UXGlass,
+          projects: [
+            {
+              id: 'mental-health',
+              title: 'Improving Access to Mental Health Care',
+              summary: 'A co-designed UX study exploring telehealth interventions to reduce barriers for individuals seeking mental health support.',
+              role: 'UX Design, UX Research, UI Design',
+              team: '3 UX Design graduate students',
+              timeline: '8 weeks (Discovery & Research: 2+ weeks · Design & Testing: 6 weeks)',
+              tools: 'Miro, Figma, PowerPoint, Ziro',
+              problem: 'Many individuals who want or need mental healthcare encounter obstacles such as stigma, financial hardship, insurance opacity, and limited provider availability. These barriers often compound anxiety and negatively affect overall wellbeing.',
+              approach: 'Through user interviews and stakeholder collaboration, we explored interventions that could mitigate access barriers. Our findings pointed toward a telehealth platform emphasizing equality, real-time availability, and transparent insurance coverage.',
+              research: {
+                title: 'User Research',
+                content: 'We interviewed 8 participants: 5 individuals seeking care and 3 mental healthcare professionals. Interviews focused on values, motivations, and perceived barriers to access.',
+                images: [
+                  { src: 'https://uxfolio-prod.s3.us-east-1.amazonaws.com/6022cf7a27eee90003a65b32/65380a692fc2e5000234b3fc/A2eUF2AYxnOEKwjL.png', alt: 'Persona 1: Patient seeking mental health care — goals, frustrations, and behaviors' },
+                  { src: 'https://uxfolio-prod.s3.us-east-1.amazonaws.com/6022cf7a27eee90003a65b32/65380a692fc2e5000234b3fc/QvzVKG49b6olbRHW.png', alt: 'Persona 2: Mental health professional — motivations, workflow, and pain points' },
+                  { src: 'https://uxfolio-prod.s3.us-east-1.amazonaws.com/6022cf7a27eee90003a65b32/65380a692fc2e5000234b3fc/WYwdWdlIPyvtMkuf.png', alt: 'Patient journey map showing emotional highs and lows across the care-seeking process' },
+                  { src: 'https://uxfolio-prod.s3.us-east-1.amazonaws.com/6022cf7a27eee90003a65b32/65380a692fc2e5000234b3fc/kg4r36sxspg7oFn4.png', alt: 'Mental health professional journey map highlighting workflow friction and communication gaps' }
+                ]
+              },
+              findings: [
+                'Stigma and mental health literacy impact help-seeking behavior',
+                'Cost and insurance opacity deter access',
+                'Demand exceeds provider availability',
+                'Marginalized groups face disproportionate barriers'
+              ],
+              design: {
+                title: 'Design & Iteration',
+                content: 'Wireframes and mid-fidelity prototypes were tested with users, leading to reduced screen complexity and the addition of FAQ support.',
+                images: [
+                  { src: 'https://uxfolio-prod.s3.us-east-1.amazonaws.com/6022cf7a27eee90003a65b32/65380a692fc2e5000234b3fc/sqNdpkuBMbvfibbP.png', alt: 'Early-stage wireframes exploring the telehealth platform layout and core user flows' },
+                  { src: 'https://uxfolio-prod.s3.us-east-1.amazonaws.com/6022cf7a27eee90003a65b32/65380a692fc2e5000234b3fc/gbXTO7cBvGq2CmZB.png', alt: 'Final design triptych showing key screens of the completed telehealth platform' }
+                ]
+              },
+              figmaUrl: 'https://embed.figma.com/proto/tPNJPOoSm4ZOL21DGucuo5/PIT-502?page-id=74%3A34&node-id=113-803&starting-point-node-id=113%3A803&embed-host=share',
+              videoUrl: 'https://www.youtube.com/embed/D1c7fbi1nu8',
+              prototypeVideoUrl: 'https://www.youtube.com/embed/rQsz6ZESRWk',
+              deckUrl: null
+            },
+            { id: 'healthcare-portal', title: 'Healthcare Portal UX Research', summary: 'Improving patient experience through comprehensive research and redesign.', role: 'Lead UX Researcher', team: '2 Researchers, 1 Designer', timeline: '6 weeks', problem: 'Patients struggled to navigate the existing portal, leading to missed appointments and medication errors.', approach: 'Conducted usability testing and heuristic evaluation to identify pain points and design solutions.' },
+            { id: 'ecommerce',         title: 'E-commerce Checkout Optimization', summary: 'Reducing cart abandonment through streamlined checkout flow.', role: 'UX Designer', team: 'Solo project', timeline: '4 weeks', problem: 'High cart abandonment rate (68%) during checkout process.', approach: 'A/B testing and user session analysis revealed friction points in the payment flow.' },
+            { id: 'accessibility',     title: 'Accessibility Audit & Remediation', summary: 'WCAG 2.1 AA compliance for enterprise application.', role: 'Accessibility Lead', team: '1 Designer, 2 Developers', timeline: '12 weeks', problem: 'Application failed basic accessibility standards, excluding users with disabilities.', approach: 'Systematic audit and remediation following WCAG guidelines.' }
+          ]
+        },
+        {
+          id: 'narrative', title: 'Narrative', subtitle: 'The Storyteller',
+          color: 'from-purple-400 to-pink-300',
+          glassColor: 'bg-purple-500/20', borderColor: 'border-purple-400/50',
+          artComponent: NarrativeGlass,
+          projects: [
+            { id: 'interactive-fiction', title: 'Interactive Fiction: The Last Signal', summary: 'A branching narrative experience set in deep space.', role: 'Writer, Narrative Designer', team: 'Solo project', timeline: '16 weeks' }
+          ]
+        },
+        {
+          id: 'ui', title: 'UI', subtitle: 'The Craftsperson',
+          color: 'from-emerald-400 to-teal-300',
+          glassColor: 'bg-emerald-500/20', borderColor: 'border-emerald-400/50',
+          artComponent: UIGlass,
+          projects: [
+            { id: 'design-system', title: 'Design System: Component Library', summary: 'Scalable design system for enterprise product suite.', role: 'UI Designer, Design Systems Lead', team: '3 Designers', timeline: '24 weeks' }
+          ]
+        },
+        {
+          id: 'technical', title: 'Technical Writing', subtitle: 'The Translator',
+          color: 'from-amber-400 to-orange-300',
+          glassColor: 'bg-amber-500/20', borderColor: 'border-amber-400/50',
+          artComponent: TechnicalGlass,
+          projects: [
+            { id: 'api-docs', title: 'API Documentation Portal', summary: 'Developer-focused documentation for REST API.', role: 'Technical Writer', team: '1 Writer, 2 Engineers', timeline: '10 weeks' }
+          ]
+        },
+        {
+          id: 'game', title: 'Game Design', subtitle: 'The Worldbuilder',
+          color: 'from-red-400 to-rose-300',
+          glassColor: 'bg-red-500/20', borderColor: 'border-red-400/50',
+          artComponent: GameGlass,
+          projects: [
+            { id: 'puzzle-mobile', title: 'Puzzle Mechanics for Mobile Game', summary: 'Core gameplay loop design for casual mobile puzzle game.', role: 'Game Designer', team: '2 Designers, 3 Developers', timeline: '20 weeks' }
+          ]
+        }
+      ];
+      // ── END CONTENT ──
+
+      // Typing effect
+      useEffect(() => {
+        if (stage !== 'typing') return;
+        let i = 0;
+        const id = setInterval(() => {
+          i++;
+          setTypedText(welcomeMessage.substring(0, i));
+          if (i >= welcomeMessage.length) {
+            clearInterval(id);
+            setTimeout(() => { setStage('cards'); setTitle(); announce('Choose your path. Five discipline cards are available.'); }, 1500);
+          }
+        }, 80);
+        return () => clearInterval(id);
+      }, [stage]);
+
+      const startIntro = () => {
+        setStage('typing');
+        announce('Welcome. Loading introduction.');
+      };
+
+      const handleCardToggle = (disciplineId) => {
+        setFlippedCards(prev =>
+          prev.includes(disciplineId)
+            ? prev.filter(id => id !== disciplineId)
+            : [...prev, disciplineId]
+        );
+        const d = disciplines.find(d => d.id === disciplineId);
+        const isNowFlipped = !flippedCards.includes(disciplineId);
+        announce(isNowFlipped ? `${d.title} card flipped. ${d.projects.length} projects shown.` : `${d.title} card closed.`);
+      };
+
+      const goToDiscipline = (discipline, e) => {
+        if (e) e.stopPropagation();
+        setCurrentDiscipline(discipline);
+        setCurrentProject(null);
+        setStage('discipline');
+        setTitle(discipline.title);
+        announce(`Viewing all ${discipline.title} projects. ${discipline.projects.length} projects listed.`);
+      };
+
+      const goToProject = (project, e) => {
+        if (e) e.stopPropagation();
+        setCurrentProject(project);
+        setStage('project');
+        setTitle(project.title);
+        announce(`Opened case study: ${project.title}`);
+      };
+
+      const goHome = () => {
+        setStage('cards'); setCurrentDiscipline(null); setCurrentProject(null); setFlippedCards([]);
+        setTitle(); announce('Returned to Choose your path.');
+      };
+      const goBackToDiscipline = () => {
+        setStage('discipline'); setCurrentProject(null);
+        setTitle(currentDiscipline.title); announce(`Returned to ${currentDiscipline.title} projects.`);
+      };
+      const goBackToCards = () => {
+        setStage('cards'); setCurrentDiscipline(null); setCurrentProject(null);
+        setTitle(); announce('Returned to Choose your path.');
+      };
+
+      // ────────────────────────────────────────────
+      // INTRO
+      // ────────────────────────────────────────────
+      if (stage === 'intro') {
+        return (
+          <main
+            id="main-content"
+            className="min-h-screen bg-black flex flex-col items-center justify-center cursor-pointer"
+            onClick={startIntro}
+          >
+            <div className="text-center px-8">
+              {/* Screen reader gets the full warm greeting; sighted users just see "Hi." */}
+              <h1
+                ref={mainHeadingRef}
+                tabIndex={-1}
+                className="text-5xl md:text-7xl font-light gradient-text outline-none"
+                aria-label="Hi. I'm Jim from Jim Folliard's portfolio. Catchy name, huh? I grew it myself. I hope you're excited! Press Enter to begin."
+              >
+                Hi.<span className="cursor" aria-hidden="true">|</span>
+              </h1>
+
+              {/* Visually hidden button — keyboard users can tab to it and activate,
+                  sighted users see only a faint glow on focus, mystery intact */}
+              <button
+                onClick={(e) => { e.stopPropagation(); startIntro(); }}
+                autoFocus
+                className="mt-16 opacity-0 focus-visible:opacity-100 px-6 py-2 border border-blue-400/40 text-blue-300 rounded-lg transition-opacity duration-300 text-sm"
+                aria-label="Begin — enter the portfolio"
+              >
+                Begin
+              </button>
+
+              {/* Subtle hint that fades in after 3s — enough for mouse users, not enough to kill the mood */}
+              <p
+                className="mt-6 text-gray-700 text-xs tracking-widest uppercase animate-hintFade"
+                aria-hidden="true"
+              >
+                tap anywhere
+              </p>
+            </div>
+
+            <style>{`
+              @keyframes hintFade {
+                0%,70% { opacity: 0; }
+                100%   { opacity: 1; }
+              }
+              .animate-hintFade {
+                animation: hintFade 4s ease-in forwards;
+              }
+              @media (prefers-reduced-motion: reduce) {
+                .animate-hintFade { animation: none; opacity: 1; }
+              }
+            `}</style>
+          </main>
+        );
+      }
+
+      // ────────────────────────────────────────────
+      // TYPING
+      // ────────────────────────────────────────────
+      if (stage === 'typing') {
+        return (
+          <main id="main-content" className="min-h-screen bg-black flex items-center justify-center" aria-busy="true" aria-label="Loading introduction">
+            <p
+              className="text-5xl md:text-6xl font-light gradient-text px-8 text-center"
+              aria-live="off"
+            >
+              {typedText}<span className="cursor" aria-hidden="true">|</span>
+            </p>
+          </main>
+        );
+      }
+
+      // ────────────────────────────────────────────
+      // CASE STUDY
+      // ────────────────────────────────────────────
+      if (stage === 'project' && currentProject) {
+        return (
+          <div className="min-h-screen bg-black text-white pb-16">
+            <main id="main-content" className="max-w-4xl mx-auto px-8 py-12">
+              <NavBar onBack={goBackToDiscipline} backLabel={`Back to ${currentDiscipline?.title} projects`} onHome={goHome} />
+
+              <article aria-labelledby="project-title">
+                <header className="mb-10">
+                  <h1
+                    id="project-title"
+                    ref={mainHeadingRef}
+                    tabIndex={-1}
+                    className="text-4xl font-light mb-4 bg-gradient-to-r from-blue-300 to-cyan-400 bg-clip-text text-transparent outline-none"
+                  >
+                    {currentProject.title}
+                  </h1>
+                  <p className="text-gray-300 text-lg mb-6">{currentProject.summary}</p>
+                  <dl className="text-sm text-gray-500 border-b border-neutral-800 pb-8 flex flex-wrap gap-x-6 gap-y-1">
+                    <div><dt className="inline font-medium text-gray-400">Role: </dt><dd className="inline">{currentProject.role}</dd></div>
+                    <div><dt className="inline font-medium text-gray-400">Team: </dt><dd className="inline">{currentProject.team}</dd></div>
+                    <div><dt className="inline font-medium text-gray-400">Timeline: </dt><dd className="inline">{currentProject.timeline}</dd></div>
+                    {currentProject.tools && <div><dt className="inline font-medium text-gray-400">Tools: </dt><dd className="inline">{currentProject.tools}</dd></div>}
+                  </dl>
+                </header>
+
+                {currentProject.problem && (
+                  <section aria-labelledby="problem-heading" className="mb-10">
+                    <h2 id="problem-heading" className="text-2xl font-light mb-4 text-blue-300">The Problem</h2>
+                    <p className="text-gray-300 leading-relaxed">{currentProject.problem}</p>
+                  </section>
+                )}
+
+                {currentProject.approach && (
+                  <section aria-labelledby="approach-heading" className="mb-10">
+                    <h2 id="approach-heading" className="text-2xl font-light mb-4 text-blue-300">The Approach</h2>
+                    <p className="text-gray-300 leading-relaxed">{currentProject.approach}</p>
+                  </section>
+                )}
+
+                {(currentProject.research || currentProject.findings || currentProject.design) && (
+                  <details className="border border-neutral-800 rounded-lg p-6 hover:border-neutral-700 transition-colors">
+                    <summary className="cursor-pointer text-gray-300 hover:text-white text-lg font-light flex items-center gap-2">
+                      <span>View research &amp; design process</span>
+                      <span aria-hidden="true" className="text-gray-500 text-sm">(expand)</span>
+                    </summary>
+                    <div className="mt-8 space-y-8">
+                      {currentProject.research && (
+                        <section aria-labelledby="research-heading">
+                          <h3 id="research-heading" className="font-medium mb-3 text-blue-300">{currentProject.research.title}</h3>
+                          <p className="text-gray-400 leading-relaxed mb-6">{currentProject.research.content}</p>
+                          {currentProject.research.images && (
+                            <div className="grid gap-6" role="list" aria-label="Research artifacts">
+                              {currentProject.research.images.map((img, i) => (
+                                <div key={i} role="listitem">
+                                  <button
+                                    onClick={() => setLightbox(img)}
+                                    className="w-full text-left group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-lg"
+                                    aria-label={`Expand image: ${img.alt}`}
+                                  >
+                                    <div className="relative overflow-hidden rounded-lg border border-neutral-800 group-hover:border-neutral-500 transition-colors">
+                                      <img
+                                        src={img.src}
+                                        alt={img.alt}
+                                        className="w-full transition-transform duration-300 group-hover:scale-[1.02]"
+                                        loading="lazy"
+                                      />
+                                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                                        <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-black/70 text-white text-xs px-3 py-1 rounded-full" aria-hidden="true">Click to expand</span>
+                                      </div>
+                                    </div>
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </section>
+                      )}
+                      {currentProject.findings && (
+                        <section aria-labelledby="findings-heading">
+                          <h3 id="findings-heading" className="font-medium mb-3 text-blue-300">Key Findings</h3>
+                          <ul className="space-y-2">
+                            {currentProject.findings.map((f, i) => (
+                              <li key={i} className="text-gray-400 leading-relaxed flex items-start gap-2">
+                                <span aria-hidden="true" className="text-blue-400 mt-1">•</span>{f}
+                              </li>
+                            ))}
+                          </ul>
+                        </section>
+                      )}
+                      {currentProject.design && (
+                        <section aria-labelledby="design-heading">
+                          <h3 id="design-heading" className="font-medium mb-3 text-blue-300">{currentProject.design.title}</h3>
+                          <p className="text-gray-400 leading-relaxed mb-6">{currentProject.design.content}</p>
+                          {currentProject.design.images && (
+                            <div className="grid gap-6" role="list" aria-label="Design screenshots">
+                              {currentProject.design.images.map((img, i) => (
+                                <div key={i} role="listitem">
+                                  <button
+                                    onClick={() => setLightbox(img)}
+                                    className="w-full text-left group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-lg"
+                                    aria-label={`Expand image: ${img.alt}`}
+                                  >
+                                    <div className="relative overflow-hidden rounded-lg border border-neutral-800 group-hover:border-neutral-500 transition-colors">
+                                      <img
+                                        src={img.src}
+                                        alt={img.alt}
+                                        className="w-full transition-transform duration-300 group-hover:scale-[1.02]"
+                                        loading="lazy"
+                                      />
+                                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                                        <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-black/70 text-white text-xs px-3 py-1 rounded-full" aria-hidden="true">Click to expand</span>
+                                      </div>
+                                    </div>
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </section>
+                      )}
+                      {currentProject.videoUrl && (
+                        <section aria-labelledby="video-heading">
+                          <h3 id="video-heading" className="font-medium mb-3 text-blue-300">Prototype Walkthrough</h3>
+                          <div className="aspect-video rounded-lg overflow-hidden border border-neutral-800">
+                            <iframe
+                              width="100%" height="100%"
+                              src={currentProject.videoUrl}
+                              title={`Prototype walkthrough for ${currentProject.title}`}
+                              frameBorder="0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                            />
+                          </div>
+                        </section>
+                      )}
+                      {currentProject.prototypeVideoUrl && (
+                        <section aria-labelledby="prototype-video-heading">
+                          <h3 id="prototype-video-heading" className="font-medium mb-3 text-blue-300">Prototype Deep-Dive</h3>
+                          <div className="aspect-video rounded-lg overflow-hidden border border-neutral-800">
+                            <iframe
+                              width="100%" height="100%"
+                              src={currentProject.prototypeVideoUrl}
+                              title={`Prototype deep-dive for ${currentProject.title}`}
+                              frameBorder="0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                            />
+                          </div>
+                        </section>
+                      )}
+                      {currentProject.figmaUrl && (
+                        <section aria-labelledby="figma-heading">
+                          <h3 id="figma-heading" className="font-medium mb-3 text-blue-300">Interactive Prototype</h3>
+                          <div className="rounded-lg overflow-hidden border border-neutral-800">
+                            <iframe
+                              width="100%"
+                              height="450"
+                              src={currentProject.figmaUrl}
+                              title={`Interactive prototype for ${currentProject.title}`}
+                              frameBorder="0"
+                              allowFullScreen
+                            />
+                          </div>
+                        </section>
+                      )}
+                      {currentProject.deckUrl && (
+                        <a
+                          href={currentProject.deckUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-block px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-400 text-black font-medium rounded-lg hover:opacity-90 transition-opacity"
+                        >
+                          View Full Presentation <span aria-label="(opens in new tab)">↗</span>
+                        </a>
+                      )}
+                    </div>
+                  </details>
+                )}
+              {lightbox && (
+                <div
+                  className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 md:p-8"
+                  onClick={() => setLightbox(null)}
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label="Image expanded view"
+                >
+                  <button
+                    ref={lightboxRef}
+                    onClick={() => setLightbox(null)}
+                    className="absolute top-4 right-4 text-white/70 hover:text-white text-sm px-4 py-2 border border-white/20 rounded-lg hover:border-white/50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                    aria-label="Close expanded image"
+                  >
+                    Close ✕
+                  </button>
+                  <div
+                    className="max-w-5xl w-full"
+                    onClick={e => e.stopPropagation()}
+                  >
+                    <img
+                      src={lightbox.src}
+                      alt={lightbox.alt}
+                      className="w-full rounded-lg shadow-2xl"
+                    />
+                    <p className="text-gray-400 text-sm mt-4 text-center">{lightbox.alt}</p>
+                  </div>
+                </div>
+              )}
+
+              <footer className="mt-16 pt-10 border-t border-neutral-800 text-center">
+                <p className="text-gray-500 text-sm mb-4">© {new Date().getFullYear()} Jim Folliard. All rights reserved.</p>
+                <button
+                  onClick={() => window.openEmail()}
+                  className="inline-block px-8 py-4 border border-blue-400/50 text-blue-300 rounded-lg hover:bg-blue-400/10 hover:border-blue-300 transition-colors text-lg font-light"
+                  aria-label="Send Jim an email"
+                >
+                  Get in touch ↗
+                </button>
+              </footer>
+              </article>
+            </main>
+          </div>
+        );
+      }
+
+      // ────────────────────────────────────────────
+      // DISCIPLINE PAGE
+      // ────────────────────────────────────────────
+      if (stage === 'discipline' && currentDiscipline) {
+        return (
+          <div className="min-h-screen bg-black text-white pb-16">
+            <main id="main-content" className="max-w-6xl mx-auto px-8 py-12">
+              <NavBar onBack={goBackToCards} backLabel="Back to all disciplines" onHome={goHome} />
+              <header className="mb-10">
+                <h1
+                  ref={mainHeadingRef}
+                  tabIndex={-1}
+                  className={`text-5xl font-light mb-2 bg-gradient-to-r ${currentDiscipline.color} bg-clip-text text-transparent outline-none`}
+                >
+                  {currentDiscipline.title}
+                </h1>
+                <p className="text-2xl text-gray-400">{currentDiscipline.subtitle}</p>
+              </header>
+              <ul className="grid gap-6" aria-label={`${currentDiscipline.title} projects`}>
+                {currentDiscipline.projects.map((project) => (
+                  <li key={project.id}>
+                    <button
+                      onClick={(e) => goToProject(project, e)}
+                      className="w-full text-left border border-white/10 rounded-lg p-8 hover:border-white/30 transition-all hover:scale-[1.02] backdrop-blur-sm bg-white/5 focus:bg-white/10"
+                      aria-label={`View case study: ${project.title}`}
+                    >
+                      <h2 className="text-2xl font-light mb-2">{project.title}</h2>
+                      <p className="text-gray-400 mb-3">{project.summary}</p>
+                      <p className="text-sm text-gray-500">{project.role} · {project.timeline}</p>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </main>
+          </div>
+        );
+      }
+
+      // ────────────────────────────────────────────
+      // CARD SELECTION
+      // ────────────────────────────────────────────
+      return (
+        <div className="min-h-screen bg-black text-white pb-16">
+          <header className="sr-only">
+            <h1>Jim Folliard — Portfolio</h1>
+          </header>
+
+          <main id="main-content" className="max-w-7xl mx-auto px-4 sm:px-8 pt-8 pb-16 md:pt-16">
+            <h2
+              ref={mainHeadingRef}
+              tabIndex={-1}
+              className="text-3xl md:text-5xl font-light gradient-text text-center mb-8 md:mb-16 outline-none px-4"
+            >
+              Choose your path
+            </h2>
+
+            <ul
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+              aria-label="Discipline cards — press Enter or Space to flip a card and see projects"
+            >
+              {disciplines.map((discipline) => {
+                const Art      = discipline.artComponent;
+                const isFlipped = flippedCards.includes(discipline.id);
+                return (
+                  <li key={discipline.id}>
+                    <div
+                      className={`card-container h-96 ${isFlipped ? 'flipped' : ''}`}
+                      role="group"
+                      aria-label={`${discipline.title} — ${discipline.subtitle}`}
+                    >
+                      <div className="card-flipper">
+                        {/* FRONT */}
+                        <button
+                          className={`card-front border-2 ${discipline.borderColor} ${discipline.glassColor} backdrop-blur-md overflow-hidden w-full`}
+                          onClick={() => handleCardToggle(discipline.id)}
+                          aria-expanded={isFlipped}
+                          aria-label={`${discipline.title}, ${discipline.subtitle}. Press to reveal projects.`}
+                          tabIndex={isFlipped ? -1 : 0}
+                        >
+                          <div className="absolute inset-0 p-4 pointer-events-none">
+                            <Art />
+                          </div>
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 pointer-events-none">
+                            <span className="font-light mb-1 leading-tight" style={{
+                              fontSize: 'clamp(1.4rem, 5.5vw, 3rem)',
+                              color: '#93c5fd',
+                              background: `linear-gradient(to bottom right, ${discipline.color.includes('blue') ? '#60a5fa, #67e8f9' : 
+                                          discipline.color.includes('purple') ? '#c084fc, #f9a8d4' :
+                                          discipline.color.includes('emerald') ? '#34d399, #2dd4bf' :
+                                          discipline.color.includes('amber') ? '#fbbf24, #fb923c' :
+                                          '#f87171, #fb7185'})`,
+                              WebkitBackgroundClip: 'text',
+                              backgroundClip: 'text',
+                              WebkitTextFillColor: 'transparent'
+                            }}>
+                              {discipline.title}
+                            </span>
+                            <span className="text-gray-300 text-sm tracking-wider">{discipline.subtitle}</span>
+                          </div>
+                        </button>
+
+                        {/* BACK */}
+                        <div
+                          className={`card-back border-2 ${discipline.borderColor} bg-black/90 backdrop-blur-md p-6 flex flex-col`}
+                          aria-hidden={!isFlipped}
+                        >
+                          <div className="flex items-center justify-between mb-4">
+                            <span className="text-xl md:text-2xl font-light" style={{
+                              color: '#93c5fd',
+                              background: `linear-gradient(to bottom right, ${discipline.color.includes('blue') ? '#60a5fa, #67e8f9' :
+                                          discipline.color.includes('purple') ? '#c084fc, #f9a8d4' :
+                                          discipline.color.includes('emerald') ? '#34d399, #2dd4bf' :
+                                          discipline.color.includes('amber') ? '#fbbf24, #fb923c' :
+                                          '#f87171, #fb7185'})`,
+                              WebkitBackgroundClip: 'text',
+                              backgroundClip: 'text',
+                              WebkitTextFillColor: 'transparent'
+                            }}>
+                              {discipline.title}
+                            </span>
+                            <button
+                              onClick={() => handleCardToggle(discipline.id)}
+                              aria-label={`Close ${discipline.title} card`}
+                              tabIndex={isFlipped ? 0 : -1}
+                              className="text-gray-500 hover:text-white text-xl px-2 transition-colors"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                          <ul className="flex-1 space-y-2 mb-4" aria-label={`${discipline.title} projects`}>
+                            {discipline.projects.slice(0, 4).map((project) => (
+                              <li key={project.id}>
+                                <button
+                                  onClick={(e) => goToProject(project, e)}
+                                  tabIndex={isFlipped ? 0 : -1}
+                                  className="w-full text-left text-sm text-gray-300 bg-white/5 border border-white/10 rounded p-3 hover:bg-white/15 hover:border-white/30 hover:text-white transition-all"
+                                >
+                                  {project.title}
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                          <button
+                            onClick={(e) => goToDiscipline(discipline, e)}
+                            tabIndex={isFlipped ? 0 : -1}
+                            className={`w-full py-3 rounded bg-gradient-to-r ${discipline.color} text-black font-medium hover:opacity-90 transition-opacity`}
+                            aria-label={`See all ${discipline.title} work — ${discipline.projects.length} projects`}
+                          >
+                            See all {discipline.title} work
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </main>
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<PortfolioWebsite />);
+  </script>
+
+  <!-- ── Protection layer ── -->
+  <script>
+    window.getEmail  = function() {
+      return [106,106,102,111,108,108,105,97,114,100,64,103,109,97,105,108,46,99,111,109]
+        .map(c => String.fromCharCode(c)).join('');
+    };
+    window.openEmail = function() { window.location.href = 'mailto:' + window.getEmail(); };
+
+    document.addEventListener('contextmenu', e => { if (e.target.tagName === 'IMG') e.preventDefault(); });
+    document.addEventListener('dragstart',   e => { if (e.target.tagName === 'IMG') e.preventDefault(); });
+  </script>
+
+</body>
+</html>

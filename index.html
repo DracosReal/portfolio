@@ -462,6 +462,56 @@
               deckUrl: null
             },
             {
+              id: 'hbcu-hub',
+              title: 'HBCU HUB: Mobile App Redesign',
+              summary: 'A year-long UX engagement redesigning a mobile platform that connects students, recruiters, and coaches within the Historically Black Colleges and Universities community — simplifying onboarding, gamifying the experience, and building an app that authentically represents HBCU culture.',
+              role: 'UX Design, QA, Consultant',
+              team: '2 UX Designers, small dev team, CEO',
+              timeline: 'Overall: 1 year · Discovery & Research: 3+ months · Design & Testing: 9+ months',
+              tools: 'Figma, Marvel, Upwork',
+              problemLabel: 'The Problem',
+              approachLabel: 'The Approach',
+              findingsLabel: 'What Was Delivered',
+              problem: 'The original HBCU HUB app asked users to input all their information upfront — a cumbersome onboarding flow that created friction before users had any reason to invest. The UI lacked dynamic content, didn\'t reflect HBCU culture visually, and had no mechanism to serve three very different user types — students, recruiters, and coaches — within a single coherent experience. ADA compliance had not been considered.',
+              approach: 'We began with flow mapping to diagnose the existing user journey and identify where friction concentrated. The proposed redesign broke onboarding into digestible steps, introduced a matchmaker feature to connect students with their best-fit HBCUs, and built out distinct but unified interfaces for each user type. Visual identity work drew on Gen-Z design trends — colorful minimalism, geometric shapes, muted colors — while staying grounded in HBCU cultural identity. ADA compliance testing was conducted at the color and contrast level, with before/after documentation of every remediation.',
+              research: {
+                title: 'Flow Mapping & Research',
+                content: 'Current and proposed user flows were mapped in full, covering registration, onboarding branching, school browsing, recruiter access, and coach interfaces. The proposed flow introduced skip options per Apple HIG guidelines, broke registration into steps, and allowed users to browse before committing — reducing the upfront cognitive load that was driving drop-off.',
+                images: [
+                  { src: 'assets/Images/HBCU HUB/Current Wireframe.png', alt: 'Current user flow — linear registration requiring all information upfront before accessing any content', caption: 'Current flow — all information required before entry' },
+                  { src: 'assets/Images/HBCU HUB/Proposed Wireframe.png', alt: 'Proposed user flow — stepped registration with skip options, browse-before-commit, and branching paths for students, recruiters, and coaches', caption: 'Proposed flow — stepped onboarding, skip options, browse before commit' },
+                  { src: 'assets/Images/HBCU HUB/User Story.png', alt: 'User story flow map showing the matchmaker pathway from selection through targeted schools, account profile, recruiter selection, and connection', caption: 'User story — matchmaker to recruiter connection flow' },
+                  { src: 'assets/Images/HBCU HUB/ADA Testing.png', alt: 'ADA validation testing showing current vs updated chat screen with ColorCheck contrast ratio testing — original failed at 1.06, remediated to meet minimum 7:1 standard', caption: 'ADA testing — contrast ratio remediation with before/after documentation' },
+                  { src: 'assets/Images/HBCU HUB/Gender Accessibility.png', alt: 'Gender accessibility iterations — current (binary only), suggested (preference field added), updated (preference field plus birthday, Finish Later option)', caption: 'Gender accessibility — three iterations toward inclusive profile creation' }
+                ]
+              },
+              findings: [
+                'Full current and proposed flow maps covering registration, onboarding, school browsing, and multi-user-type routing',
+                'Gamified onboarding with the HBCU Matchmaker — students answer preference questions to surface best-fit schools and recruiters',
+                'Three distinct but unified interfaces: Students (academic profile, school filtering, scheduling), Recruiters (student requests, appointments, contact), Coaches (sport-specific student discovery)',
+                'ADA compliance testing and remediation — color contrast validation with before/after documentation for chat, text, and UI elements',
+                'Gender accessibility redesign — binary-only field expanded to include gender preference input and birthday collection with confidentiality note',
+                'Visual identity aligned with HBCU culture: colorful minimalism, geometric shapes, muted tones, informed by Gen-Z design trends and popular social apps',
+                'Iterated with CEO, dev team, and stakeholder feedback across 9+ months of design and testing'
+              ],
+              design: {
+                title: 'The Redesigned App',
+                content: 'The final app introduced The Yard — a social community layer connecting students across HBCU culture groups — alongside a schools browser with scholarship highlights and academic grading, sport-specific coach dashboards, and a recruiter interface for managing student requests and appointments. The previous dark, undifferentiated UI was replaced with a light, culturally grounded design system.',
+                images: [
+                  { src: 'assets/Images/HBCU HUB/Previous app design.png', alt: 'Previous app design — dark UI with limited differentiation between user types and no cultural visual identity', caption: 'Before — previous app design' },
+                  { src: 'assets/Images/HBCU HUB/Your Path To An HBCU-Recruiters-2.png', alt: 'Redesigned onboarding screen — What Best Describes You? with Student or Parent, Recruiters, and Coach pathways, each with distinct color coding', caption: 'Redesigned onboarding — three user types, distinct paths' },
+                  { src: 'assets/Images/HBCU HUB/Schools.png', alt: 'Schools browser showing HBCU listings with institutional grade ratings, cost of attendance, time to graduation, and acceptance rate — scholarship banner at top', caption: 'Schools browser — graded listings with scholarship surface' },
+                  { src: 'assets/Images/HBCU HUB/The Yard.png', alt: 'The Yard — social community screen with HBCU cultural groups (Band, Dance, Football), post sharing, and student discussion threads', caption: 'The Yard — social layer for HBCU community and culture' },
+                  { src: 'assets/Images/HBCU HUB/Mobile screen 1.png', alt: 'Coach and recruiter interfaces — sport-selection dashboard and student request management with Accept/Reject controls and appointment details', caption: 'Coach and recruiter dashboards — sport selection and student requests' },
+                  { src: 'assets/Images/HBCU HUB/Matchmaker.png', alt: 'HBCU Matchmaker feature — full-bleed campus photography with Click Here To Start CTA, connecting students to best-fit schools through preference questions', caption: 'HBCU Matchmaker — preference-driven school and recruiter matching' }
+                ]
+              },
+              figmaUrl: null,
+              videoUrl: null,
+              prototypeVideoUrl: null,
+              deckUrl: null
+            },
+            {
               id: 'rrt',
               title: 'Revision Reasoning Tool',
               summary: 'A self-directed tool design project building a judgment layer between AI document analysis and synthesis — structuring human authorship decisions rather than replacing them.',

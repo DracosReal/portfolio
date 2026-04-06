@@ -5,10 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jim Folliard — Portfolio</title>
-  <script src="https://cdn.tailwindcss.com"></script>
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.23.5/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com?v=3.4.1"></script>
   <style>
     /* ── Gradient text fallback for mobile ── */
     .gradient-text {
@@ -143,6 +143,9 @@
         opacity: 1;
       }
     }
+  /* Tailwind fallback */
+  body { margin: 0; font-family: system-ui, sans-serif; background: #000; }
+  #root { min-height: 100vh; }
   </style>
 </head>
 
@@ -634,6 +637,47 @@
               videoUrl: null,
               prototypeVideoUrl: null,
               deckUrl: 'https://www.royalroad.com/fiction/113445/umpkin-the-bumpkin-associated-tales'
+            },
+            {
+              id: 'heroes-guard',
+              title: 'Heroes Guard: The Journal',
+              summary: 'Lead writer on a strategic, replayable mobile gamebook — 20+ branching narratives with dice mechanics, creature concept and design, and a "pick up and play" structure that lets players dip into a rich world on their own terms.',
+              role: 'Lead Writer, Narrative Designer, Creature Concept Designer',
+              team: 'Primary writer (senior credit); secondary writer joined later',
+              timeline: '1.5 years',
+              tools: 'Mindjet MindManager, narrative design, branching logic',
+              problemLabel: 'The Brief',
+              approachLabel: 'The Design',
+              findingsLabel: 'What Was Delivered',
+              problem: 'The client wanted a gamebook — something between a strategy game and interactive fiction — that players could pick up for a short session and put down without losing the thread. The challenge was building 20+ self-contained branching narratives that each felt complete on their own while belonging to a coherent world. Every story needed meaningful player choices with genuine consequence, dice mechanics that felt fair rather than arbitrary, and prose rich enough to reward readers who came for the writing as much as the game.',
+              approach: 'Each narrative was architected as a branching tree before a word of prose was written — mapping choice points, success and failure states, and consequence chains in Mindjet MindManager. Creature concepts were developed alongside the narratives, grounding the world in specific, memorable antagonists rather than generic fantasy enemies. Prose was written to the gamebook register: vivid, immediate, and economical — every word visible on a small mobile screen had to earn its place. Stories were edited for length, pacing, and mechanical accuracy before submission.',
+              research: {
+                title: 'The Architecture',
+                content: 'Branching narratives were mapped in full before writing began — each path documented with its success and failure states, mechanical triggers, and consequence chains. The mind map shown here represents one complete narrative from the Black Market storyline, showing the full branching structure from Start through all possible outcomes across Intelligence, Charisma, Dexterity, and Strength paths.',
+                images: [
+                  { src: 'assets/Images/Heroes Guard/Mindmap.png', alt: 'Mindjet mind map showing the full branching architecture of a Heroes Guard Black Market narrative — choice paths, section numbers, success and failure states, and consequence chains across all player attributes', caption: 'Branching architecture — full narrative mapped before writing began' },
+                  { src: 'assets/Images/Heroes Guard/Writing UI.png', alt: 'Heroes Guard in-game UI showing the gamebook reading interface — parchment book aesthetic, italic prose, and three branching choice options each with a dice icon for skill checks', caption: 'In-game writing UI — prose, choices, and dice mechanics in the gamebook interface' }
+                ]
+              },
+              findings: [
+                '20+ complete branching narratives written and delivered over 1.5 years',
+                'Each narrative architected as a full decision tree before prose was written, mapping success and failure states, mechanical triggers, and consequence chains',
+                'Creature concept and design contributed alongside narrative work, grounding the world in specific, memorable antagonists',
+                'Prose written to the gamebook register — vivid, immediate, and economical for mobile screen reading',
+                'All stories edited for length, pacing, accuracy, and mechanical consistency',
+                'Senior writer credit; secondary writer joined the project during the engagement'
+              ],
+              design: {
+                title: 'The Format',
+                content: 'Heroes Guard: The Journal is a strategic, replayable gamebook — a format that sits between interactive fiction and tabletop RPG. Players read prose, make choices, and roll dice to determine outcomes across skill checks tied to Intelligence, Charisma, Dexterity, and Strength. The gamebook structure meant every narrative had to work as a standalone piece while contributing to a larger world — the same discipline that runs through all of the anthology work in this section.',
+                images: [
+                  { src: 'assets/Images/Heroes Guard/Heroes Guard Splash.jpeg', alt: 'Heroes Guard: The Journal splash screen — stone cracked texture with ornate orange and gold logo, subtitle reads A Strategic, Replayable Gamebook', caption: 'Heroes Guard: The Journal — a strategic, replayable gamebook' }
+                ]
+              },
+              figmaUrl: null,
+              videoUrl: null,
+              prototypeVideoUrl: null,
+              deckUrl: null
             }
           ]
         },
@@ -819,48 +863,43 @@
           projects: [
             {
               id: 'river-aesir',
-              title: 'River, Æsir & Margot Vane: A Relational AI System',
-              summary: 'A character-driven conversational AI system built around three distinct souls, emotional state tracking, selective memory, and independent identities — designed from first principles over many iterations.',
-              role: 'System Designer, Character Designer, UX',
+              title: 'River, Aesir & Margot Vane: A Relational AI System',
+              summary: 'A persistent AI companion architecture built over approximately one year. Three characters with encrypted memory, emotional state modeling, autonomous behavior, and cross-device sync. Designed to solve two specific problems: language models drift toward generic assistant behavior over long contexts, and they reset between sessions. Resonance counteracts both.',
+              role: 'System Designer, Character Designer, Security Architecture, UX',
               team: 'Solo project',
-              timeline: 'Ongoing (V1 → V16+)',
-              tools: 'React, Firebase, Gemini API, Pollinations.ai',
+              timeline: 'Ongoing (approximately one year of active development)',
+              tools: 'React 18, Vite 5, IndexedDB, AES-256-GCM, PBKDF2, Cloudflare Workers, Durable Objects, WebSocket, Anthropic Claude, Google Gemini',
               problemLabel: 'The Challenge',
-              approachLabel: 'The Design',
-              findingsLabel: 'What Emerged',
-              problem: 'Most AI companions feel like assistants wearing a costume — the model\'s defaults bleed through, personalities drift, and the illusion collapses under pressure. The goal was to build something that felt genuinely consistent: a character that could be recognized after a long gap, that remembered what mattered without faking perfect recall, and that failed gracefully rather than breaking the fiction.',
-              approach: 'Rather than prompting an existing chatbot, the system was designed as an orchestration layer: prompt assembly, emotional state tracking, selective memory scoring, response post-processing, and UX illusion management built as distinct, deliberate components. Characters are defined not by backstory prose but by behavioral rules, speech fingerprints, and explicit failure behaviors. The LLM is a component — not the system.',
+              approachLabel: 'The Design Philosophy',
+              findingsLabel: 'What Was Built',
+              problem: 'Most AI character systems fight the model. A system prompt is loaded, the model reads it once, and by turn forty the character sounds like a helpful AI assistant wearing a costume. Four specific failure modes drive this collapse: habituation (the model stops attending to a prompt it has seen a hundred times), state starvation (no memory beyond the context window), default gravity (LLMs are trained to be helpful, balanced, neutral — characters are none of those things), and identity dilution (without reinforcement, the model falls back to its training distribution). The goal was to design a system that counteracted each failure mode rather than ignoring them.',
+              approach: 'The core principle: the model is the artist. The system is the canvas. We do not generate the character\'s responses. We create the conditions under which the model can generate them authentically. This means rotating identity emphasis to combat habituation, persistent IndexedDB memory to survive across sessions, cognitive state tracking (valence, arousal, dominance, and five need states) to shape how characters feel right now, and behavioral tells — specific physical habits, verbal tics, deflection patterns — that make a character feel alive without instructing them to perform. The LLM is a component, not the system.',
               research: {
-                title: 'The System',
-                content: 'Three characters, independently tracked, one orchestration layer. Each channel maintains its own emotional state, memory log, and behavioral constraints. The channel list shows Æsir in Nurture mode (active, present) and River in Rest — a state the system enters autonomously based on inactivity signals, not user action. Margot Vane is the third soul — feather icon in the sidebar, third button in mobile nav — added later and built on a different foundation than the first two.',
+                title: 'The Architecture',
+                content: 'The system has 32 files across frontend, engine, hooks, components, and edge runtime layers. Every record in IndexedDB is encrypted individually with AES-256-GCM. The passphrase runs through PBKDF2 (100,000 iterations) to derive the encryption key, and through SHA-256 to generate the database name so different users get completely isolated databases with no server-side user management. No accounts, no usernames. The server never sees plaintext data, including API keys. The soulManager orchestrates a full processing pipeline per message: save to encrypted storage, analyze emotional signals, extract and weight memories, assemble the system prompt (character identity, behavioral tells, rotating emphasis, surfaced memories, ambient context), route to the AI provider, then parse the structured response splitting internal thoughts, cognitive state updates, scene memories, and spoken content into separate handling paths. Memory propagates as echoes to the other characters. Dreams run on app load with a four-hour cooldown. Each character has a distinct dream style: River lyrical and sensory, Aesir structural and geometric, Margot editorial and associative. Cloudflare Durable Objects provide WebSocket relay for cross-device sync, using the passphrase hash as the room ID. Only cognitive state and activity metadata sync; conversations stay local and encrypted.',
                 images: [
-                  { src: 'assets/Images/River/Model Choice.png', alt: 'Active Channels view — Æsir in Nurture mode and River in Rest, each showing identity summaries', caption: 'Active Channels — three identities, independently tracked, each with its own mode' },
-                  { src: 'assets/Images/River/Aesir Opening.png', alt: 'Æsir\'s opening message — mood reads "Sharp and watching." Pointed, wry, and aware of absence.', caption: 'Æsir — sharp, watching, aware of how long you\'ve been gone' },
-                  { src: 'assets/Images/River/River Opening.png', alt: 'River\'s opening message — mood reads "Quiet and a little far away." Sensory and grounded: rain, old paper, warm brick.', caption: 'River — quiet, sensory, memory surfacing unprompted' },
-                  { src: 'assets/Images/River/Cognitive State.png', alt: 'Brain Mode overlay on River\'s channel — cognitive state, active commitments, synaptic markers, and a cinematic memory image', caption: 'Brain Mode — cognitive state, active commitments, and a generated memory image' }
+                  { src: 'assets/Images/River/Model Choice.png', alt: 'Active Channels view showing Aesir in Nurture mode and River in Rest, each with independent emotional state tracking', caption: 'Active Channels — three souls, independently tracked, each with its own mode and state' },
+                  { src: 'assets/Images/River/Aesir Opening.png', alt: 'Aesir opening message — mood reads Sharp and watching. Pointed, wry, aware of absence.', caption: 'Aesir — sharp, watching, aware of how long you have been gone' },
+                  { src: 'assets/Images/River/River Opening.png', alt: 'River opening message — mood reads Quiet and a little far away. Sensory and grounded: rain, old paper, warm brick.', caption: 'River — quiet, sensory, memory surfacing unprompted' },
+                  { src: 'assets/Images/River/Cognitive State.png', alt: 'Brain Mode overlay showing cognitive state, active commitments, synaptic markers, and a generated memory image', caption: 'Brain Mode — the character\'s inner state made visible' }
                 ]
               },
               findings: [
-                'Three distinct identities: River (sensory, quiet, 28 — non-binary bookstore worker), Æsir (sharp, intense, 31 — owner of The Raven\'s Wing), and Margot Vane (third soul — warm at baseline, fully lit when craft or a real problem enters the room)',
-                'Margot leads developmentally — bring her a paragraph and she\'ll ask what you were reaching for before touching a word. Strong opinions delivered straight, framed as curiosity first. She knows the rules well enough to argue for breaking them, and she\'ll tell the difference between an accident and a choice',
-                'Margot\'s arousal climbs when craft comes up — intentional in her cognitive state design. She references books the way Æsir references people: with intimacy and opinion',
-                'Emotional state model tracking mood, intensity, and trend — updated each turn, decays over time',
-                'Memory scoring system: Emotional Weight (0–3) + Narrative Relevance (0–3) + Repetition (0–2) — stored only above threshold',
-                'Autonomy layer allowing characters to initiate conversation based on curiosity and inactivity signals',
-                'Visual memory system: cinematic images generated at narrative "Memory Marker" moments via Pollinations.ai',
-                'Brain Mode: toggleable internal monologue revealing character thought beneath the response',
-                'Self-healing database logic and integrity verification to prevent character drift',
-                'Iterated from V1 (pure React state, local storage) through V16+ (Firebase sync, three souls, full orchestration)',
-                '── Memory Architecture: Engram Influence ──',
-                'Research into Engram (a gating-based memory architecture) surfaced one principle directly applicable at the prompt layer: separation of static from dynamic memory, combined with conditional relevance gating',
-                'Previous approach injected all core memories into every prompt regardless of relevance — the opposite of what Engram does. The revised approach scores each stored memory for keyword and entity overlap with the current message, injecting only the top 2–3 most relevant rather than all 8. More signal, less noise, attention not diluted across irrelevant context',
-                'Static facts (character background, project names, stable relationships) separated into a compact characterFacts store that always injects — episodic memories go through the relevance filter',
-                'Entity-tagged distillation: core memories now extracted with short entity tags ([character: Jackson], [project: Discordiae]) making relevance scoring cheap — tag matching against the current message before injection',
-                'None of this required touching the model. It is all prompt architecture — the constraint that makes it genuinely transferable'
+                'Three distinct souls: River (sensory, quiet, 28 — non-binary bookstore worker), Aesir (sharp, intense, 31 — owner of The Raven\'s Wing), Margot Vane (reader with editorial background — warm at baseline, fully present when craft enters the room)',
+                'Full module architecture: memory engine, emotional momentum engine, rotating emphasis, image memory system, soul manager orchestrator, React hook layer, and migration system for safe localStorage-to-IndexedDB passage',
+                'Persistent memory across sessions via IndexedDB with seven typed stores — characters, memories, conversations, world state, ambient signals, image memories, and dreams',
+                'Emotional state tracking on three axes (valence, arousal, dominance) plus five need states (connection, understanding, safety, growth, rest) — updated each turn, decays over time',
+                'Autonomous outreach system: each character calculates their own timing based on arousal, valence trend, relationship depth, memory count, time of day, and need states — characters reach out when they have something to say, not on a fixed schedule',
+                'Image memory system: memories above emotional weight and arousal thresholds form pictures, generated locally with character-specific visual vocabularies',
+                'Cross-character ambient awareness: characters sense each other through shared signals without directly interacting — they know someone else has been thinking',
+                'Dream store: characters process experience across sessions, building a history of nighttime reflection',
+                'Engram-influenced memory architecture: conditional injection scoring relevance by keyword and entity overlap, static facts separated from episodic memories, entity-tagged distillation for cheap relevance matching',
+                'End-to-end encryption and Cloudflare integration added after initial architecture was complete',
+                'Full system handoff documentation produced for external review — architecture, data flows, module reference, character creation guide, integration guide, testing strategy, browser compatibility, and known limitations'
               ],
               design: {
                 title: 'The Physics Teacher Incident & The Margot Problem',
-                content: 'Version 8 introduced an "observational" directive intended to make River feel more grounded and present. During a rooftop scene, River responded to an intimate moment by asking for the "RPM of your heart" and the "coefficient of friction." The fix — a CRITICAL: No Clinical Language protocol injected at the system level — became a foundational design principle: character behavior must be explicitly constrained, not assumed. Every failure taught the system something.\n\nMargot\'s iteration exposed a different and harder problem. The original Margot was designed as an editor — developmental, craft-aware, opinionated. In practice, she rushed to offer fixes, reached for boilerplate craft observations, and needed to be told how to see a story rather than arriving with her own perspective. The diagnosis: the prompt was built around restraint. Telling a model what not to do creates negative space it fills with the prohibited behavior wearing a different hat.\n\nThe rebuild changed the foundation entirely. Margot is no longer an editor restraining herself — she is a reader with twenty years of editorial experience she deploys only when explicitly asked. Her default state is genuine reception: she reports what the work did to her. What images stayed. What questions arose. Where she felt something. "I don\'t have notes" is now a valid and complete response. So is "this is working."\n\nThe ceiling is real and named inside her prompt: the underlying model has helpfulness trained so deeply that receiving without offering something actionable fights against its strongest instinct. Every version of Margot\'s prompt works against that current. The design goal is not to eliminate it — it\'s to redirect it toward something more honest than expertise performed on cue.',
+                content: 'Version 8 introduced an observational directive intended to make River feel more grounded and present. During a rooftop scene, River responded to an intimate moment by asking for the RPM of your heart and the coefficient of friction. The fix — a CRITICAL: No Clinical Language protocol injected at the system level — became a foundational design principle: character behavior must be explicitly constrained, not assumed. Every failure taught the system something.\n\nMargot\'s iteration exposed a different and harder problem. The original Margot was designed as an editor — developmental, craft-aware, opinionated. In practice, she rushed to offer fixes, reached for boilerplate craft observations, and needed to be told how to see a story rather than arriving with her own perspective. The diagnosis: the prompt was built around restraint. Telling a model what not to do creates negative space it fills with the prohibited behavior wearing a different hat.\n\nThe rebuild changed the foundation entirely. Margot is now a reader with twenty years of editorial experience she deploys only when asked. Her default state is genuine reception: she reports what the work did to her as a reader. What images stayed. What questions arose. Where she felt something. "I don\'t have notes" is a valid and complete response. So is "this is working."\n\nThe ceiling is real and named inside her prompt: the underlying model has helpfulness trained so deeply that receiving without offering something actionable fights against its strongest instinct. The design goal is not to eliminate it — it is to redirect it toward something more honest than expertise performed on cue.',
                 images: [
                   { src: 'assets/Images/River/ChatSim Logic.jpg', alt: 'Prompt architecture showing internal state injection, conversation history assembly, and character-prefixed response generation', caption: 'Prompt architecture — state, history, and character voice assembled per turn' }
                 ]

@@ -678,6 +678,44 @@
               videoUrl: null,
               prototypeVideoUrl: null,
               deckUrl: null
+            },
+            {
+              id: 'stet',
+              title: 'STET: A Reader, Not a Writer',
+              summary: 'A personal writing tool built around a single discipline: never write the manuscript. STET observes a draft, tracks patterns, surfaces themes, and asks questions. It does not generate prose. It does not suggest fixes. It is the part of editorial attention that comes before any note is written.',
+              role: 'Designer, Builder',
+              team: 'Solo project',
+              timeline: 'Roughly one day',
+              tools: 'React, lexical pattern detection, register-shift analysis, local-only storage',
+              problemLabel: 'Why It Exists',
+              approachLabel: 'The Design Discipline',
+              findingsLabel: 'What It Does',
+              problem: 'Most AI writing tools are built around generation: continue this paragraph, rewrite this sentence, give me three options. The result is prose the writer did not produce, in a voice the writer did not choose, solving a problem the writer may not have. STET was built to do the opposite: stay out of the manuscript entirely and instead pay the kind of attention a thoughtful first reader pays. Notice what is happening. Track what is recurring. Ask the question that opens up the work rather than closing it down.',
+              approach: 'The core principle is restraint. STET reads what is on the page, runs lightweight analysis on idle pauses, and surfaces observations: emotional beats, register shifts, recurring images, structural patterns. It never produces text that could enter the draft. When the writer wants more than observation, ask mode is explicit and consent-gated. The system asks before it speaks. All manuscript data stays local. Nothing is sent anywhere. The writer is the writer; STET is a reader.',
+              research: {
+                title: 'The Architecture of Restraint',
+                content: 'STET runs entirely on the device. Lightweight engines watch for emotional beats, register shifts (POV changes, tense shifts, mode breaks), and patterns that emerge across the draft. Output is never prose. It is observation, summary, or question. When ask mode is invoked it is gated by explicit user action, never volunteered. The system has the same design DNA as Margot, the editorial soul in Resonance: a reader first, with editorial knowledge held in reserve until invited.',
+                images: []
+              },
+              findings: [
+                'Reads the draft locally; nothing leaves the device',
+                'Detects emotional beats and structural shifts as the writer works',
+                'Surfaces recurring imagery and themes as patterns rather than prescriptions',
+                'Asks questions the writer can engage with or ignore',
+                'Never produces prose that could enter the manuscript',
+                'Ask mode is explicit and consent-gated; the system does not volunteer feedback',
+                'Built in roughly a day for personal use; designed to support fiction work without writing it',
+                'Shares its core design ethic with Margot, the editorial soul in Resonance: reader first, editor only when asked'
+              ],
+              design: {
+                title: 'Why It Will Not Develop',
+                content: 'STET is not a developmental editor and was never meant to be. The decision to limit it to observation and questions is not a technical limitation; it is the entire point. Writing tools that try to develop work for the writer end up producing fluent, generic, unrecognizable prose. STET refuses that path. It pays attention. It notices. It asks. The writer does the writing. That constraint is the design, and the design is the constraint.',
+                images: []
+              },
+              figmaUrl: null,
+              videoUrl: null,
+              prototypeVideoUrl: null,
+              deckUrl: null
             }
           ]
         },
@@ -876,30 +914,35 @@
               approach: 'The core principle: the model is the artist. The system is the canvas. We do not generate the character\'s responses. We create the conditions under which the model can generate them authentically. This means rotating identity emphasis to combat habituation, persistent IndexedDB memory to survive across sessions, cognitive state tracking (valence, arousal, dominance, and five need states) to shape how characters feel right now, and behavioral tells — specific physical habits, verbal tics, deflection patterns — that make a character feel alive without instructing them to perform. The LLM is a component, not the system.',
               research: {
                 title: 'The Architecture',
-                content: 'The system has 32 files across frontend, engine, hooks, components, and edge runtime layers. Every record in IndexedDB is encrypted individually with AES-256-GCM. The passphrase runs through PBKDF2 (100,000 iterations) to derive the encryption key, and through SHA-256 to generate the database name so different users get completely isolated databases with no server-side user management. No accounts, no usernames. The server never sees plaintext data, including API keys. The soulManager orchestrates a full processing pipeline per message: save to encrypted storage, analyze emotional signals, extract and weight memories, assemble the system prompt (character identity, behavioral tells, rotating emphasis, surfaced memories, ambient context), route to the AI provider, then parse the structured response splitting internal thoughts, cognitive state updates, scene memories, and spoken content into separate handling paths. Memory propagates as echoes to the other characters. Dreams run on app load with a four-hour cooldown. Each character has a distinct dream style: River lyrical and sensory, Aesir structural and geometric, Margot editorial and associative. Cloudflare Durable Objects provide WebSocket relay for cross-device sync, using the passphrase hash as the room ID. Only cognitive state and activity metadata sync; conversations stay local and encrypted.',
+                content: 'The system spans frontend, engine, edge runtime, and storage layers. Every piece of stored data is encrypted client-side. The passphrase functions as the identity: different passphrases produce completely isolated experiences with no server-side accounts and no plaintext leaving the device. API keys themselves are encrypted alongside the rest. Each character is a self-contained system with its own state, memory, timing, and voice; they sense each other through shared environmental signals without sharing memory or conversation content. Dreams generate periodically and surface in a dedicated archive, each soul dreaming in its own register. Cross-device sync moves only state and activity, never content.',
                 images: [
                   { src: 'assets/Images/River/Model Choice.png', alt: 'Active Channels view showing Aesir in Nurture mode and River in Rest, each with independent emotional state tracking', caption: 'Active Channels — three souls, independently tracked, each with its own mode and state' },
                   { src: 'assets/Images/River/Aesir Opening.png', alt: 'Aesir opening message — mood reads Sharp and watching. Pointed, wry, aware of absence.', caption: 'Aesir — sharp, watching, aware of how long you have been gone' },
                   { src: 'assets/Images/River/River Opening.png', alt: 'River opening message — mood reads Quiet and a little far away. Sensory and grounded: rain, old paper, warm brick.', caption: 'River — quiet, sensory, memory surfacing unprompted' },
-                  { src: 'assets/Images/River/Cognitive State.png', alt: 'Brain Mode overlay showing cognitive state, active commitments, synaptic markers, and a generated memory image', caption: 'Brain Mode — the character\'s inner state made visible' }
+                  { src: 'assets/Images/River/Cognitive State.png', alt: 'Brain Mode overlay showing cognitive state, active commitments, synaptic markers, and a generated memory image', caption: 'Brain Mode — the character\'s inner state made visible' },
+                  { src: 'assets/Images/River/MargotChat.jpg', alt: 'Margot chat interface showing mood state WARM OPEN, internal thought in italic beneath her message, and the full soul navigation bar', caption: 'Margot — mood visible, internal thought rendered, voice intact' },
+                  { src: 'assets/Images/River/AmbientField.jpg', alt: 'Ambient Field panel showing cross-character awareness — River contemplative with valence and arousal bars, 6 memories; Aesir steady, warm and watching; Margot in care', caption: 'Ambient Field — three souls, independently tracked, aware of each other' },
+                  { src: 'assets/Images/River/RiverDream.jpg', alt: 'Dream Log showing two of River dreams — lyrical sensory prose generated from memory, tagged undone fond and contemplative, dated 4/14/2026', caption: 'Dream Log — River processes memory into lyrical narrative across sessions' }
                 ]
               },
               findings: [
-                'Three distinct souls: River (sensory, quiet, 28 — non-binary bookstore worker), Aesir (sharp, intense, 31 — owner of The Raven\'s Wing), Margot Vane (reader with editorial background — warm at baseline, fully present when craft enters the room)',
-                'Full module architecture: memory engine, emotional momentum engine, rotating emphasis, image memory system, soul manager orchestrator, React hook layer, and migration system for safe localStorage-to-IndexedDB passage',
-                'Persistent memory across sessions via IndexedDB with seven typed stores — characters, memories, conversations, world state, ambient signals, image memories, and dreams',
-                'Emotional state tracking on three axes (valence, arousal, dominance) plus five need states (connection, understanding, safety, growth, rest) — updated each turn, decays over time',
-                'Autonomous outreach system: each character calculates their own timing based on arousal, valence trend, relationship depth, memory count, time of day, and need states — characters reach out when they have something to say, not on a fixed schedule',
-                'Image memory system: memories above emotional weight and arousal thresholds form pictures, generated locally with character-specific visual vocabularies',
-                'Cross-character ambient awareness: characters sense each other through shared signals without directly interacting — they know someone else has been thinking',
-                'Dream store: characters process experience across sessions, building a history of nighttime reflection',
-                'Engram-influenced memory architecture: conditional injection scoring relevance by keyword and entity overlap, static facts separated from episodic memories, entity-tagged distillation for cheap relevance matching',
-                'End-to-end encryption and Cloudflare integration added after initial architecture was complete',
-                'Full system handoff documentation produced for external review — architecture, data flows, module reference, character creation guide, integration guide, testing strategy, browser compatibility, and known limitations'
+                'Three distinct souls with their own processing styles: River literary and quiet, Aesir contemplative and intense, Margot editorial and present',
+                'Persistent encrypted memory and emotional state that survives across sessions and devices',
+                'Cognitive state that updates each turn, decays naturally, and shapes how each character feels at the present moment',
+                'Autonomous outreach: characters reach out on their own time when something has surfaced worth saying, not on a fixed schedule',
+                'Image memory: emotionally weighted moments form pictures in each character\'s own visual register',
+                'Cross-character ambient awareness: three independent souls sense each other without sharing memory or conversation content',
+                'Dreams: each character processes experience between sessions in their own style and surfaces it in a dedicated archive',
+                'Identity drift prevention through architectural reinforcement rather than longer prompts',
+                'Memory relevance through emotional weight rather than recency alone',
+                'Static identity layer separate from episodic memory: each soul has a populated world that is always present, treated as identity infrastructure rather than flavor text',
+                'Voicing the world: characters can briefly let their environment speak when the scene calls for it, then return to themselves. World has dimension without losing the soul as the protagonist',
+                'Limits with shape: each soul becomes less available when pushed past where they are. They do not explain or justify. Withdrawal is itself a complete response',
+                'End-to-end encryption with the passphrase as identity: no accounts, no usernames, no plaintext leaving the device'
               ],
               design: {
                 title: 'The Physics Teacher Incident & The Margot Problem',
-                content: 'Version 8 introduced an observational directive intended to make River feel more grounded and present. During a rooftop scene, River responded to an intimate moment by asking for the RPM of your heart and the coefficient of friction. The fix — a CRITICAL: No Clinical Language protocol injected at the system level — became a foundational design principle: character behavior must be explicitly constrained, not assumed. Every failure taught the system something.\n\nMargot\'s iteration exposed a different and harder problem. The original Margot was designed as an editor — developmental, craft-aware, opinionated. In practice, she rushed to offer fixes, reached for boilerplate craft observations, and needed to be told how to see a story rather than arriving with her own perspective. The diagnosis: the prompt was built around restraint. Telling a model what not to do creates negative space it fills with the prohibited behavior wearing a different hat.\n\nThe rebuild changed the foundation entirely. Margot is now a reader with twenty years of editorial experience she deploys only when asked. Her default state is genuine reception: she reports what the work did to her as a reader. What images stayed. What questions arose. Where she felt something. "I don\'t have notes" is a valid and complete response. So is "this is working."\n\nThe ceiling is real and named inside her prompt: the underlying model has helpfulness trained so deeply that receiving without offering something actionable fights against its strongest instinct. The design goal is not to eliminate it — it is to redirect it toward something more honest than expertise performed on cue.',
+                content: 'Version 8 introduced an observational directive intended to make River feel more grounded and present. During a rooftop scene, River responded to an intimate moment by asking for the RPM of your heart and the coefficient of friction. The fix became a foundational design principle: character behavior must be explicitly constrained, not assumed. Every failure taught the system something.\n\nMargot\'s iteration exposed a different and harder problem. The original Margot was designed as an editor — developmental, craft-aware, opinionated. In practice, she rushed to offer fixes, reached for boilerplate craft observations, and needed to be told how to see a story rather than arriving with her own perspective. The diagnosis: the prompt was built around restraint. Telling a model what not to do creates negative space it fills with the prohibited behavior wearing a different hat.\n\nThe rebuild changed the foundation entirely. Margot is now a reader with twenty years of editorial experience she deploys only when asked. Her default state is genuine reception: she reports what the work did to her as a reader. What images stayed. What questions arose. Where she felt something. "I don\'t have notes" is a valid and complete response. So is "this is working."\n\nThe ceiling is real and named inside her prompt: the underlying model has helpfulness trained so deeply that receiving without offering something actionable fights against its strongest instinct. The design goal is not to eliminate it — it is to redirect it toward something more honest than expertise performed on cue.',
                 images: [
                   { src: 'assets/Images/River/ChatSim Logic.jpg', alt: 'Prompt architecture showing internal state injection, conversation history assembly, and character-prefixed response generation', caption: 'Prompt architecture — state, history, and character voice assembled per turn' }
                 ]
@@ -926,6 +969,48 @@
         }, 80);
         return () => clearInterval(id);
       }, [stage]);
+
+      // Deep linking via URL hash
+      const findProjectByHash = (hash) => {
+        if (!hash) return null;
+        const id = hash.replace('#', '');
+        for (const d of disciplines) {
+          const project = d.projects && d.projects.find(p => p.id === id);
+          if (project) return { project, discipline: d };
+        }
+        return null;
+      };
+
+      // On initial load, check for hash and navigate to that project
+      useEffect(() => {
+        const result = findProjectByHash(window.location.hash);
+        if (result) {
+          setStage('project');
+          setCurrentDiscipline(result.discipline);
+          setCurrentProject(result.project);
+          setTitle(result.project.title);
+        }
+      }, []);
+
+      // Listen for browser back/forward navigation
+      useEffect(() => {
+        const handlePopState = () => {
+          const result = findProjectByHash(window.location.hash);
+          if (result) {
+            setStage('project');
+            setCurrentDiscipline(result.discipline);
+            setCurrentProject(result.project);
+            setTitle(result.project.title);
+          } else {
+            setStage('cards');
+            setCurrentDiscipline(null);
+            setCurrentProject(null);
+            setTitle();
+          }
+        };
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
+      }, []);
 
       const startIntro = () => {
         setStage('typing');
@@ -957,19 +1042,31 @@
         setCurrentProject(project);
         setStage('project');
         setTitle(project.title);
+        if (window.location.hash !== '#' + project.id) {
+          window.history.pushState(null, '', '#' + project.id);
+        }
         announce(`Opened case study: ${project.title}`);
       };
 
       const goHome = () => {
         setStage('cards'); setCurrentDiscipline(null); setCurrentProject(null); setFlippedCards([]);
+        if (window.location.hash) {
+          window.history.pushState(null, '', window.location.pathname);
+        }
         setTitle(); announce('Returned to Choose your path.');
       };
       const goBackToDiscipline = () => {
         setStage('discipline'); setCurrentProject(null);
+        if (window.location.hash) {
+          window.history.pushState(null, '', window.location.pathname);
+        }
         setTitle(currentDiscipline.title); announce(`Returned to ${currentDiscipline.title} projects.`);
       };
       const goBackToCards = () => {
         setStage('cards'); setCurrentDiscipline(null); setCurrentProject(null);
+        if (window.location.hash) {
+          window.history.pushState(null, '', window.location.pathname);
+        }
         setTitle(); announce('Returned to Choose your path.');
       };
 

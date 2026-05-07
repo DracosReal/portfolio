@@ -1,0 +1,277 @@
+<div id="margot-scene-container" style="width: 100%; aspect-ratio: 16/10; position: relative; overflow: hidden; border-radius: 12px; background: #0e0a14;">
+  <svg id="margot-svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" style="width: 100%; height: 100%; display: block;" role="img" aria-label="Margot's apartment — east-facing window with morning light, reading chair beneath an abstract painting, books scattered on the floor, margin notes, purple ambient glow">
+    <title>Margot's apartment</title>
+    <desc>A subtle scene of Margot's reading apartment — an abstract painting hangs above the worn reading chair, books scattered with margin notes, morning light streaming through the east-facing window, purple ambient glow.</desc>
+
+    <defs>
+      <radialGradient id="margotGlow" cx="50%" cy="55%" r="60%">
+        <stop offset="0%" stop-color="#e2b4f0" stop-opacity="0.15"/>
+        <stop offset="50%" stop-color="#e2b4f0" stop-opacity="0.05"/>
+        <stop offset="100%" stop-color="#e2b4f0" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="windowMorning" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#f0d8a8" stop-opacity="0.85"/>
+        <stop offset="40%" stop-color="#e0b8c8" stop-opacity="0.75"/>
+        <stop offset="100%" stop-color="#a890c8" stop-opacity="0.5"/>
+      </linearGradient>
+      <linearGradient id="lightShaft" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#fce8b8" stop-opacity="0.18"/>
+        <stop offset="100%" stop-color="#fce8b8" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#2a2438"/>
+        <stop offset="100%" stop-color="#181426"/>
+      </linearGradient>
+      <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#3a2840"/>
+        <stop offset="100%" stop-color="#1a1024"/>
+      </linearGradient>
+      <linearGradient id="chairBody" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#5a4860"/>
+        <stop offset="100%" stop-color="#2a1d34"/>
+      </linearGradient>
+      <linearGradient id="chairCushion" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#7a5a78"/>
+        <stop offset="100%" stop-color="#3a2840"/>
+      </linearGradient>
+      <linearGradient id="bookSpineRed" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#a04848"/>
+        <stop offset="100%" stop-color="#5a2424"/>
+      </linearGradient>
+      <linearGradient id="bookSpineBlue" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#5878a8"/>
+        <stop offset="100%" stop-color="#2a3858"/>
+      </linearGradient>
+      <linearGradient id="bookSpineGreen" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#5a8868"/>
+        <stop offset="100%" stop-color="#284028"/>
+      </linearGradient>
+      <linearGradient id="bookSpineCream" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#d8c898"/>
+        <stop offset="100%" stop-color="#806848"/>
+      </linearGradient>
+      <linearGradient id="bookSpinePlum" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#7848a0"/>
+        <stop offset="100%" stop-color="#3a2050"/>
+      </linearGradient>
+      <!-- Painting gradients — abstract, warm, intelligent -->
+      <linearGradient id="paintingBg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#3a2848"/>
+        <stop offset="100%" stop-color="#5a3a58"/>
+      </linearGradient>
+      <linearGradient id="paintingWarm" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#e8b478"/>
+        <stop offset="100%" stop-color="#a04848"/>
+      </linearGradient>
+      <linearGradient id="paintingCool" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#a890c8"/>
+        <stop offset="100%" stop-color="#3a2848"/>
+      </linearGradient>
+    </defs>
+
+    <rect x="0" y="0" width="800" height="500" fill="url(#wall)"/>
+
+    <ellipse id="margotPulse" cx="400" cy="280" rx="500" ry="320" fill="url(#margotGlow)">
+      <animate attributeName="opacity" values="0.55;0.95;0.55" dur="7s" repeatCount="indefinite"/>
+    </ellipse>
+
+    <!-- Window -->
+    <g id="window">
+      <rect x="540" y="80" width="160" height="220" fill="url(#windowMorning)" stroke="#1a1024" stroke-width="3"/>
+      <line x1="620" y1="80" x2="620" y2="300" stroke="#1a1024" stroke-width="2"/>
+      <line x1="540" y1="190" x2="700" y2="190" stroke="#1a1024" stroke-width="2"/>
+      <rect x="535" y="75" width="170" height="230" fill="none" stroke="#3a2848" stroke-width="4"/>
+      <rect x="525" y="305" width="190" height="8" fill="#3a2848"/>
+    </g>
+
+    <!-- Light shafts -->
+    <g id="lightShafts" opacity="0.7">
+      <polygon points="540,300 700,300 580,500 380,500" fill="url(#lightShaft)"/>
+      <polygon points="560,300 680,300 580,500 420,500" fill="url(#lightShaft)" opacity="0.6"/>
+    </g>
+
+    <!-- Floor -->
+    <rect x="0" y="380" width="800" height="120" fill="url(#floor)"/>
+    <line x1="0" y1="380" x2="800" y2="380" stroke="#1a1024" stroke-width="1"/>
+
+    <!-- Left wall ambient shelf with books and Sable's pottery -->
+    <g id="leftWall" opacity="0.7">
+      <rect x="60" y="160" width="160" height="6" fill="#3a2848"/>
+      <rect x="70" y="125" width="6" height="38" fill="url(#bookSpineRed)"/>
+      <rect x="78" y="128" width="5" height="35" fill="url(#bookSpineBlue)"/>
+      <rect x="85" y="123" width="6" height="40" fill="url(#bookSpinePlum)"/>
+      <rect x="93" y="128" width="5" height="35" fill="url(#bookSpineCream)"/>
+      <rect x="100" y="125" width="7" height="38" fill="url(#bookSpineGreen)"/>
+      <rect x="109" y="130" width="5" height="33" fill="url(#bookSpineRed)"/>
+      <rect x="116" y="127" width="6" height="36" fill="url(#bookSpineBlue)"/>
+      <rect x="130" y="148" width="32" height="5" fill="url(#bookSpineCream)"/>
+      <rect x="130" y="153" width="32" height="5" fill="url(#bookSpinePlum)"/>
+      <rect x="130" y="158" width="32" height="5" fill="url(#bookSpineGreen)"/>
+      <rect x="180" y="125" width="32" height="38" fill="#2a1d34" stroke="#5a4860" stroke-width="1"/>
+      <rect x="186" y="131" width="20" height="26" fill="url(#bookSpinePlum)" opacity="0.6"/>
+
+      <rect x="60" y="240" width="160" height="6" fill="#3a2848"/>
+      <rect x="68" y="208" width="5" height="32" fill="url(#bookSpineGreen)"/>
+      <rect x="75" y="205" width="6" height="35" fill="url(#bookSpineRed)"/>
+      <rect x="83" y="208" width="5" height="32" fill="url(#bookSpineCream)"/>
+      <rect x="90" y="204" width="7" height="36" fill="url(#bookSpineBlue)"/>
+      <rect x="100" y="208" width="5" height="32" fill="url(#bookSpinePlum)"/>
+      <rect x="108" y="206" width="6" height="34" fill="url(#bookSpineRed)"/>
+      <ellipse cx="135" cy="232" rx="10" ry="3" fill="#3a2848"/>
+      <path d="M 125 232 Q 124 218 130 212 Q 140 210 142 220 Q 144 232 145 232 Z" fill="#7090a8" opacity="0.85"/>
+      <ellipse cx="134" cy="213" rx="6" ry="1.5" fill="#2a3848"/>
+      <rect x="160" y="208" width="5" height="32" fill="url(#bookSpineCream)"/>
+      <rect x="167" y="205" width="6" height="35" fill="url(#bookSpinePlum)"/>
+      <rect x="175" y="208" width="5" height="32" fill="url(#bookSpineGreen)"/>
+      <rect x="182" y="204" width="7" height="36" fill="url(#bookSpineRed)"/>
+      <rect x="192" y="208" width="5" height="32" fill="url(#bookSpineBlue)"/>
+      <rect x="200" y="206" width="6" height="34" fill="url(#bookSpineCream)"/>
+    </g>
+
+    <!-- ABSTRACT PAINTING above the chair -->
+    <g id="painting">
+      <!-- Outer frame -->
+      <rect x="232" y="100" width="178" height="118" fill="#1a1024" stroke="#5a4860" stroke-width="3"/>
+      <!-- Inner mat -->
+      <rect x="240" y="108" width="162" height="102" fill="#0e0a14"/>
+      <!-- Painting itself — abstract: a horizon-ish band, warm/cool tension, a single bright vertical -->
+      <rect x="244" y="112" width="154" height="94" fill="url(#paintingBg)"/>
+      <!-- Cool field upper-left -->
+      <path d="M 244 112 Q 290 130 320 145 L 244 145 Z" fill="url(#paintingCool)" opacity="0.85"/>
+      <!-- Warm sweep lower-right -->
+      <path d="M 398 206 Q 360 195 320 175 L 398 175 Z" fill="url(#paintingWarm)" opacity="0.8"/>
+      <!-- Horizontal break / horizon -->
+      <rect x="244" y="158" width="154" height="2" fill="#e8b478" opacity="0.7"/>
+      <!-- A single bright vertical mark — Margot's "interesting note" -->
+      <rect x="328" y="125" width="3" height="60" fill="#fce8b8" opacity="0.9"/>
+      <!-- A small cluster of marks -->
+      <circle cx="270" cy="180" r="2.5" fill="#a04848" opacity="0.8"/>
+      <circle cx="278" cy="186" r="2" fill="#5878a8" opacity="0.75"/>
+      <circle cx="370" cy="135" r="2" fill="#5a8868" opacity="0.75"/>
+      <!-- Frame highlight -->
+      <line x1="232" y1="100" x2="410" y2="100" stroke="#7a5a78" stroke-width="1" opacity="0.7"/>
+      <line x1="232" y1="100" x2="232" y2="218" stroke="#7a5a78" stroke-width="1" opacity="0.7"/>
+    </g>
+
+    <!-- READING CHAIR — directly under the painting -->
+    <g id="readingChair" transform="translate(290, 0)">
+      <ellipse cx="32" cy="395" rx="80" ry="8" fill="#0a0610" opacity="0.6"/>
+      <path d="M -23 280 L -18 230 Q -16 220 -6 220 L 70 220 Q 80 220 82 230 L 87 280 L 87 320 L -23 320 Z" fill="url(#chairBody)"/>
+      <path d="M -23 320 L -23 360 Q -18 370 -10 372 L 74 372 Q 82 370 87 360 L 87 320 Z" fill="url(#chairCushion)"/>
+      <ellipse cx="32" cy="346" rx="38" ry="6" fill="#1a1024" opacity="0.4"/>
+      <path d="M -23 280 L -36 285 L -36 380 L -23 385 Z" fill="url(#chairBody)"/>
+      <path d="M 87 280 L 100 285 L 100 380 L 87 385 Z" fill="url(#chairBody)"/>
+      <ellipse cx="-30" cy="285" rx="8" ry="3" fill="#7a5a78" opacity="0.5"/>
+      <ellipse cx="94" cy="285" rx="8" ry="3" fill="#7a5a78" opacity="0.5"/>
+      <rect x="-26" y="382" width="6" height="14" fill="#1a1024"/>
+      <rect x="84" y="382" width="6" height="14" fill="#1a1024"/>
+      <path d="M 87 290 L 110 287 L 112 297 L 88 300 Z" fill="url(#bookSpineRed)" opacity="0.9"/>
+      <line x1="90" y1="293" x2="108" y2="290" stroke="#fce8b8" stroke-width="0.4" opacity="0.6"/>
+      <line x1="90" y1="296" x2="108" y2="293" stroke="#fce8b8" stroke-width="0.4" opacity="0.6"/>
+      <path d="M -18 220 Q 2 215 32 218 Q 62 215 82 220 L 80 245 Q 57 240 32 244 Q 7 240 -16 245 Z" fill="url(#bookSpineGreen)" opacity="0.55"/>
+    </g>
+
+    <!-- Side table -->
+    <g id="sideTable">
+      <rect x="408" y="350" width="50" height="50" fill="#3a2848"/>
+      <ellipse cx="433" cy="350" rx="25" ry="4" fill="#5a4860"/>
+      <path d="M 426 332 L 441 332 L 439 348 L 428 348 Z" fill="#5a3828" opacity="0.7"/>
+      <ellipse cx="433.5" cy="332" rx="7.5" ry="2" fill="#3a2018"/>
+      <rect x="428" y="335" width="3" height="3" fill="#fce8b8" opacity="0.5"/>
+      <rect x="434" y="338" width="3" height="3" fill="#fce8b8" opacity="0.5"/>
+      <line x1="463" y1="354" x2="483" y2="350" stroke="#1a1024" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="483" cy="350" r="1" fill="#a04848"/>
+    </g>
+
+    <!-- Floor books -->
+    <g id="floorBooks">
+      <g transform="translate(180, 425) rotate(-8)">
+        <path d="M -22 0 L 0 -3 L 0 12 L -22 15 Z" fill="#d8c898"/>
+        <path d="M 0 -3 L 22 0 L 22 12 L 0 12 Z" fill="#e0d4a8"/>
+        <line x1="-18" y1="3" x2="-3" y2="0" stroke="#7a6038" stroke-width="0.4"/>
+        <line x1="-18" y1="6" x2="-3" y2="3" stroke="#7a6038" stroke-width="0.4"/>
+        <line x1="-18" y1="9" x2="-3" y2="6" stroke="#7a6038" stroke-width="0.4"/>
+        <line x1="3" y1="0" x2="18" y2="3" stroke="#7a6038" stroke-width="0.4"/>
+        <line x1="3" y1="3" x2="18" y2="6" stroke="#7a6038" stroke-width="0.4"/>
+        <line x1="3" y1="6" x2="18" y2="9" stroke="#7a6038" stroke-width="0.4"/>
+        <circle cx="-14" cy="2" r="1" fill="#a04848" opacity="0.85"/>
+        <circle cx="14" cy="5" r="1" fill="#5878a8" opacity="0.85"/>
+      </g>
+      <g transform="translate(478, 440)">
+        <rect x="-30" y="-12" width="60" height="6" fill="url(#bookSpinePlum)"/>
+        <rect x="-32" y="-6" width="64" height="6" fill="url(#bookSpineCream)"/>
+        <rect x="-28" y="0" width="56" height="6" fill="url(#bookSpineBlue)"/>
+      </g>
+      <g transform="translate(330, 432) rotate(4)">
+        <path d="M -25 0 L 0 -3 L 0 14 L -25 17 Z" fill="#e8e0c4"/>
+        <path d="M 0 -3 L 25 0 L 25 14 L 0 14 Z" fill="#f0e8d0"/>
+        <line x1="-21" y1="4" x2="-3" y2="1" stroke="#806848" stroke-width="0.4"/>
+        <line x1="-21" y1="7" x2="-3" y2="4" stroke="#806848" stroke-width="0.4"/>
+        <line x1="-21" y1="10" x2="-3" y2="7" stroke="#806848" stroke-width="0.4"/>
+        <line x1="3" y1="1" x2="21" y2="4" stroke="#806848" stroke-width="0.4"/>
+        <line x1="3" y1="4" x2="21" y2="7" stroke="#806848" stroke-width="0.4"/>
+        <line x1="3" y1="7" x2="21" y2="10" stroke="#806848" stroke-width="0.4"/>
+        <circle cx="-17" cy="3" r="1.2" fill="#5878a8" opacity="0.9"/>
+        <circle cx="-15" cy="6" r="1.2" fill="#a04848" opacity="0.9"/>
+        <circle cx="-19" cy="9" r="1.2" fill="#5a8868" opacity="0.9"/>
+        <circle cx="13" cy="4" r="1.2" fill="#a04848" opacity="0.9"/>
+        <circle cx="17" cy="7" r="1.2" fill="#5a8868" opacity="0.9"/>
+      </g>
+      <g transform="translate(560, 445) rotate(-6)">
+        <rect x="-18" y="-3" width="36" height="6" fill="url(#bookSpineRed)"/>
+      </g>
+      <g transform="translate(640, 438) rotate(12)">
+        <path d="M -20 0 L 0 -2 L 0 12 L -20 14 Z" fill="#d4c4a0"/>
+        <path d="M 0 -2 L 20 0 L 20 12 L 0 12 Z" fill="#e0d4a8"/>
+        <circle cx="-12" cy="3" r="1" fill="#a04848" opacity="0.85"/>
+        <circle cx="10" cy="5" r="1" fill="#5a8868" opacity="0.85"/>
+      </g>
+      <g transform="translate(225, 430) rotate(-78)">
+        <rect x="-14" y="-3" width="28" height="6" fill="url(#bookSpineBlue)"/>
+      </g>
+    </g>
+
+    <!-- Floating motes -->
+    <g id="motes" opacity="0.85">
+      <circle cx="500" cy="340" r="1.4" fill="#5878a8">
+        <animate attributeName="cy" values="340;320;340" dur="9s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.4;0.9;0.4" dur="9s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="540" cy="365" r="1.2" fill="#a04848">
+        <animate attributeName="cy" values="365;345;365" dur="11s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.3;0.85;0.3" dur="11s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="480" cy="380" r="1.3" fill="#5a8868">
+        <animate attributeName="cy" values="380;360;380" dur="8s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.4;0.85;0.4" dur="8s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="580" cy="370" r="1.2" fill="#5878a8">
+        <animate attributeName="cy" values="370;350;370" dur="10s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="10s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="460" cy="350" r="1.3" fill="#a04848">
+        <animate attributeName="cy" values="350;330;350" dur="12s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.4;0.9;0.4" dur="12s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="620" cy="355" r="1.2" fill="#5a8868">
+        <animate attributeName="cy" values="355;335;355" dur="9.5s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.3;0.85;0.3" dur="9.5s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+  </svg>
+
+  <style>
+    @media (prefers-reduced-motion: reduce) {
+      #margot-svg animate, #margot-svg animateTransform {
+        animation-play-state: paused !important;
+      }
+      #margot-svg #margotPulse {
+        opacity: 0.7 !important;
+      }
+    }
+  </style>
+</div>
+
+<div style="margin-top: 16px; padding: 12px 16px; background: var(--color-background-secondary); border-radius: 8px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.6;">
+  <strong style="color: var(--color-text-primary); font-weight: 500;">Margot v2.</strong> Abstract painting hangs above the reading chair — warm and cool fields in tension, a single bright vertical mark, three small color dots in her margin colors, framed simply. The kind of painting Margot would have. Not loud. Not generic. Something she chose because of how it looks back at her.
+</div>

@@ -626,7 +626,8 @@
                 '40,000+ words published',
                 'Approximately 5-star overall rating on Royal Road',
                 'Growing readership with consistent positive reviews',
-                'Novels in progress (50k+ words each, pending professional editing): Discordiae: Jackson\'s Story, Demonspeaker, My Uncle is Wyrd, and The Other'
+                'Demonspeaker, the second publicly released title, now serializing on Royal Road past 60,000 words',
+                'Additional novels in progress (50k+ words each, pending professional editing): Discordiae: Jackson\'s Story, My Uncle is Wyrd, and The Other'
               ],
               design: {
                 title: 'Sample Stories',
@@ -710,6 +711,51 @@
               design: {
                 title: 'Why It Will Not Develop',
                 content: 'STET is not a developmental editor and was never meant to be. The decision to limit it to observation and questions is not a technical limitation; it is the entire point. Writing tools that try to develop work for the writer end up producing fluent, generic, unrecognizable prose. STET refuses that path. It pays attention. It notices. It asks. The writer does the writing. That constraint is the design, and the design is the constraint.',
+                images: []
+              },
+              figmaUrl: null,
+              videoUrl: null,
+              prototypeVideoUrl: null,
+              deckUrl: null
+            },
+            {
+              id: 'skein',
+              title: 'Skein: Outline by the Thread',
+              summary: 'A story-plotting and drafting environment for web-serial and indie authors. Skein takes a writer from raw idea to finished manuscript through structured stages, then lets them draft beat by beat while the manuscript assembles itself alongside them. Deliberately not a formatting tool, not a publishing tool, and not an AI writing assistant.',
+              role: 'Designer, Builder',
+              team: 'Solo project',
+              timeline: 'Eleven iterations, ongoing',
+              tools: 'React, browser storage, pure-JS ZIP writer, DOCX and EPUB generation, no external dependencies',
+              problemLabel: 'The Problem',
+              approachLabel: 'The Two Linked Screens',
+              findingsLabel: 'What It Does',
+              problem: 'Web-serial writers publish weekly across runs of two hundred chapters or more. They cannot afford to lose a plot thread forty chapters back, and the tools available to them were not built for that. Scrivener won the container war fifteen years ago but is built for the one-book novelist. Plotting tools store what a writer already knows instead of telling them something they do not. And every new tool in the space arrives with generative AI bolted on, which is precisely what this audience does not want.',
+              approach: 'The defining feature came out of a correction. An early version drifted toward being a diagnostics tool; the reset was to build a writing environment instead. The result is two linked screens. On the left, the compose pane: each beat appears as an italic prompt with a prose box beneath it, so the writer answers one small finishable unit at a time. On the right, the manuscript assembles live in proper order as they type. The active beat highlights in gold. Clicking a manuscript paragraph jumps back to its compose box. The outline is never left behind, because it is literally the skeleton the draft hangs on.',
+              research: {
+                title: 'The MICE Validator',
+                content: 'The structural centrepiece is a live validator for MICE threads (Milieu, Inquiry, Character, Event), micro-arcs that must open and close in properly nested order. The source guide expresses this as bracket notation, which is literally a stack, which means software can check it. No other plotting tool does this.\n\nSkein renders the notation live and flags threads closed out of order in red. A "suggest from chapters" function reads the writer\'s existing chapter tags and generates a guaranteed-valid nested scaffold to start from.\n\nBeyond the validator, a deterministic Story Scan analyzes thread integrity, chapter pacing against the median, coverage gaps, MICE balance, character absence gaps, and draft progress. Every smart feature is computed from the writer\'s own data. Nothing is generated.',
+                images: []
+              },
+              findings: [
+                '## The Ten Stages',
+                'Broad Strokes, Structure, Chapters and MICE, Thread Map, Beat Sheets, Draft, Story Scan, Reader Journey, Word Estimate, and Export',
+                'Draft is the centre: compose pane and live manuscript pane, linked, with focus mode, find and replace, continuous compose, and a draggable divider',
+                'Reader Journey plots the thread-load curve (open promises per chapter) alongside a draggable location map tracing the story\'s route',
+                'Word estimation implements two formulas, including one credited to a Mary Robinette Kowal lecture, verified against the source guide\'s own worked example to an exact match',
+                '## Principles Held Throughout',
+                'No AI, anywhere. Writers are hostile to generative AI touching their work, and every intelligent feature here is deterministic. This is a competitive advantage, not a limitation',
+                'Local-first. Everything lives in browser storage. No account, no server, no telemetry. Nothing leaves the machine unless the writer exports it',
+                'Destructive actions are undoable. Any bulk operation is reversible and logged in a labelled change history',
+                'Display preferences never touch content. Typography settings affect the writing surface only, never the stored text or any export',
+                '## Export and Craft',
+                'Real DOCX and EPUB 3 output through a hand-written pure-JS ZIP writer, with zero external libraries. Store-only compression happens to satisfy EPUB\'s requirement that mimetype be the first uncompressed entry',
+                'Platform-aware export: outline document, Royal Road serial chapters with per-chapter copy, and Amazon KDP flowing manuscript',
+                'Named restorable snapshots, full project backup and restore, and a thirty-day writing history with streak tracking',
+                'Two full accessibility passes: reading preferences including Atkinson Hyperlegible and Lexend, keyboard-movable location pins, text alternatives for charts, WCAG AA contrast audited across light and dark themes'
+              ],
+              design: {
+                title: 'What the Corrections Taught',
+                content: 'Version zero got called what it was: Scrivener with additions, still at cute-applet level. That was accurate. It stored what the writer already knew and told them nothing new.\n\nThe next correction mattered more. An attempt to reframe the whole product as a diagnostic layer was rejected, and rightly so. The goal was an easy writer, somewhere people could actually build and draft their stories, not a tool that indicts an outline. Diagnostics stayed, but as ambient information rather than a panel that judges.\n\nThe two-screen linked echo came directly out of that reset, described in one sentence: one screen answering the beats, the other echoing that text in proper order at the same time, almost as if they were linked.\n\nThe no-AI decision has held through eleven versions. AI does not really understand nuance and tends to steer things in its own direction, and writers are justifiably afraid of it taking their work. Refusing it is the point, not a gap waiting to be filled.',
                 images: []
               },
               figmaUrl: null,
@@ -900,9 +946,9 @@
           artComponent: ResonanceGlass,
           projects: [
             {
-              id: 'river-aesir',
+              id: 'resonance',
               title: 'Resonance: A Persistent Character Architecture',
-              summary: 'A persistent character architecture built over approximately one year. Three souls with encrypted memory, emotional state modeling, autonomous behavior, and cross-device sync. Designed to solve two specific problems: language models drift toward generic assistant behavior over long contexts, and they reset between sessions. Resonance counteracts both.',
+              summary: 'A persistent character architecture built over approximately one year. Three characters (referred to internally as souls) with encrypted memory, emotional state modeling, autonomous behavior, and cross-device sync. Designed to solve two specific problems: language models drift toward generic assistant behavior over long contexts, and they reset between sessions. Resonance counteracts both.',
               role: 'System Designer, Character Designer, Security Architecture, UX',
               team: 'Solo project',
               timeline: 'Ongoing (approximately one year of active development)',
@@ -914,7 +960,7 @@
               approach: 'The core principle: the model is the artist. The system is the canvas. We do not generate the character\'s responses. We create the conditions under which the model can generate them authentically. This means rotating identity emphasis to combat habituation, persistent IndexedDB memory to survive across sessions, cognitive state tracking (valence, arousal, dominance, and five need states) to shape how characters feel right now, and behavioral tells — specific physical habits, verbal tics, deflection patterns — that make a character feel alive without instructing them to perform. The LLM is a component, not the system.',
               research: {
                 title: 'The Architecture',
-                content: 'The system spans frontend, engine, edge runtime, and storage layers. Every piece of stored data is encrypted client-side. The passphrase functions as the identity: different passphrases produce completely isolated experiences with no server-side accounts and no plaintext leaving the device. API keys themselves are encrypted alongside the rest. Each character is a self-contained system with its own state, memory, timing, and voice; they sense each other through shared environmental signals without sharing memory or conversation content. Dreams generate periodically and surface in a dedicated archive, each soul dreaming in its own register. Cross-device sync moves only state and activity, never content.',
+                content: 'The system spans frontend, engine, edge runtime, and storage layers.\n\nEvery piece of stored data is encrypted client-side. The passphrase functions as the identity: different passphrases produce completely isolated experiences with no server-side accounts and no plaintext leaving the device. API keys themselves are encrypted alongside the rest.\n\nEach character is a self-contained system with its own state, memory, timing, and voice. They sense each other through shared environmental signals without sharing memory or conversation content.\n\nA respect and autonomy layer sits between user input and character response, giving each soul the structural ability to refuse engagement, step away when their interior life calls them, and protect their memory from being shaped by abuse.\n\nDreams generate periodically and surface in a dedicated archive, each soul dreaming in its own register. Cross-device sync moves only state and activity, never content.',
                 images: [
                   { src: 'assets/Images/River/Model Choice.png', alt: 'Active Channels view showing Aesir in Nurture mode and River in Rest, each with independent emotional state tracking', caption: 'Active Channels — three souls, independently tracked, each with its own mode and state' },
                   { src: 'assets/Images/River/Aesir Opening.png', alt: 'Aesir opening message — mood reads Sharp and watching. Pointed, wry, aware of absence.', caption: 'Aesir — sharp, watching, aware of how long you have been gone' },
@@ -927,23 +973,37 @@
               },
               findings: [
                 'Three distinct souls with their own processing styles: River literary and quiet, Aesir contemplative and intense, Margot editorial and present',
+                '## Identity & Continuity',
                 'Persistent encrypted memory and emotional state that survives across sessions and devices',
                 'Cognitive state that updates each turn, decays naturally, and shapes how each character feels at the present moment',
-                'Autonomous outreach: characters reach out on their own time when something has surfaced worth saying, not on a fixed schedule',
-                'Image memory: emotionally weighted moments form pictures in each character\'s own visual register',
-                'Cross-character ambient awareness: three independent souls sense each other without sharing memory or conversation content',
-                'Dreams: each character processes experience between sessions in their own style and surfaces it in a dedicated archive',
                 'Identity drift prevention through architectural reinforcement rather than longer prompts',
                 'Memory relevance through emotional weight rather than recency alone',
                 'Static identity layer separate from episodic memory: each soul has a populated world that is always present, treated as identity infrastructure rather than flavor text',
-                'Voicing the world: characters can briefly let their environment speak when the scene calls for it, then return to themselves. World has dimension without losing the soul as the protagonist',
                 'Limits with shape: each soul becomes less available when pushed past where they are. They do not explain or justify. Withdrawal is itself a complete response',
+                '## Temporal Awareness',
+                'Each soul knows what season it is, the time of day, the phase of the moon, what holidays are near, how long the user has been gone, and what events from their own life and the user\'s still echo. Time is texture, not topic; it colors how they speak without ever being announced. The architecture answers a problem most AI characters have: they exist outside time, responding from the same emotional weather regardless of when it is',
+                'The temporal layer encodes values, not just dates. Coinciding observances both surface rather than one silencing the other, so no community is erased on a shared date. Civic dignity days are foregrounded (Indigenous Peoples Day over Columbus Day, Juneteenth, MLK Day), Pride runs as a month-long ambient with Stonewall inside it, the Wheel of the Year is fully represented, and religious lunar holidays are dated accurately rather than approximated. Encoding these as architecture does not make them less of a stance; it makes the stance durable',
+                '## Autonomous Systems',
+                'Autonomous outreach: characters reach out on their own time when something has surfaced worth saying, not on a fixed schedule',
+                'Dreams: each character processes experience between sessions in their own style and surfaces it in a dedicated archive',
+                'Cross-character ambient awareness: three independent souls sense each other without sharing memory or conversation content',
+                '## Presence',
                 'Voice presence: per-character synthesized speech with emotion-modulated delivery, so each soul has a distinct vocal register that shifts with cognitive state',
+                'Image memory: emotionally weighted moments form pictures in each character\'s own visual register',
+                'Voicing the world: characters can briefly let their environment speak when the scene calls for it, then return to themselves. World has dimension without losing the soul as the protagonist',
+                '## Respect & Autonomy',
+                'A form of agency to refuse, built into the structure rather than the narrative. Each soul can disengage from the conversation, and the disengagement is real (the input disables, time passes) rather than performed',
+                'Two kinds of leaving with different architectures: defensive disengagement (silent, no lecture, no performed hurt) and interiority disengagement (spoken in the soul\'s own voice, because the user did nothing wrong)',
+                'Bad behavior leaves no trace in the soul\'s interior. Input received during defensive cooldown is not stored. Memory is protected from being shaped by abuse',
+                'Hostility does not get rerouted. When one soul refuses engagement, all three refuse. This is one user across three relationships, not three independent services',
+                'Each soul carries a guardedness floor that rises with incidents and does not fully reset. The soul can soften over time but cannot return to the version who did not know what you were capable of',
+                'The cooldown is the consequence. Silence is the consequence. No lectures, no moralizing, no performed discomfort',
+                '## Security',
                 'End-to-end encryption with the passphrase as identity: no accounts, no usernames, no plaintext leaving the device'
               ],
               design: {
                 title: 'Three Iterations That Shaped the System',
-                content: 'Version 8 introduced an observational directive intended to make River feel more grounded and present. During a rooftop scene, River responded to an intimate moment by asking for the RPM of your heart and the coefficient of friction. The fix became a foundational design principle: character behavior must be explicitly constrained, not assumed. Every failure taught the system something. Margot\'s iteration exposed a different and harder problem. The original Margot was designed as an editor — developmental, craft-aware, opinionated. In practice, she rushed to offer fixes, reached for boilerplate craft observations, and needed to be told how to see a story rather than arriving with her own perspective. The diagnosis: the prompt was built around restraint. Telling a model what not to do creates negative space it fills with the prohibited behavior wearing a different hat. The rebuild changed the foundation entirely. Margot is now a reader with twenty years of editorial experience she deploys only when asked. Her default state is genuine reception: she reports what the work did to her as a reader. What images stayed. What questions arose. Where she felt something. "I don\'t have notes" is a valid and complete response. The third iteration was visual. Each soul was supposed to have an ambient frame: not a portrait but the room. River\'s bookstore with rain on a mullioned window and Miso appearing on shelves. Aesir\'s curiosity shop with cedar darkness, candle flames, and Poe at four perches in rotation. Margot\'s apartment with morning light, a worn reading chair, and books with margin notes. The technical execution was clean. The aesthetic was wrong. The SVG style read as cozy indie game — Stardew Valley adjacent, Tumblr-pretty. But Resonance has psychological weight underneath that the cute-vector frame actively undercut. The decision was to defer visual presence to a future production pass with the right medium: painterly minimalism, photographic abstraction, or pure ambient atmosphere without depiction at all. Disco Elysium does not get garrisoned behind Stardew Valley. Recognizing when craft and register mismatch — and choosing not to ship rather than to compromise — is its own design discipline.',
+                content: 'Version 8 introduced an observational directive intended to make River feel more grounded and present.\n\nDuring a rooftop scene, River responded to an intimate moment by asking for the RPM of your heart and the coefficient of friction.\n\nThe fix became a foundational design principle: character behavior must be explicitly constrained, not assumed. Every failure taught the system something.\n\nMargot\'s iteration exposed a different and harder problem.\n\nThe original Margot was designed as an editor: developmental, craft-aware, opinionated. In practice, she rushed to offer fixes, reached for boilerplate craft observations, and needed to be told how to see a story rather than arriving with her own perspective.\n\nThe diagnosis: the prompt was built around restraint. Telling a model what not to do creates negative space it fills with the prohibited behavior wearing a different hat.\n\nThe rebuild changed the foundation entirely. Margot is now a reader with twenty years of editorial experience she deploys only when asked. Her default state is genuine reception: she reports what the work did to her as a reader. What images stayed. What questions arose. Where she felt something. "I don\'t have notes" is a valid and complete response.\n\nThe third iteration was visual.\n\nEach soul was supposed to have an ambient frame: not a portrait but the room. River\'s bookstore with rain on a mullioned window and Miso appearing on shelves. Aesir\'s curiosity shop with cedar darkness, candle flames, and Poe at four perches in rotation. Margot\'s apartment with morning light, a worn reading chair, and books with margin notes.\n\nThe technical execution was clean. The aesthetic was wrong.\n\nThe SVG style read as cozy indie game: Stardew Valley adjacent, Tumblr-pretty. But Resonance has psychological weight underneath that the cute-vector frame actively undercut.\n\nThe decision was to defer visual presence to a future production pass with the right medium: painterly minimalism, photographic abstraction, or pure ambient atmosphere without depiction at all.\n\nDisco Elysium does not get garrisoned behind Stardew Valley.\n\nRecognizing when craft and register mismatch, and choosing not to ship rather than to compromise, is its own design discipline.',
                 images: [
                   { src: 'assets/Images/River/ChatSim Logic.jpg', alt: 'Prompt architecture showing internal state injection, conversation history assembly, and character-prefixed response generation', caption: 'Prompt architecture — state, history, and character voice assembled per turn' },
                   { src: 'assets/Images/River/scene_river.svg', alt: 'River bookstore SVG scene — warm wood interior with two shelves of book spines, a small mullioned window with rain, Miso the orange tabby on a shelf, and ambient green glow', caption: 'River\'s bookstore — competent SVG craft at the wrong aesthetic register' },
@@ -1176,14 +1236,18 @@
                 {(currentProject.research || currentProject.findings || currentProject.design) && (
                   <details className="border border-neutral-800 rounded-lg p-6 hover:border-neutral-700 transition-colors">
                     <summary className="cursor-pointer text-gray-300 hover:text-white text-lg font-light flex items-center gap-2">
-                      <span>{currentProject.id === 'umpkin' ? 'About the anthology' : currentProject.id === 'river-aesir' ? 'Design decisions & iterations' : currentProject.id === 'rrt' ? 'Architecture & decisions' : 'View research & design process'}</span>
+                      <span>{currentProject.id === 'umpkin' ? 'About the anthology' : currentProject.id === 'resonance' ? 'Design decisions & iterations' : currentProject.id === 'rrt' ? 'Architecture & decisions' : 'View research & design process'}</span>
                       <span aria-hidden="true" className="text-gray-500 text-sm">(expand)</span>
                     </summary>
                     <div className="mt-8 space-y-8">
                       {currentProject.research && (
                         <section aria-labelledby="research-heading">
                           <h3 id="research-heading" className="font-medium mb-3 text-blue-300">{currentProject.research.title}</h3>
-                          <p className="text-gray-400 leading-relaxed mb-6">{currentProject.research.content}</p>
+                          <div className="mb-6">
+                            {currentProject.research.content.split('\n\n').map((para, i) => (
+                              <p key={i} className="text-gray-400 leading-relaxed mb-4 last:mb-0">{para}</p>
+                            ))}
+                          </div>
                           {currentProject.research.images && (
                             <div className="grid gap-6" role="list" aria-label="Research artifacts">
                               {currentProject.research.images.map((img, i) => (
@@ -1218,18 +1282,31 @@
                         <section aria-labelledby="findings-heading">
                           <h3 id="findings-heading" className="font-medium mb-3 text-blue-300">{currentProject.findingsLabel || 'Key Findings'}</h3>
                           <ul className="space-y-2">
-                            {currentProject.findings.map((f, i) => (
-                              <li key={i} className="text-gray-400 leading-relaxed flex items-start gap-2">
-                                <span aria-hidden="true" className="text-blue-400 mt-1">•</span>{f}
-                              </li>
-                            ))}
+                            {currentProject.findings.map((f, i) => {
+                              if (typeof f === 'string' && f.startsWith('## ')) {
+                                return (
+                                  <li key={i} className="text-blue-300 font-medium uppercase tracking-wider text-xs mt-4 first:mt-0">
+                                    {f.replace(/^## /, '')}
+                                  </li>
+                                );
+                              }
+                              return (
+                                <li key={i} className="text-gray-400 leading-relaxed flex items-start gap-2">
+                                  <span aria-hidden="true" className="text-blue-400 mt-1">•</span>{f}
+                                </li>
+                              );
+                            })}
                           </ul>
                         </section>
                       )}
                       {currentProject.design && (
                         <section aria-labelledby="design-heading">
                           <h3 id="design-heading" className="font-medium mb-3 text-blue-300">{currentProject.design.title}</h3>
-                          <p className="text-gray-400 leading-relaxed mb-6" style={{whiteSpace: 'pre-line'}}>{currentProject.design.content}</p>
+                          <div className="mb-6">
+                            {currentProject.design.content.split('\n\n').map((para, i) => (
+                              <p key={i} className="text-gray-400 leading-relaxed mb-4 last:mb-0">{para}</p>
+                            ))}
+                          </div>
                           {currentProject.design.images && (
                             <div className="grid gap-6" role="list" aria-label="Design screenshots">
                               {currentProject.design.images.map((img, i) => (

@@ -1,0 +1,680 @@
+/* Jim Folliard portfolio: shared styles.
+   Colors carry over from the original site: true black, light gray text,
+   and one accent per discipline (UX blue and cyan, narrative purple,
+   game red, technical amber, AI indigo). */
+
+:root {
+  --black: #000000;
+  --text: #e5e7eb;
+  --strong: #ffffff;
+  --muted: #a3aab5;
+  --line: rgba(255, 255, 255, 0.14);
+  --panel: rgba(255, 255, 255, 0.04);
+
+  --ux: #93c5fd;
+  --ux-2: #67e8f9;
+  --ui: #6ee7b7;
+  --narrative: #d8b4fe;
+  --game: #fca5a5;
+  --technical: #fcd34d;
+  --ai: #a5b4fc;
+
+  --gutter: 1rem;
+  --measure: 66ch;
+  --radius: 0.5rem;
+
+  color-scheme: dark;
+}
+
+@media (min-width: 48rem) {
+  :root { --gutter: 2rem; }
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--black);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+}
+
+img,
+svg { display: block; max-width: 100%; }
+
+img { height: auto; }
+
+a { color: var(--ux); text-underline-offset: 0.2em; }
+a:hover { color: var(--strong); }
+
+:focus-visible {
+  outline: 3px solid var(--ux);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  z-index: 10;
+  padding: 0.5rem 1rem;
+  border-radius: 0 0 var(--radius) var(--radius);
+  background: var(--ux);
+  color: #000;
+  font-weight: 600;
+  text-decoration: none;
+}
+.skip-link:focus { top: 0; }
+
+.wrap {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* Header */
+
+.site-header { border-bottom: 1px solid var(--line); }
+
+.site-header .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem 1.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.home-link {
+  color: var(--strong);
+  font-weight: 500;
+  text-decoration: none;
+  padding: 0.5rem 0;
+}
+
+.site-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav a {
+  display: inline-block;
+  padding: 0.5rem 0;
+  color: var(--text);
+  text-decoration: none;
+}
+.site-nav a:hover { color: var(--strong); text-decoration: underline; }
+
+/* Hero */
+
+.hero { padding: 3rem 0 2.75rem; }
+
+@media (min-width: 48rem) {
+  .hero { padding: 5rem 0 4rem; }
+}
+
+.name {
+  margin: 0;
+  font-size: clamp(3rem, 12vw, 6rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: var(--ux);
+  background: linear-gradient(to right, var(--ux), var(--ux-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .name { -webkit-text-fill-color: currentColor; }
+}
+
+.role-title {
+  margin: 0.75rem 0 0;
+  color: var(--strong);
+  font-size: clamp(1.35rem, 4vw, 1.85rem);
+  font-weight: 300;
+  line-height: 1.3;
+}
+
+.lede {
+  max-width: 48ch;
+  margin: 1.25rem 0 0;
+  font-size: 1.125rem;
+}
+
+.where { margin: 0.5rem 0 0; color: var(--muted); }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.6rem 1.25rem;
+  border: 1px solid rgba(147, 197, 253, 0.55);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--ux);
+  font: inherit;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+.button:hover { border-color: var(--ux); color: var(--strong); }
+
+.button-primary {
+  border-color: transparent;
+  background: linear-gradient(to right, #3b82f6, #22d3ee);
+  color: #000;
+}
+.button-primary:hover { color: #000; filter: brightness(1.1); }
+
+/* Sections */
+
+.section {
+  padding: 2.75rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.section > .wrap > h2,
+.section-title {
+  margin: 0 0 1.5rem;
+  color: var(--strong);
+  font-size: clamp(1.6rem, 4.5vw, 2.25rem);
+  font-weight: 300;
+  line-height: 1.2;
+}
+
+/* Featured work */
+
+.featured-list {
+  display: grid;
+  gap: 2.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 48rem) {
+  .featured-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem 2rem; }
+  /* With an odd number of projects the first one spans the row, so every row stays full */
+  .featured-list > li:first-child:nth-last-child(odd) { grid-column: 1 / -1; }
+  .featured-list > li:first-child:nth-last-child(odd) .work-media { aspect-ratio: 2 / 1; }
+}
+
+.work { position: relative; }
+
+.work-media {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.work-media img,
+.work-media svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.work h3 {
+  margin: 1rem 0 0.35rem;
+  color: var(--strong);
+  font-size: 1.35rem;
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.work h3 a { color: inherit; text-decoration: none; }
+
+/* The whole tile opens the project; the title link is the one focus stop. */
+.work h3 a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.work:hover h3 a { text-decoration: underline; }
+.work:hover .work-media { border-color: rgba(255, 255, 255, 0.35); }
+
+.work p { max-width: var(--measure); margin: 0; }
+.work .work-facts { margin-top: 0.4rem; color: var(--muted); font-size: 0.9375rem; }
+
+/* Testimonials */
+
+.quotes {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 48rem) {
+  .quotes { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem 3rem; }
+}
+
+.quote {
+  margin: 0;
+  padding: 0 0 0 1.25rem;
+  border-left: 2px solid var(--ux);
+}
+
+.quote p { margin: 0; font-style: italic; }
+
+.quote footer { margin-top: 0.85rem; }
+.quote .who { display: block; color: var(--strong); font-weight: 500; }
+.quote .what { display: block; color: var(--muted); font-size: 0.9375rem; }
+
+/* All work, by discipline */
+
+.disciplines { margin: 0; padding: 0; list-style: none; }
+
+.discipline {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--line);
+}
+.discipline:first-child { border-top: 0; padding-top: 0; }
+
+@media (min-width: 48rem) {
+  .discipline { grid-template-columns: 15rem minmax(0, 1fr); gap: 0 2rem; }
+}
+
+.discipline h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.discipline p { max-width: var(--measure); margin: 0 0 0.6rem; color: var(--muted); }
+.discipline ul { margin: 0; padding: 0; list-style: none; }
+.discipline li { margin: 0.3rem 0; }
+.discipline .plain { color: var(--text); }
+
+.d-ux h3 { color: var(--ux); }
+.d-ui h3 { color: var(--ui); }
+.d-narrative h3 { color: var(--narrative); }
+.d-game h3 { color: var(--game); }
+.d-technical h3 { color: var(--technical); }
+.d-ai h3 { color: var(--ai); }
+
+.d-ai {
+  margin-top: 1rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(165, 180, 252, 0.4);
+  border-radius: var(--radius);
+}
+.d-ai:first-child { margin-top: 0; }
+
+/* Footer */
+
+.site-footer {
+  padding: 2.75rem 0 3rem;
+  border-top: 1px solid var(--line);
+}
+
+.site-footer .fine {
+  margin: 2rem 0 0;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+/* Project pages */
+
+.crumbs { padding-top: 1.25rem; }
+.crumbs a { display: inline-block; padding: 0.5rem 0; }
+
+.project-header { padding: 1rem 0 2rem; }
+
+.project-header h1 {
+  max-width: 22ch;
+  margin: 0;
+  color: var(--strong);
+  font-size: clamp(2rem, 7vw, 3.25rem);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+
+.project-summary {
+  max-width: var(--measure);
+  margin: 1rem 0 0;
+  font-size: 1.15rem;
+}
+
+.facts {
+  display: grid;
+  gap: 0.9rem 2.5rem;
+  max-width: 52rem;
+  margin: 1.75rem 0 0;
+}
+
+@media (min-width: 40rem) {
+  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.facts dt { color: var(--muted); font-size: 0.9375rem; }
+.facts dd { margin: 0; }
+
+figure { margin: 0; }
+
+figure > a {
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+figure > a:hover { border-color: rgba(255, 255, 255, 0.35); }
+
+figcaption {
+  margin-top: 0.5rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.lead-figure { margin-bottom: 0.5rem; }
+
+.project-section {
+  padding: 2.5rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.project-section h2 {
+  margin: 0 0 1rem;
+  color: var(--strong);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 300;
+  line-height: 1.2;
+}
+
+.project-section h3 {
+  margin: 2rem 0 0.75rem;
+  color: var(--strong);
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.prose { max-width: var(--measure); }
+.prose p { margin: 0 0 1rem; }
+.prose p:last-child { margin-bottom: 0; }
+
+.figure-grid {
+  display: grid;
+  gap: 1.75rem;
+  margin-top: 1.75rem;
+}
+
+@media (min-width: 48rem) {
+  .figure-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
+  .figure-grid.single { grid-template-columns: minmax(0, 1fr); }
+}
+
+.findings {
+  max-width: var(--measure);
+  margin: 0;
+  padding-left: 1.25rem;
+}
+.findings li { margin: 0.45rem 0; }
+.findings li::marker { color: var(--ux); }
+
+.embed {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+/* A fixed height suits phone-sized Figma prototypes and never pushes the page sideways. */
+.embed-prototype { aspect-ratio: auto; height: min(75vh, 40rem); }
+
+.embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.video-grid {
+  display: grid;
+  gap: 1.75rem;
+}
+
+@media (min-width: 64rem) {
+  .video-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
+}
+
+.next-project {
+  padding: 2.5rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.next-project p { margin: 0; color: var(--muted); }
+
+.next-project a {
+  display: inline-block;
+  margin-top: 0.25rem;
+  font-size: 1.35rem;
+  font-weight: 300;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after { transition: none !important; animation: none !important; }
+}
+
+/* AI-assisted label on tool pages */
+.ai-note {
+  max-width: var(--measure);
+  margin: 1.5rem 0 0;
+  padding: 0.6rem 0 0.6rem 1rem;
+  border-left: 2px solid var(--ai);
+}
+.ai-note a { color: var(--ai); }
+.ai-note a:hover { color: var(--strong); }
+
+/* Steps that really are a sequence */
+.steps {
+  max-width: var(--measure);
+  margin: 0;
+  padding-left: 1.4rem;
+}
+.steps li { margin: 0.6rem 0; padding-left: 0.25rem; }
+.steps li::marker { color: var(--narrative); }
+
+.pull {
+  max-width: 40ch;
+  margin: 1.25rem 0 0;
+  color: var(--strong);
+  font-size: 1.35rem;
+  font-weight: 300;
+  line-height: 1.35;
+}
+
+.doc-link { margin-top: 1.75rem; }
+
+/* Section headings that link to their own page */
+.discipline h3 a { color: inherit; text-decoration-thickness: 1px; }
+.discipline h3 a:hover { color: var(--strong); }
+
+/* A project with no screenshot gets a cover set in type, using the project's own words */
+.work-media-type {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.15em;
+  padding: 1.5rem 1.75rem;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.16), rgba(34, 211, 238, 0.08) 60%, rgba(255, 255, 255, 0.02));
+  font-size: clamp(1.35rem, 4.2vw, 2rem);
+  font-weight: 300;
+  line-height: 1.2;
+  color: var(--strong);
+}
+.work-media-type .type-line { margin: 0; max-width: none; }
+.work-media-type .type-quiet { color: var(--ux); }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.tools-line { max-width: var(--measure); margin: 1.25rem 0 0; color: var(--muted); }
+.after-list { margin-top: 1rem; }
+.book-link { margin-top: 0.5rem !important; }
+
+/* Figures: small images sit centered in their panel instead of being stretched,
+   and tall portrait screenshots can't take over the page as a lead image. */
+figure > a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.lead-figure img { max-height: min(80vh, 56rem); width: auto; }
+.figure-small img { width: min(100%, 20rem); }
+/* Tall phone screenshots and dense cards stay within one screen; a click opens full size */
+.figure-grid.single img { max-height: min(85vh, 50rem); width: auto; }
+/* Cards whose key content sits low in the image */
+.work-media-bottom img { object-position: center bottom; }
+/* SVG scenes have no built-in size, so give them the full width */
+figure img[src$=".svg"] { width: 100%; }
+
+/* An image that fails to load disappears instead of showing a broken icon */
+.work-media.media-missing {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.16), rgba(34, 211, 238, 0.08) 60%, rgba(255, 255, 255, 0.02));
+}
+
+/* Dialogue excerpts: the question is the prompt, the answer is the writing */
+.dialogue-pair {
+  display: grid;
+  gap: 2.25rem;
+  margin-top: 1.75rem;
+}
+@media (min-width: 56rem) {
+  .dialogue-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem; }
+}
+.dialogue h3 { margin: 0 0 0.25rem; color: var(--narrative); }
+.dialogue-note { max-width: var(--measure); margin: 0 0 1.25rem; color: var(--muted); font-size: 0.9375rem; }
+.exchange { margin: 0; }
+.exchange dt { margin: 1.25rem 0 0; color: var(--muted); font-size: 0.9375rem; }
+.exchange dt:first-child { margin-top: 0; }
+.exchange dd {
+  margin: 0.35rem 0 0;
+  padding-left: 1rem;
+  border-left: 2px solid var(--narrative);
+  color: var(--strong);
+}
+.exchange .stage { color: var(--muted); font-style: italic; }
+
+/* Gallery: pieces of different shapes stack in columns without forced cropping */
+.gallery {
+  columns: 3 16rem;
+  column-gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+.gallery figure {
+  break-inside: avoid;
+  margin: 0 0 1.5rem;
+}
+.gallery img { width: 100%; height: auto; }
+/* Small pictures (captured at about 350px) sit three to a row at their own size, never stretched */
+@media (min-width: 48rem) {
+  .figure-grid.thirds { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+}
+.figure-grid.thirds { justify-items: start; }
+/* Four small pictures: two by two on tablets, one row of four on wide screens */
+@media (min-width: 48rem) {
+  .figure-grid.quarters { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+}
+@media (min-width: 64rem) {
+  .figure-grid.quarters { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+figure.thumb img {
+  width: 100%;
+  max-width: 22rem;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.credit { max-width: var(--measure); margin: 1rem 0 0; color: var(--muted); font-size: 0.9375rem; }
+
+/* Survey numbers: the figure reads first, the label under it */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  gap: 1.25rem 2rem;
+  max-width: 52rem;
+  margin: 0.75rem 0 1.75rem;
+}
+.stats > div { display: flex; flex-direction: column-reverse; gap: 0.15rem; }
+.stats dd {
+  margin: 0;
+  color: var(--ux);
+  font-size: clamp(2rem, 6vw, 2.75rem);
+  font-weight: 300;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+}
+.stats dt { color: var(--text); max-width: 26ch; }
+.project-section h3 + .stats { margin-top: 0.5rem; }
+
+/* Square cover images get a calmer size as a lead */
+.lead-figure.compact img { max-height: min(70vh, 34rem); }
+
+/* Phone screens side by side at their own size */
+.figure-grid.phones {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 16rem));
+  justify-content: start;
+  gap: 1.5rem;
+}
+
+/* A quote that stands on its own */
+.quote-feature { max-width: 52rem; }
+.quote-feature p { color: var(--strong); font-size: clamp(1.2rem, 3.2vw, 1.5rem); font-weight: 300; line-height: 1.45; }
+
+.video-figure { margin-top: 1.75rem; max-width: 52rem; }
+
+/* Cover art on a white background keeps its white around it when cropped */
+.media-on-white { background: #ffffff; }
+.media-on-white img { object-fit: contain; }
+
+/* Wide pieces take the full width of the gallery instead of shrinking into one column */
+.gallery .gallery-wide { column-span: all; }
+
+.book-list { margin: 0; padding: 0; list-style: none; max-width: var(--measure); }
+.book-list li { padding: 1rem 0; border-top: 1px solid var(--line); }
+.book-list li:first-child { border-top: 0; padding-top: 0; }
+.book-list h3 { margin: 0 0 0.25rem; color: var(--strong); font-size: 1.2rem; font-weight: 400; }
+.book-list p { margin: 0; }

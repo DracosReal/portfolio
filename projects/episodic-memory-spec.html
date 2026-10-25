@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Episodic Memory and Identity Anchoring: Technical Specification | Jim Folliard</title>
+  <meta name="description" content="A technical specification for an AI conversational state manager: episodic memory, identity anchoring, and retrieval-augmented context injection, written for technical and design readers at once.">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://dracosreal.github.io/portfolio/projects/episodic-memory-spec.html">
+  <meta property="og:title" content="Episodic Memory and Identity Anchoring: Technical Specification | Jim Folliard">
+  <meta property="og:description" content="A technical specification for an AI conversational state manager: episodic memory, identity anchoring, and retrieval-augmented context injection, written for technical and design readers at once.">
+  <meta property="og:image" content="https://dracosreal.github.io/portfolio/assets/Images/River/Comparison%20Table%20%28Standard%20vs%20Episodic%29.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="home-link" href="../">Jim Folliard</a>
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="../#featured">Featured work</a></li>
+          <li><a href="../#all-work">All work</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap">
+      <p class="crumbs"><a href="../#all-work">Back to all work</a></p>
+
+      <header class="project-header">
+        <h1>Episodic Memory and Identity Anchoring: Technical Specification</h1>
+        <p class="project-summary">A technical specification for an AI conversational state manager, detailing how episodic memory, identity anchoring, and retrieval-augmented context injection work together to create relational continuity in an LLM-based system.</p>
+        <dl class="facts">
+          <div><dt>Role</dt><dd>Technical writer, systems designer</dd></div>
+          <div><dt>Team</dt><dd>Solo project</dd></div>
+          <div><dt>Timeline</dt><dd>Developed alongside the River and Æsir system</dd></div>
+          <div><dt>Tools</dt><dd>Technical documentation, JSON schema design</dd></div>
+        </dl>
+      </header>
+
+      <section class="project-section" aria-labelledby="problem">
+        <h2 id="problem">The problem</h2>
+        <div class="prose">
+          <p>Standard LLMs suffer from context drift: they forget earlier parts of a conversation or hallucinate details.</p>
+          <p>Documenting the solution meant writing for two audiences at once: a technical reader who needed to understand the implementation, and a design reader who needed to understand why the architecture decisions were made. Most system documentation chooses one and loses the other.</p>
+        </div>
+      </section>
+
+      <section class="project-section" aria-labelledby="document">
+        <h2 id="document">The document</h2>
+        <div class="prose">
+          <p>The specification is structured as a versioned technical document with numbered sections, parameter definitions, and a worked example showing the full extraction, storage, and retrieval cycle for a single user input.</p>
+          <p>The comparison table between standard LLM behavior and the episodic system makes the value legible without prior technical knowledge. The document was written from inside the system: not as a description of something handed over, but as a record of something designed.</p>
+        </div>
+      </section>
+
+      <section class="project-section" aria-labelledby="covers">
+        <h2 id="covers">What it covers</h2>
+        <ul class="findings">
+          <li>Identity Anchoring: a static Anchor Profile with immutable Core_Values and a mutable Current_Mood that prevents character drift regardless of conversation length</li>
+          <li>Episodic Storage Logic: entity extraction, sentiment tagging, temporal stamping, and structured JSON storage for significant user inputs</li>
+          <li>The Retrieval and Context Injection pipeline: trigger conditions, semantic database queries, and response priming</li>
+          <li>A comparison table: a standard LLM (limited context window, linear recall, goldfish memory) against the episodic system (database retrieval, semantic tagging, relational continuity)</li>
+        </ul>
+      </section>
+
+      <section class="project-section" aria-labelledby="sample">
+        <h2 id="sample">Sample and comparison</h2>
+        <div class="prose">
+          <p>The specification includes a worked example that traces a single user input, "I really struggled with that meeting yesterday," through entity extraction, sentiment tagging, time-stamping, and storage, then shows how it surfaces in a future session when the user mentions work or stress. The comparison table comes from the document itself.</p>
+        </div>
+        <div class="figure-grid single">
+          <figure>
+            <a href="../assets/Images/River/Comparison%20Table%20%28Standard%20vs%20Episodic%29.jpg" target="_blank" rel="noopener">
+              <img src="../assets/Images/River/Comparison%20Table%20%28Standard%20vs%20Episodic%29.jpg" alt="Comparison table: a standard LLM against the episodic system across context window, recall method, and user experience" loading="lazy" decoding="async">
+            </a>
+            <figcaption>Standard against episodic: the value in plain language</figcaption>
+          </figure>
+        </div>
+        <p class="doc-link"><a class="button button-primary" href="../assets/docs/episodic-memory-spec.pdf" target="_blank" rel="noopener">Read the specification (PDF)</a></p>
+        <p class="doc-link">See also <a href="resonance.html">Resonance</a>, in AI-assisted tools, where this system is put to work.</p>
+      </section>
+
+      <nav class="next-project" aria-label="Back to all work">
+        <p>That's the last project in this section</p>
+        <a href="../#all-work">Back to all work</a>
+      </nav>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="contact" aria-labelledby="contact-title">
+    <div class="wrap">
+      <h2 class="section-title" id="contact-title">Contact</h2>
+      <div class="actions">
+        <button class="button button-primary" type="button" data-email>Email me</button>
+        <a class="button" href="https://www.linkedin.com/in/jamesfolliard/">LinkedIn</a>
+      </div>
+      <p class="fine">&copy; <span data-year>2026</span> Jim Folliard</p>
+    </div>
+  </footer>
+</body>
+</html>

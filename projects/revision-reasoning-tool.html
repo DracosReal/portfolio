@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Revision Reasoning Tool | Jim Folliard</title>
+  <meta name="description" content="A judgment layer between AI document analysis and synthesis: every AI insight needs a human decision before any merge can run, with an audit trail of what was decided and why.">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://dracosreal.github.io/portfolio/projects/revision-reasoning-tool.html">
+  <meta property="og:title" content="Revision Reasoning Tool | Jim Folliard">
+  <meta property="og:description" content="A judgment layer between AI document analysis and synthesis: every AI insight needs a human decision before any merge can run, with an audit trail of what was decided and why.">
+  <meta property="og:image" content="https://dracosreal.github.io/portfolio/assets/Images/RRT/Judgement%20layer.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="home-link" href="../">Jim Folliard</a>
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="../#featured">Featured work</a></li>
+          <li><a href="../#all-work">All work</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap">
+      <p class="crumbs"><a href="../ai-assisted.html">Back to AI-assisted tools and systems</a></p>
+
+      <header class="project-header">
+        <h1>Revision Reasoning Tool</h1>
+        <p class="project-summary">A self-directed tool design project building a judgment layer between AI document analysis and synthesis, structuring human authorship decisions rather than replacing them.</p>
+        <p class="ai-note">Built with AI assistance. Part of the <a href="../ai-assisted.html">AI-assisted tools and systems</a> section.</p>
+        <dl class="facts">
+          <div><dt>Role</dt><dd>Systems designer, tool architect</dd></div>
+          <div><dt>Team</dt><dd>Self-directed, built collaboratively with AI</dd></div>
+          <div><dt>Timeline</dt><dd>Ongoing development</dd></div>
+          <div><dt>Tools</dt><dd>Claude, GPT-4, Python (AI-generated code)</dd></div>
+        </dl>
+      </header>
+
+      <figure class="lead-figure">
+        <a href="../assets/Images/RRT/Judgement%20layer.png" target="_blank" rel="noopener">
+          <img src="../assets/Images/RRT/Judgement%20layer.png" alt="Judgment Layer: every AI-generated insight presented with Keep, Reject, and Unsure controls; merge is blocked until all are resolved" decoding="async">
+        </a>
+        <figcaption>Judgment Layer: every insight needs a decision before a merge can run</figcaption>
+      </figure>
+
+      <section class="project-section" aria-labelledby="problem">
+        <h2 id="problem">The problem I noticed</h2>
+        <div class="prose">
+          <p>Most AI document tools operate as black boxes: feed in documents, get output. The human's judgment about which insights matter, and which don't, is either ignored or collapsed into a thumbs-up on the final result. Judgment happens too late, and leaves no record.</p>
+          <p>For professional work, this creates a specific problem: it becomes impossible to prove what a human actually decided versus what the AI decided for them.</p>
+        </div>
+      </section>
+
+      <section class="project-section" aria-labelledby="decisions">
+        <h2 id="decisions">The design decisions</h2>
+        <div class="prose">
+          <p>The core architecture insight was recognizing that document comparison has four distinct phases that need to stay separated: Input, Interpretation, Decision, and Output. The tool inserts a structured judgment layer between Interpretation and Output, a step most tools skip entirely.</p>
+          <p>Every AI-generated insight is surfaced explicitly, and the user must mark it accepted, rejected, or unsure (with a required note) before any merge can proceed. The merge engine is then constrained by those decisions, not free to act on its own. This was a design decision, not a technical one.</p>
+          <p>The original AI implementation made a critical architectural mistake, direct client calls with regex parsing, that made the interpretation layer unpredictable. Replacing it with structured output contracts was the central intervention.</p>
+        </div>
+      </section>
+
+      <section class="project-section" aria-labelledby="action">
+        <h2 id="action">The system in action</h2>
+        <div class="prose">
+          <p>The Revision Reasoning Tool surfaces AI-generated insights across multiple views, from an empty input state through structured analysis, conceptual diffs, and a judgment layer, so the user can evaluate, accept, reject, or flag each one before any merge proceeds.</p>
+        </div>
+        <div class="figure-grid">
+          <figure>
+            <a href="../assets/Images/RRT/Documents.png" target="_blank" rel="noopener">
+              <img src="../assets/Images/RRT/Documents.png" alt="Documents tab in its empty state, the starting point before any content is loaded" loading="lazy" decoding="async">
+            </a>
+            <figcaption>Documents tab: the empty state before input</figcaption>
+          </figure>
+          <figure>
+            <a href="../assets/Images/RRT/Structured%20Analysis.png" target="_blank" rel="noopener">
+              <img src="../assets/web/rrt-structured-analysis.jpg" alt="Structured Analysis view: AI-generated insights parsed into a readable two-column card grid with source badges" loading="lazy" decoding="async">
+            </a>
+            <figcaption>Structured Analysis: insights parsed into a readable card grid</figcaption>
+          </figure>
+          <figure>
+            <a href="../assets/Images/RRT/Conceptual%20diff.png" target="_blank" rel="noopener">
+              <img src="../assets/Images/RRT/Conceptual%20diff.png" alt="Conceptual Diff: a three-column view showing what changed conceptually, what was removed, and what was emphasized more" loading="lazy" decoding="async">
+            </a>
+            <figcaption>Conceptual Diff: what changed, what was removed, what was emphasized</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="project-section" aria-labelledby="does">
+        <h2 id="does">What it does</h2>
+        <ul class="findings">
+          <li>Users mark every AI insight as accept, reject, or unsure, and the merge cannot run until all unsure items carry a note</li>
+          <li>The merge output is constrained by those decisions; the AI cannot override accepted or rejected choices</li>
+          <li>A structured audit trail documents which decisions were fully applied, partially applied, or not applied, with explanations</li>
+          <li>Input, Interpretation, Decision, and Output stay separate phases, so AI judgment can't bypass human review</li>
+          <li>Defensive UX blocks the merge until all decisions are resolved, and the error message explains why, making it pedagogical rather than just obstructive</li>
+          <li>Structured output contracts replace regex parsing, making the interpretation layer predictable and auditable</li>
+        </ul>
+      </section>
+
+      <section class="project-section" aria-labelledby="key">
+        <h2 id="key">Architecture and key decisions</h2>
+        <div class="prose">
+          <p>The clearest signal that this is design work, not just prompting: the original AI-generated code made a structural mistake I caught and named. It was making direct API calls and parsing responses with regex, which made behavior unpredictable and the outputs untrustworthy.</p>
+          <p>I identified the missing layer, specified the structured output contract, and defined the schema. The AI then wrote the corrected implementation to my spec. The acceptance criteria I wrote before any code existed: "a user reviewing 50 insights should be able to prove, after the fact, exactly which ones they approved and why." That's the product.</p>
+          <p>The rebuild made that contract visual. Dark near-black background, warm cream type, gold accents: not a SaaS dashboard, a writer's instrument. Tab-based navigation (Input, Analysis, Diff, Decisions, Merge) makes the four phases legible as a progression rather than a scroll. Each tab appears as content is generated, and the Decisions tab shows a live judgment counter.</p>
+          <p>Hardening decisions that matter: scoped styles so the component doesn't bleed into the host page, structured JSON retry so model misbehavior doesn't silently corrupt output, request guards to prevent duplicate calls, and token warnings before the context window fills. Export downloads a full session archive (decisions, notes, rationale, merged output) so the audit trail is portable.</p>
+        </div>
+        <div class="figure-grid">
+          <figure>
+            <a href="../assets/Images/RRT/Decision%20layer.png" target="_blank" rel="noopener">
+              <img src="../assets/Images/RRT/Decision%20layer.png" alt="Decisions tab showing analysis cards for Key Differences, Strengths of each version, and Conceptual Shifts, each with accept, reject, and unsure controls" loading="lazy" decoding="async">
+            </a>
+            <figcaption>Decisions tab: structured judgment cards with a live resolution counter</figcaption>
+          </figure>
+          <figure>
+            <a href="../assets/Images/RRT/Options%20chosen.png" target="_blank" rel="noopener">
+              <img src="../assets/Images/RRT/Options%20chosen.png" alt="Resolved decision cards showing kept and rejected insights with notes, and a merge strategy constrained by those choices" loading="lazy" decoding="async">
+            </a>
+            <figcaption>Options chosen: resolved decisions with notes, ready for merge</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <nav class="next-project" aria-label="Next project">
+        <p>Next in AI-assisted tools and systems</p>
+        <a href="curious-machine.html">The Curious Machine</a>
+      </nav>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="contact" aria-labelledby="contact-title">
+    <div class="wrap">
+      <h2 class="section-title" id="contact-title">Contact</h2>
+      <div class="actions">
+        <button class="button button-primary" type="button" data-email>Email me</button>
+        <a class="button" href="https://www.linkedin.com/in/jamesfolliard/">LinkedIn</a>
+      </div>
+      <p class="fine">&copy; <span data-year>2026</span> Jim Folliard</p>
+    </div>
+  </footer>
+</body>
+</html>

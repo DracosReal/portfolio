@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Curious Machine | Jim Folliard</title>
+  <meta name="description" content="A hub of games designed for my father as he experiences age-related cognitive decline, built around genuine play rather than clinical exercise, with a dry, sardonic Machine as host.">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://dracosreal.github.io/portfolio/projects/curious-machine.html">
+  <meta property="og:title" content="The Curious Machine | Jim Folliard">
+  <meta property="og:description" content="A hub of games designed for my father as he experiences age-related cognitive decline, built around genuine play rather than clinical exercise, with a dry, sardonic Machine as host.">
+  <meta property="og:image" content="https://dracosreal.github.io/portfolio/assets/Images/Curious-Machine/Main-screen.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="home-link" href="../">Jim Folliard</a>
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="../#featured">Featured work</a></li>
+          <li><a href="../#all-work">All work</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap">
+      <p class="crumbs"><a href="../ai-assisted.html">Back to AI-assisted tools and systems</a></p>
+
+      <header class="project-header">
+        <h1>The Curious Machine</h1>
+        <p class="project-summary">A hub of games and diversions designed for my father, who has a PhD in analytical chemistry and is experiencing age-related cognitive decline. It's built around genuine engagement rather than clinical exercise, with the Machine as a dry, sardonic companion throughout.</p>
+        <p class="ai-note">Built with AI assistance. Part of the <a href="../ai-assisted.html">AI-assisted tools and systems</a> section.</p>
+        <dl class="facts">
+          <div><dt>Role</dt><dd>Game designer, systems designer, narrative designer</dd></div>
+          <div><dt>Team</dt><dd>Solo project</dd></div>
+          <div><dt>Timeline</dt><dd>Ongoing, version 6 and later</dd></div>
+          <div><dt>Tools</dt><dd>Vanilla JS, CSS, Cormorant Garamond, localStorage</dd></div>
+        </dl>
+      </header>
+
+      <figure class="lead-figure">
+        <a href="../assets/Images/Curious-Machine/Main-screen.png" target="_blank" rel="noopener">
+          <img src="../assets/Images/Curious-Machine/Main-screen.png" alt="The Curious Machine welcome screen: a starfield background, the title in Cormorant Garamond, the current chapter, a Machine Speaks narrative vignette, and an Enter the Laboratory button" decoding="async">
+        </a>
+        <figcaption>Main screen: the current chapter surfaced on every entry, narrative always present</figcaption>
+      </figure>
+
+      <section class="project-section" aria-labelledby="problem">
+        <h2 id="problem">The problem</h2>
+        <div class="prose">
+          <p>Most cognitive training tools are clinical in both tone and feel. They look like tests, which creates anxiety, and they track performance in ways that emphasize failure.</p>
+          <p>The original version used pattern-recognition puzzles. Version 6 changed direction entirely when the data was honest: my father found the games more engaging than having his cognition tested.</p>
+          <p>The right design isn't always the clever one. Sometimes it's the one that gets used.</p>
+        </div>
+      </section>
+
+      <section class="project-section" aria-labelledby="design">
+        <h2 id="design">The design</h2>
+        <div class="prose">
+          <p>The hub is built around a fictional framing, the Institute for Experimental Thought, that gives every visit a sense of occasion without any stakes.</p>
+          <p>The Machine serves as host, dealer, and opponent across four activities, each designed to meet a well-read PhD chemist where he actually is: someone who enjoys a good game, appreciates dry wit, and finds genuine pleasure in words and ideas.</p>
+          <p>The goal is not cognitive maintenance disguised as fun. It's just fun, built with care.</p>
+        </div>
+      </section>
+
+      <section class="project-section" aria-labelledby="puzzles">
+        <h2 id="puzzles">Versions 1 to 5: the puzzle system</h2>
+        <ul class="findings">
+          <li>Three difficulty modes with 15 puzzles in total (Gentle Observation, Curious Investigation, and Deep Deconstruction) covering compound rotation, color shifts, dot counting, orbital systems, and multi-variable transformations</li>
+          <li>Incorrect answers got lines like "An elegant hypothesis. In a neighboring timeline, that would be correct." No red X. No score. No timer</li>
+          <li>Reactive mode shift: after 2 consecutive wrong answers, a quiet panel suggested a gentler mode without pressure or judgment</li>
+          <li>A hint system framed as the Machine thinking alongside you, not giving in. "That's enough for today" always visible, styled faint</li>
+          <li>A session analytics layer invisible to the player and visible to the caregiver, tracking accuracy, response time, hints per session, and chapter progress</li>
+        </ul>
+        <div class="figure-grid">
+          <figure>
+            <a href="../assets/Images/Curious-Machine/Difficulty.png" target="_blank" rel="noopener">
+              <img src="../assets/Images/Curious-Machine/Difficulty.png" alt="Mode selection screen with three cards, Gentle Observation, Curious Investigation, and Deep Deconstruction, under the line There is no wrong answer to how we begin" loading="lazy" decoding="async">
+            </a>
+            <figcaption>Mode selection: three difficulty levels, no pressure in the framing</figcaption>
+          </figure>
+          <figure>
+            <a href="../assets/Images/Curious-Machine/Stage-positive.png" target="_blank" rel="noopener">
+              <img src="../assets/Images/Curious-Machine/Stage-positive.png" alt="Correct answer on The Subtle Revolution puzzle: an arrow rotation sequence with the answer highlighted green and the response Excellent. In this timeline, at least." loading="lazy" decoding="async">
+            </a>
+            <figcaption>Correct answer: affirming without being effusive</figcaption>
+          </figure>
+          <figure>
+            <a href="../assets/Images/Curious-Machine/Stage-negative.png" target="_blank" rel="noopener">
+              <img src="../assets/Images/Curious-Machine/Stage-negative.png" alt="Incorrect answer on The Accelerating Count puzzle: a dot counting sequence with the response The mechanism operates on subtler terms. Look again. The correct answer is highlighted and the wrong one dimmed." loading="lazy" decoding="async">
+            </a>
+            <figcaption>Wrong answer: no red X, no "Wrong." Just a redirect and the correct answer shown</figcaption>
+          </figure>
+          <figure>
+            <a href="../assets/Images/Curious-Machine/The-Mechanism.png" target="_blank" rel="noopener">
+              <img src="../assets/Images/Curious-Machine/The-Mechanism.png" alt="Mechanism reveal overlay explaining the governing rule in plain language with visual frames: The arrow advances exactly 45 degrees clockwise per frame." loading="lazy" decoding="async">
+            </a>
+            <figcaption>Examine the Mechanism: the rule explained plainly after answering, never before</figcaption>
+          </figure>
+          <figure>
+            <a href="../assets/Images/Curious-Machine/Hint-nudge.png" target="_blank" rel="noopener">
+              <img src="../assets/Images/Curious-Machine/Hint-nudge.png" alt="Reactive mode shift panel after 2 consecutive wrong answers, asking whether a different angle would serve better today, with Gentle Observation and Continue as is options" loading="lazy" decoding="async">
+            </a>
+            <figcaption>Reactive mode shift: appears quietly after 2 wrong answers, never nags</figcaption>
+          </figure>
+          <figure>
+            <a href="../assets/Images/Curious-Machine/Stage-Completion.png" target="_blank" rel="noopener">
+              <img src="../assets/Images/Curious-Machine/Stage-Completion.png" alt="Session complete screen titled Thorough Investigation, with a narrative excerpt from Chapter 2: The Recurring Signature and a dot tracker showing 1 session to the next chapter" loading="lazy" decoding="async">
+            </a>
+            <figcaption>Session complete: narrative progress shown, next chapter always within reach</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="project-section" aria-labelledby="pivot">
+        <h2 id="pivot">Version 6: the pivot</h2>
+        <div class="prose">
+          <p>Version 6 replaced the puzzle hub with four activities. The puzzle screenshots on this page document what was learned and preserved, not what was discarded.</p>
+        </div>
+        <ul class="findings">
+          <li><strong>Blackjack:</strong> a full game with betting chips, starting at 500. Hit, stand, double down. The Machine deals with dry, sardonic commentary after every hand, and play continues until the chips run out or he leaves the table</li>
+          <li><strong>Shuffleboard:</strong> a physics simulation on a canvas court. Swipe to throw, and speed and angle emerge naturally from the gesture. The Machine plays strategically and sometimes tries to knock his best puck off. Standard scoring, 6 ends per game</li>
+          <li><strong>The Lexicon:</strong> Balderdash against the Machine. 20 words in the pool (10 per game), each with one genuine definition and two fabricated ones written to be plausible. It leans on literary, scientific, and interesting vocabulary: words a well-read PhD chemist will either know or find genuinely worth knowing</li>
+          <li><strong>The Joke Engine:</strong> tap to reveal the punchline, then rate it Groan, Chuckle, or Brilliant, and the Machine responds to the rating. 32 jokes: chemistry puns, programmer jokes, wordplay, and a few meta ones. It loops if he wants to keep going</li>
+          <li>All 9 narrative chapters, the caregiver dashboard, email reports, the archive overlay, the 5-tap unlock, and the localStorage analytics were preserved, so existing data carries over with no loss</li>
+        </ul>
+      </section>
+
+      <section class="project-section" aria-labelledby="voice">
+        <h2 id="voice">The voice</h2>
+        <div class="prose">
+          <p>The Machine's tone was the central design decision across every version. It needed to be warm without being condescending, precise without being clinical, and lightly absurd without trying too hard. That voice runs through every response: Blackjack commentary, Lexicon reveals, joke ratings, session-end reflections, and the narrative chapters that unlock across visits.</p>
+          <p>The final narrative chapter ends: "The work does not end. The anomalies continue to arrive. And there continues to be a mind (curious, precise, willing to sit with the unknown long enough for it to become, if not known, then at least familiar) that shows up to meet them." That's the whole design philosophy in one passage.</p>
+        </div>
+        <div class="figure-grid">
+          <figure>
+            <a href="../assets/Images/Curious-Machine/The-Archive.png" target="_blank" rel="noopener">
+              <img src="../assets/Images/Curious-Machine/The-Archive.png" alt="The Archive overlay showing unlocked narrative chapters, Chapter 1: The Awakening and Chapter 2: The Recurring Signature, with full story text" loading="lazy" decoding="async">
+            </a>
+            <figcaption>The Archive: narrative chapters unlock across sessions, building the Institute's world</figcaption>
+          </figure>
+          <figure>
+            <a href="../assets/Images/Curious-Machine/Caregiver-View.png" target="_blank" rel="noopener">
+              <img src="../assets/Images/Curious-Machine/Caregiver-View.png" alt="Caregiver View dashboard with session analytics: 2 sessions, 68 percent average accuracy, 11 second average response time, chapter 2 of 9, accuracy and response time trend graphs, hints per session, and recent sessions" loading="lazy" decoding="async">
+            </a>
+            <figcaption>Caregiver View: analytics invisible to the player, visible to whoever is watching over them</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <nav class="next-project" aria-label="Next project">
+        <p>Next in AI-assisted tools and systems</p>
+        <a href="skein.html">Skein: Outline by the Thread</a>
+      </nav>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="contact" aria-labelledby="contact-title">
+    <div class="wrap">
+      <h2 class="section-title" id="contact-title">Contact</h2>
+      <div class="actions">
+        <button class="button button-primary" type="button" data-email>Email me</button>
+        <a class="button" href="https://www.linkedin.com/in/jamesfolliard/">LinkedIn</a>
+      </div>
+      <p class="fine">&copy; <span data-year>2026</span> Jim Folliard</p>
+    </div>
+  </footer>
+</body>
+</html>

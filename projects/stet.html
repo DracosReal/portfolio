@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>STET: A Reader, Not a Writer | Jim Folliard</title>
+  <meta name="description" content="A personal writing tool built around one discipline: never write the manuscript. STET observes a draft, tracks patterns, surfaces themes, and asks questions, without generating prose.">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://dracosreal.github.io/portfolio/projects/stet.html">
+  <meta property="og:title" content="STET: A Reader, Not a Writer | Jim Folliard">
+  <meta property="og:description" content="A personal writing tool built around one discipline: never write the manuscript. STET observes a draft, tracks patterns, surfaces themes, and asks questions, without generating prose.">
+  <meta property="og:image" content="https://dracosreal.github.io/portfolio/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="home-link" href="../">Jim Folliard</a>
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="../#featured">Featured work</a></li>
+          <li><a href="../#all-work">All work</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap">
+      <p class="crumbs"><a href="../ai-assisted.html">Back to AI-assisted tools and systems</a></p>
+
+      <header class="project-header">
+        <h1>STET: A Reader, Not a Writer</h1>
+        <p class="project-summary">A personal writing tool built around a single discipline: never write the manuscript. STET observes a draft, tracks patterns, surfaces themes, and asks questions. It does not generate prose. It does not suggest fixes. It is the part of editorial attention that comes before any note is written.</p>
+        <p class="ai-note">Built with AI assistance. Part of the <a href="../ai-assisted.html">AI-assisted tools and systems</a> section.</p>
+        <dl class="facts">
+          <div><dt>Role</dt><dd>Designer, builder</dd></div>
+          <div><dt>Team</dt><dd>Solo project</dd></div>
+          <div><dt>Timeline</dt><dd>Roughly one day</dd></div>
+          <div><dt>Tools</dt><dd>React, lexical pattern detection, register-shift analysis, local-only storage</dd></div>
+        </dl>
+      </header>
+
+      <section class="project-section" aria-labelledby="why">
+        <h2 id="why">Why it exists</h2>
+        <div class="prose">
+          <p>Most AI writing tools are built around generation: continue this paragraph, rewrite this sentence, give me three options. The result is prose the writer did not produce, in a voice the writer did not choose, solving a problem the writer may not have.</p>
+          <p>STET was built to do the opposite: stay out of the manuscript entirely and instead pay the kind of attention a thoughtful first reader pays. Notice what is happening. Track what is recurring. Ask the question that opens up the work rather than closing it down.</p>
+        </div>
+      </section>
+
+      <section class="project-section" aria-labelledby="discipline">
+        <h2 id="discipline">The design discipline</h2>
+        <div class="prose">
+          <p>The core principle is restraint. STET reads what is on the page, runs lightweight analysis on idle pauses, and surfaces observations: emotional beats, register shifts, recurring images, structural patterns. It never produces text that could enter the draft.</p>
+          <p>When the writer wants more than observation, ask mode is explicit and consent-gated. The system asks before it speaks. Manuscript data stays on the device, and nothing is sent anywhere unless the writer asks. The writer is the writer; STET is a reader.</p>
+        </div>
+      </section>
+
+      <section class="project-section" aria-labelledby="restraint">
+        <h2 id="restraint">The architecture of restraint</h2>
+        <div class="prose">
+          <p>STET reads on the device. Lightweight engines watch for emotional beats, register shifts (POV changes, tense shifts, mode breaks), and patterns that emerge across the draft. Output is never prose. It is observation, summary, or question.</p>
+          <p>Ask mode is gated by explicit user action and never volunteered. The system shares its design DNA with Margot, the editorial soul in Resonance: a reader first, with editorial knowledge held in reserve until invited.</p>
+        </div>
+      </section>
+
+      <section class="project-section" aria-labelledby="does">
+        <h2 id="does">What it does</h2>
+        <ul class="findings">
+          <li>Reads the draft locally; nothing leaves the device unless the writer asks</li>
+          <li>Detects emotional beats and structural shifts as the writer works</li>
+          <li>Surfaces recurring imagery and themes as patterns rather than prescriptions</li>
+          <li>Asks questions the writer can engage with or ignore</li>
+          <li>Never produces prose that could enter the manuscript</li>
+          <li>Ask mode is explicit and consent-gated; the system does not volunteer feedback</li>
+          <li>Built in roughly a day for personal use, to support fiction work without writing it</li>
+        </ul>
+      </section>
+
+      <section class="project-section" aria-labelledby="develop">
+        <h2 id="develop">Why it will not develop</h2>
+        <div class="prose">
+          <p>STET is not a developmental editor and was never meant to be. The decision to limit it to observation and questions is not a technical limitation; it is the entire point.</p>
+          <p>Writing tools that try to develop work for the writer end up producing fluent, generic, unrecognizable prose. STET refuses that path. It pays attention. It notices. It asks. The writer does the writing. That constraint is the design, and the design is the constraint.</p>
+        </div>
+      </section>
+
+      <nav class="next-project" aria-label="Back to the section">
+        <p>That's the last project in this section</p>
+        <a href="../ai-assisted.html">Back to AI-assisted tools and systems</a>
+      </nav>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="contact" aria-labelledby="contact-title">
+    <div class="wrap">
+      <h2 class="section-title" id="contact-title">Contact</h2>
+      <div class="actions">
+        <button class="button button-primary" type="button" data-email>Email me</button>
+        <a class="button" href="https://www.linkedin.com/in/jamesfolliard/">LinkedIn</a>
+      </div>
+      <p class="fine">&copy; <span data-year>2026</span> Jim Folliard</p>
+    </div>
+  </footer>
+</body>
+</html>

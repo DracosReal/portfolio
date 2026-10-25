@@ -1,1650 +1,256 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jim Folliard — Portfolio</title>
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone@7.23.5/babel.min.js"></script>
-  <script src="https://cdn.tailwindcss.com?v=3.4.1"></script>
-  <style>
-    /* ── Gradient text fallback for mobile ── */
-    .gradient-text {
-      color: #93c5fd;
-      background: linear-gradient(to right, #93c5fd, #67e8f9);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jim Folliard | Senior UX Designer</title>
+  <meta name="description" content="Jim Folliard, senior UX designer with an MS in User Experience from Arizona State University. UX case studies, plus narrative design, game design, technical writing, and AI-assisted tools.">
 
-    @supports not (background-clip: text) or not (-webkit-background-clip: text) {
-      .gradient-text {
-        -webkit-text-fill-color: currentColor;
-      }
-    }
-
-    .skip-link {
-      position: absolute;
-      top: -100px;
-      left: 1rem;
-      background: #93c5fd;
-      color: #000;
-      padding: 0.5rem 1rem;
-      border-radius: 0 0 0.5rem 0.5rem;
-      font-weight: 600;
-      z-index: 9999;
-      transition: top 0.2s;
-      text-decoration: none;
-    }
-
-    .skip-link:focus {
-      top: 0;
-      outline: 3px solid #fff;
-      outline-offset: 2px;
-    }
-
-    :focus-visible {
-      outline: 3px solid #93c5fd;
-      outline-offset: 3px;
-      border-radius: 4px;
-    }
-
-    .card-container {
-      perspective: 1000px;
-    }
-
-    .card-flipper {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transition: transform 0.6s;
-      transform-style: preserve-3d;
-      touch-action: manipulation;
-    }
-
-    .card-container.flipped .card-flipper {
-      transform: rotateY(180deg);
-    }
-
-    .card-front,
-    .card-back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      border-radius: 0.5rem;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .card-back {
-      transform: rotateY(180deg);
-    }
-
-    @media (max-width: 768px) {
-      .card-container {
-        height: 22rem !important;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .card-flipper {
-        transition: none;
-      }
-
-      .animate-fadeIn {
-        animation: none;
-      }
-
-      * {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .animate-fadeIn {
-      animation: fadeIn 0.3s ease-out;
-    }
-
-    details summary {
-      list-style: none;
-    }
-
-    details summary::-webkit-details-marker {
-      display: none;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-
-    .cursor {
-      animation: blink 1.06s step-start infinite;
-      margin-left: 2px;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .cursor {
-        animation: none;
-        opacity: 1;
-      }
-    }
-  /* Tailwind fallback */
-  body { margin: 0; font-family: system-ui, sans-serif; background: #000; }
-  #root { min-height: 100vh; }
-  </style>
-</head>
-
-<body class="bg-black">
-
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-
-  <div id="root"></div>
-
-  <div id="live-region" aria-live="polite" aria-atomic="true"
-    style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;"></div>
-
-  <script type="text/babel">
-    const { useState, useEffect, useRef } = React;
-
-    function announce(msg) {
-      const el = document.getElementById('live-region');
-      if (el) { el.textContent = ''; setTimeout(() => { el.textContent = msg; }, 50); }
-    }
-
-    function setTitle(t) {
-      document.title = t ? `${t} — Jim Folliard` : 'Jim Folliard — Portfolio';
-    }
-
-    const HomeIcon = () => (
-      <svg aria-hidden="true" focusable="false" className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-      </svg>
-    );
-    const ArrowIcon = () => (
-      <svg aria-hidden="true" focusable="false" className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-      </svg>
-    );
-
-    const UXGlass = () => (
-      <svg aria-hidden="true" focusable="false" viewBox="0 0 300 400" className="w-full h-full">
-        <defs>
-          <linearGradient id="ux-g1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style={{ stopColor: '#60a5fa', stopOpacity: 0.8 }} />
-            <stop offset="100%" style={{ stopColor: '#3b82f6', stopOpacity: 0.9 }} />
-          </linearGradient>
-          <linearGradient id="ux-g2" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style={{ stopColor: '#93c5fd', stopOpacity: 0.7 }} />
-            <stop offset="100%" style={{ stopColor: '#67e8f9', stopOpacity: 0.8 }} />
-          </linearGradient>
-        </defs>
-        <rect x="20" y="20" width="80" height="120" fill="url(#ux-g1)" stroke="#1e3a8a" strokeWidth="3" />
-        <rect x="110" y="20" width="80" height="80" fill="url(#ux-g2)" stroke="#1e3a8a" strokeWidth="3" />
-        <rect x="200" y="20" width="80" height="120" fill="url(#ux-g1)" stroke="#1e3a8a" strokeWidth="3" />
-        <rect x="20" y="150" width="120" height="100" fill="url(#ux-g2)" stroke="#1e3a8a" strokeWidth="3" />
-        <rect x="150" y="150" width="130" height="100" fill="url(#ux-g1)" stroke="#1e3a8a" strokeWidth="3" />
-        <rect x="110" y="110" width="80" height="30" fill="url(#ux-g2)" stroke="#1e3a8a" strokeWidth="3" />
-        <circle cx="150" cy="310" r="60" fill="url(#ux-g1)" stroke="#1e3a8a" strokeWidth="3" />
-        <rect x="20" y="260" width="100" height="120" fill="url(#ux-g2)" stroke="#1e3a8a" strokeWidth="3" />
-        <rect x="200" y="260" width="80" height="120" fill="url(#ux-g1)" stroke="#1e3a8a" strokeWidth="3" />
-      </svg>
-    );
-    const NarrativeGlass = () => (
-      <svg aria-hidden="true" focusable="false" viewBox="0 0 300 400" className="w-full h-full">
-        <defs>
-          <linearGradient id="narr-g1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style={{ stopColor: '#c084fc', stopOpacity: 0.8 }} />
-            <stop offset="100%" style={{ stopColor: '#a855f7', stopOpacity: 0.9 }} />
-          </linearGradient>
-          <linearGradient id="narr-g2" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style={{ stopColor: '#f0abfc', stopOpacity: 0.7 }} />
-            <stop offset="100%" style={{ stopColor: '#f9a8d4', stopOpacity: 0.8 }} />
-          </linearGradient>
-        </defs>
-        <path d="M 20 50 Q 80 20,150 50 T 280 50" fill="url(#narr-g1)" stroke="#581c87" strokeWidth="3" />
-        <path d="M 20 120 Q 100 80,150 120 T 280 120" fill="url(#narr-g2)" stroke="#581c87" strokeWidth="3" />
-        <ellipse cx="70" cy="200" rx="50" ry="80" fill="url(#narr-g1)" stroke="#581c87" strokeWidth="3" />
-        <ellipse cx="230" cy="200" rx="50" ry="80" fill="url(#narr-g2)" stroke="#581c87" strokeWidth="3" />
-        <path d="M 20 280 Q 80 240,150 280 T 280 280" fill="url(#narr-g1)" stroke="#581c87" strokeWidth="3" />
-        <circle cx="150" cy="330" r="50" fill="url(#narr-g2)" stroke="#581c87" strokeWidth="3" />
-        <path d="M 20 160 L 280 160" stroke="#581c87" strokeWidth="3" fill="none" />
-        <path d="M 150 20 L 150 380" stroke="#581c87" strokeWidth="3" fill="none" />
-      </svg>
-    );
-    const UIGlass = () => (
-      <svg aria-hidden="true" focusable="false" viewBox="0 0 300 400" className="w-full h-full">
-        <defs>
-          <linearGradient id="ui-g1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style={{ stopColor: '#34d399', stopOpacity: 0.8 }} />
-            <stop offset="100%" style={{ stopColor: '#10b981', stopOpacity: 0.9 }} />
-          </linearGradient>
-          <linearGradient id="ui-g2" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style={{ stopColor: '#5eead4', stopOpacity: 0.7 }} />
-            <stop offset="100%" style={{ stopColor: '#2dd4bf', stopOpacity: 0.8 }} />
-          </linearGradient>
-        </defs>
-        <polygon points="150,20 220,90 150,160 80,90" fill="url(#ui-g1)" stroke="#064e3b" strokeWidth="3" />
-        <polygon points="20,140 90,70 90,210" fill="url(#ui-g2)" stroke="#064e3b" strokeWidth="3" />
-        <polygon points="280,140 210,70 210,210" fill="url(#ui-g2)" stroke="#064e3b" strokeWidth="3" />
-        <polygon points="150,180 220,250 150,320 80,250" fill="url(#ui-g1)" stroke="#064e3b" strokeWidth="3" />
-        <rect x="90" y="230" width="120" height="60" fill="url(#ui-g2)" stroke="#064e3b" strokeWidth="3" />
-        <circle cx="60" cy="350" r="40" fill="url(#ui-g1)" stroke="#064e3b" strokeWidth="3" />
-        <circle cx="240" cy="350" r="40" fill="url(#ui-g1)" stroke="#064e3b" strokeWidth="3" />
-        <polygon points="150,300 180,340 120,340" fill="url(#ui-g2)" stroke="#064e3b" strokeWidth="3" />
-      </svg>
-    );
-    const TechnicalGlass = () => (
-      <svg aria-hidden="true" focusable="false" viewBox="0 0 300 400" className="w-full h-full">
-        <defs>
-          <linearGradient id="tech-g1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style={{ stopColor: '#fbbf24', stopOpacity: 0.8 }} />
-            <stop offset="100%" style={{ stopColor: '#f59e0b', stopOpacity: 0.9 }} />
-          </linearGradient>
-          <linearGradient id="tech-g2" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style={{ stopColor: '#fcd34d', stopOpacity: 0.7 }} />
-            <stop offset="100%" style={{ stopColor: '#fb923c', stopOpacity: 0.8 }} />
-          </linearGradient>
-        </defs>
-        <rect x="20" y="20" width="260" height="60" fill="url(#tech-g1)" stroke="#78350f" strokeWidth="3" />
-        <rect x="20" y="90" width="120" height="100" fill="url(#tech-g2)" stroke="#78350f" strokeWidth="3" />
-        <rect x="160" y="90" width="120" height="100" fill="url(#tech-g1)" stroke="#78350f" strokeWidth="3" />
-        <rect x="20" y="200" width="80" height="80" fill="url(#tech-g1)" stroke="#78350f" strokeWidth="3" />
-        <rect x="110" y="200" width="80" height="80" fill="url(#tech-g2)" stroke="#78350f" strokeWidth="3" />
-        <rect x="200" y="200" width="80" height="80" fill="url(#tech-g1)" stroke="#78350f" strokeWidth="3" />
-        <rect x="20" y="290" width="260" height="90" fill="url(#tech-g2)" stroke="#78350f" strokeWidth="3" />
-        <line x1="150" y1="20" x2="150" y2="80" stroke="#78350f" strokeWidth="2" />
-        <line x1="20" y1="240" x2="280" y2="240" stroke="#78350f" strokeWidth="2" />
-      </svg>
-    );
-    const GameGlass = () => (
-      <svg aria-hidden="true" focusable="false" viewBox="0 0 300 400" className="w-full h-full">
-        <defs>
-          <linearGradient id="game-g1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style={{ stopColor: '#f87171', stopOpacity: 0.8 }} />
-            <stop offset="100%" style={{ stopColor: '#ef4444', stopOpacity: 0.9 }} />
-          </linearGradient>
-          <linearGradient id="game-g2" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style={{ stopColor: '#fda4af', stopOpacity: 0.7 }} />
-            <stop offset="100%" style={{ stopColor: '#fb7185', stopOpacity: 0.8 }} />
-          </linearGradient>
-        </defs>
-        <rect x="30" y="30" width="240" height="80" rx="10" fill="url(#game-g1)" stroke="#7f1d1d" strokeWidth="3" />
-        <polygon points="150,130 200,180 150,230 100,180" fill="url(#game-g2)" stroke="#7f1d1d" strokeWidth="3" />
-        <circle cx="60" cy="180" r="35" fill="url(#game-g1)" stroke="#7f1d1d" strokeWidth="3" />
-        <circle cx="240" cy="180" r="35" fill="url(#game-g1)" stroke="#7f1d1d" strokeWidth="3" />
-        <rect x="80" y="250" width="140" height="60" rx="30" fill="url(#game-g2)" stroke="#7f1d1d" strokeWidth="3" />
-        <polygon points="150,320 180,350 150,380 120,350" fill="url(#game-g1)" stroke="#7f1d1d" strokeWidth="3" />
-        <circle cx="50" cy="320" r="25" fill="url(#game-g2)" stroke="#7f1d1d" strokeWidth="3" />
-        <circle cx="250" cy="320" r="25" fill="url(#game-g2)" stroke="#7f1d1d" strokeWidth="3" />
-      </svg>
-    );
-
-    const ResonanceGlass = () => (
-      <svg aria-hidden="true" focusable="false" viewBox="0 0 300 400" className="w-full h-full">
-        <defs>
-          <linearGradient id="res-g1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style={{ stopColor: '#818cf8', stopOpacity: 0.8 }} />
-            <stop offset="100%" style={{ stopColor: '#6366f1', stopOpacity: 0.9 }} />
-          </linearGradient>
-          <linearGradient id="res-g2" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style={{ stopColor: '#67e8f9', stopOpacity: 0.7 }} />
-            <stop offset="100%" style={{ stopColor: '#a5b4fc', stopOpacity: 0.8 }} />
-          </linearGradient>
-        </defs>
-        <circle cx="150" cy="200" r="30" fill="url(#res-g1)" stroke="#1e1b4b" strokeWidth="3" />
-        <circle cx="70" cy="90" r="20" fill="url(#res-g2)" stroke="#1e1b4b" strokeWidth="3" />
-        <circle cx="230" cy="90" r="20" fill="url(#res-g2)" stroke="#1e1b4b" strokeWidth="3" />
-        <circle cx="40" cy="230" r="18" fill="url(#res-g1)" stroke="#1e1b4b" strokeWidth="3" />
-        <circle cx="260" cy="230" r="18" fill="url(#res-g1)" stroke="#1e1b4b" strokeWidth="3" />
-        <circle cx="100" cy="340" r="16" fill="url(#res-g2)" stroke="#1e1b4b" strokeWidth="3" />
-        <circle cx="200" cy="340" r="16" fill="url(#res-g2)" stroke="#1e1b4b" strokeWidth="3" />
-        <line x1="150" y1="200" x2="70" y2="90" stroke="#a5b4fc" strokeWidth="2" strokeOpacity="0.6" />
-        <line x1="150" y1="200" x2="230" y2="90" stroke="#a5b4fc" strokeWidth="2" strokeOpacity="0.6" />
-        <line x1="150" y1="200" x2="40" y2="230" stroke="#67e8f9" strokeWidth="2" strokeOpacity="0.5" />
-        <line x1="150" y1="200" x2="260" y2="230" stroke="#67e8f9" strokeWidth="2" strokeOpacity="0.5" />
-        <line x1="150" y1="200" x2="100" y2="340" stroke="#a5b4fc" strokeWidth="2" strokeOpacity="0.4" />
-        <line x1="150" y1="200" x2="200" y2="340" stroke="#a5b4fc" strokeWidth="2" strokeOpacity="0.4" />
-        <line x1="70" y1="90" x2="230" y2="90" stroke="#818cf8" strokeWidth="1.5" strokeOpacity="0.3" />
-        <line x1="40" y1="230" x2="100" y2="340" stroke="#818cf8" strokeWidth="1.5" strokeOpacity="0.3" />
-        <line x1="260" y1="230" x2="200" y2="340" stroke="#818cf8" strokeWidth="1.5" strokeOpacity="0.3" />
-        <circle cx="150" cy="200" r="55" fill="none" stroke="#6366f1" strokeWidth="1" strokeOpacity="0.3" />
-        <circle cx="150" cy="200" r="85" fill="none" stroke="#6366f1" strokeWidth="1" strokeOpacity="0.2" />
-      </svg>
-    );
-
-    const NavBar = ({ onBack, onHome, backLabel }) => (
-      <nav aria-label="Page navigation" className="flex items-center gap-3 mb-12">
-        {onBack && (
-          <button
-            onClick={onBack}
-            aria-label={backLabel || 'Go back'}
-            className="flex items-center gap-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
-          >
-            <ArrowIcon /> <span className="text-sm">Back</span>
-          </button>
-        )}
-        <button
-          onClick={onHome}
-          aria-label="Go to home — Choose your path"
-          className="flex items-center gap-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
-        >
-          <HomeIcon /> <span className="text-sm">Home</span>
-        </button>
-      </nav>
-    );
-
-    const PortfolioWebsite = () => {
-      const [stage, setStage] = useState('intro');
-      const [typedText, setTypedText] = useState('');
-      const [flippedCards, setFlippedCards] = useState([]);
-      const [currentDiscipline, setCurrentDiscipline] = useState(null);
-      const [currentProject, setCurrentProject] = useState(null);
-      const [lightbox, setLightbox] = useState(null);
-      const lightboxRef = useRef(null);
-
-      useEffect(() => {
-        if (!lightbox) return;
-        const prev = document.activeElement;
-        if (lightboxRef.current) lightboxRef.current.focus();
-        const onKey = (e) => {
-          if (e.key === 'Escape') setLightbox(null);
-        };
-        document.addEventListener('keydown', onKey);
-        return () => {
-          document.removeEventListener('keydown', onKey);
-          if (prev) prev.focus();
-        };
-      }, [lightbox]);
-
-      const mainHeadingRef = useRef(null);
-      useEffect(() => {
-        if (mainHeadingRef.current) mainHeadingRef.current.focus();
-      }, [stage, currentDiscipline, currentProject]);
-
-      const yourName = "Jim";
-      const welcomeMessage = `I'm ${yourName}. Welcome to my world.`;
-
-      const disciplines = [
-        {
-          id: 'ux', title: 'UX', subtitle: 'The Architect',
-          color: 'from-blue-400 to-cyan-300',
-          glassColor: 'bg-blue-500/20', borderColor: 'border-blue-400/50',
-          artComponent: UXGlass,
-          projects: [
-            {
-              id: 'mental-health',
-              title: 'Improving Access to Mental Health Care',
-              summary: 'A co-designed UX study exploring telehealth interventions to reduce barriers for individuals seeking mental health support.',
-              role: 'UX Design, UX Research, UI Design',
-              team: '3 UX Design graduate students',
-              timeline: '8 weeks (Discovery & Research: 2+ weeks · Design & Testing: 6 weeks)',
-              tools: 'Miro, Figma, PowerPoint, Ziro',
-              problem: 'Many individuals who want or need mental healthcare encounter obstacles such as stigma, financial hardship, insurance opacity, and limited provider availability. These barriers often compound anxiety and negatively affect overall wellbeing.',
-              approach: 'Through user interviews and stakeholder collaboration, we explored interventions that could mitigate access barriers. Our findings pointed toward a telehealth platform emphasizing equality, real-time availability, and transparent insurance coverage.',
-              research: {
-                title: 'User Research',
-                content: 'We interviewed 8 participants: 5 individuals seeking care and 3 mental healthcare professionals. Interviews focused on values, motivations, and perceived barriers to access.',
-                images: [
-                  { src: 'https://uxfolio-prod.s3.us-east-1.amazonaws.com/6022cf7a27eee90003a65b32/65380a692fc2e5000234b3fc/A2eUF2AYxnOEKwjL.png', alt: 'Persona 1: Patient seeking mental health care — goals, frustrations, and behaviors' },
-                  { src: 'https://uxfolio-prod.s3.us-east-1.amazonaws.com/6022cf7a27eee90003a65b32/65380a692fc2e5000234b3fc/QvzVKG49b6olbRHW.png', alt: 'Persona 2: Mental health professional — motivations, workflow, and pain points' },
-                  { src: 'https://uxfolio-prod.s3.us-east-1.amazonaws.com/6022cf7a27eee90003a65b32/65380a692fc2e5000234b3fc/WYwdWdlIPyvtMkuf.png', alt: 'Patient journey map showing emotional highs and lows across the care-seeking process' },
-                  { src: 'https://uxfolio-prod.s3.us-east-1.amazonaws.com/6022cf7a27eee90003a65b32/65380a692fc2e5000234b3fc/kg4r36sxspg7oFn4.png', alt: 'Mental health professional journey map highlighting workflow friction and communication gaps' }
-                ]
-              },
-              findings: [
-                'Stigma and mental health literacy impact help-seeking behavior',
-                'Cost and insurance opacity deter access',
-                'Demand exceeds provider availability',
-                'Marginalized groups face disproportionate barriers'
-              ],
-              design: {
-                title: 'Design & Iteration',
-                content: 'Wireframes and mid-fidelity prototypes were tested with users, leading to reduced screen complexity and the addition of FAQ support.',
-                images: [
-                  { src: 'https://uxfolio-prod.s3.us-east-1.amazonaws.com/6022cf7a27eee90003a65b32/65380a692fc2e5000234b3fc/sqNdpkuBMbvfibbP.png', alt: 'Early-stage wireframes exploring the telehealth platform layout and core user flows' },
-                  { src: 'https://uxfolio-prod.s3.us-east-1.amazonaws.com/6022cf7a27eee90003a65b32/65380a692fc2e5000234b3fc/gbXTO7cBvGq2CmZB.png', alt: 'Final design triptych showing key screens of the completed telehealth platform' }
-                ]
-              },
-              figmaUrl: 'https://embed.figma.com/proto/tPNJPOoSm4ZOL21DGucuo5/PIT-502?page-id=74%3A34&node-id=113-803&starting-point-node-id=113%3A803&embed-host=share',
-              videoUrl: 'https://www.youtube.com/embed/D1c7fbi1nu8',
-              prototypeVideoUrl: 'https://www.youtube.com/embed/rQsz6ZESRWk',
-              deckUrl: null
-            },
-            {
-              id: 'iron-hill',
-              title: 'Iron Hill Brewery Website Redesign',
-              summary: 'A solo UX redesign of a regional brewery and restaurant website, focused on navigation clarity, menu accessibility, and information hierarchy.',
-              role: 'UX Research, UX Design, UI Design, Usability Testing',
-              team: 'Solo project',
-              timeline: '8 weeks',
-              tools: 'Miro, Figma, PowerPoint, Ziro',
-              problem: 'The Iron Hill Brewery & Restaurant website felt scattered and inconsistent. Key information like allergen-sensitive and gluten-free menus was buried, events and specials were hard to find, and the ordering flow opened in a separate tab with a completely different design — breaking users\' mental model mid-task. A heuristic evaluation using Nielsen\'s 10 heuristics confirmed these pain points, with several interactions scoring a severity 2–3 on the usability scale.',
-              approach: 'Starting with a formal heuristic evaluation and user research interviews, I built three personas representing the real range of Iron Hill patrons — from a regular blue-collar lunch visitor to a high-income professional using the site for catering and work events. Research revealed that all three user types struggled with the same core issues: navigation felt inconsistent, the menu was difficult to parse online, and events were nearly impossible to discover without already knowing where to look. The redesign prioritized clear navigation, surfaced allergen and dietary information, and unified the visual experience across ordering and browsing flows.',
-              research: {
-                title: 'User Research & Heuristic Evaluation',
-                content: 'I conducted a Nielsen\'s 10 Heuristics evaluation of the existing site, rating issues on a severity scale from 0 (no problem) to 4 (unusable). This was followed by user interviews with Iron Hill patrons, from which I developed three distinct personas representing the site\'s core audience: working-class regulars, busy professionals seeking quick takeout, and high-income social users interested in events and catering.',
-                images: [
-                  { src: 'assets/Images/IronHill/AJ-Persona.png', alt: 'Persona: AJ Kajwandi — 27-year-old landscaper from Harleysville, PA who frequents Iron Hill for late lunches and enjoys food pairings but finds the site scattered' },
-                  { src: 'assets/Images/IronHill/Hannah-Persona.png', alt: 'Persona: Hannah Sims — 34-year-old Financial Manager from Doylestown, PA who uses Iron Hill for work catering and events but finds the website a headache to navigate' },
-                  { src: 'assets/Images/IronHill/Alice-Persona.png', alt: 'Persona: Alice Kim — 43-year-old Head Nurse from North Wales, PA who values takeout specials and family time but struggles to understand the webpage' }
-                ]
-              },
-              findings: [
-                'Navigation was inconsistent — ordering launched a new tab with a different visual design, breaking user flow',
-                'Allergen-sensitive and gluten-free menu options were buried, creating barriers for users with dietary needs',
-                'Events and daily specials were difficult to discover without prior knowledge of the site structure',
-                'All three persona types shared the same core frustration: the site felt scattered and hard to read'
-              ],
-              design: {
-                title: 'Redesign & Usability Testing',
-                content: 'The redesign addressed navigation, visual hierarchy, and dietary information access across the full site — not just the homepage. I conducted remote usability testing sessions over Zoom with 4–6 Iron Hill patrons, testing tasks like finding events, locating food pairings, and navigating the menu. One session had to be paused mid-test when Iron Hill temporarily removed their daily special from the live site during testing — a real-world reminder that research doesn\'t always go as planned. The special was eventually restored. Findings from testing informed refinements to the navigation structure and content hierarchy.',
-                images: [
-                  { src: 'assets/Images/IronHill/IronHill-Redesign.jpg', alt: 'Iron Hill Brewery & Restaurant website — current homepage showing navigation, awards section, and promotional content for retail beer, loyalty program, and beer club' },
-                  { src: 'assets/Images/IronHill/TestPlan-Dashboard.png', alt: 'Usability Test Plan Dashboard outlining the product under test, test objectives, participants, test tasks, responsibilities, equipment, location, dates, and procedure steps' }
-                ]
-              },
-              figmaUrl: 'https://embed.figma.com/proto/erCz1jVkJ0kFe715tC3ldZ/GIT-542?page-id=12%3A2&node-id=14-894&viewport=-1732%2C1923%2C0.41&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=14%3A894&embed-host=share',
-              videoUrl: null,
-              prototypeVideoUrl: null,
-              deckUrl: null
-            },
-            {
-              id: 'hbcu-hub',
-              title: 'HBCU HUB: Mobile App Redesign',
-              summary: 'A year-long UX engagement — part of a two-person design team — redesigning a mobile platform that connects students, recruiters, and coaches within the Historically Black Colleges and Universities community. Focused on simplifying onboarding, gamifying the experience, and building an app that authentically represents HBCU culture.',
-              role: 'UX/UI Designer, QA, Consultant',
-              team: '2 UX/UI Designers (equal contribution), small dev team, CEO',
-              timeline: 'Overall: 1 year · Discovery & Research: 3+ months · Design & Testing: 9+ months',
-              tools: 'Figma, Marvel, Upwork',
-              problemLabel: 'The Problem',
-              approachLabel: 'The Approach',
-              findingsLabel: 'What Was Delivered',
-              problem: 'The original HBCU HUB app asked users to input all their information upfront — a cumbersome onboarding flow that created friction before users had any reason to invest. The UI lacked dynamic content, didn\'t reflect HBCU culture visually, and had no mechanism to serve three very different user types — students, recruiters, and coaches — within a single coherent experience. ADA compliance had not been considered.',
-              approach: 'We began with flow mapping to diagnose the existing user journey and identify where friction concentrated. The proposed redesign broke onboarding into digestible steps, introduced a matchmaker feature to connect students with their best-fit HBCUs, and built out distinct but unified interfaces for each user type. Visual identity work drew on Gen-Z design trends — colorful minimalism, geometric shapes, muted colors — while staying grounded in HBCU cultural identity. ADA compliance testing was conducted at the color and contrast level, with before/after documentation of every remediation.',
-              research: {
-                title: 'Flow Mapping & Research',
-                content: 'Current and proposed user flows were mapped in full, covering registration, onboarding branching, school browsing, recruiter access, and coach interfaces. The proposed flow introduced skip options per Apple HIG guidelines, broke registration into steps, and allowed users to browse before committing — reducing the upfront cognitive load that was driving drop-off.',
-                images: [
-                  { src: 'assets/Images/HBCU Hub/Current_Wireframe.png', alt: 'Current user flow — linear registration requiring all information upfront before accessing any content', caption: 'Current flow — all information required before entry' },
-                  { src: 'assets/Images/HBCU Hub/Proposed_Wireframe.png', alt: 'Proposed user flow — stepped registration with skip options, browse-before-commit, and branching paths for students, recruiters, and coaches', caption: 'Proposed flow — stepped onboarding, skip options, browse before commit' },
-                  { src: 'assets/Images/HBCU Hub/UserStory.png', alt: 'User story flow map showing the matchmaker pathway from selection through targeted schools, account profile, recruiter selection, and connection', caption: 'User story — matchmaker to recruiter connection flow' },
-                  { src: 'assets/Images/HBCU Hub/Target_Audience.png', alt: 'Target audience breakdown — three user types defined: Students seeking to connect with HBCU staff and filter schools, Recruiters managing appointments and student contact, Coaches accessing student discovery and in-app communication', caption: 'Target audience — three distinct user types, each with their own needs and access model' },
-                  { src: 'assets/Images/HBCU Hub/ADA_Testing.png', alt: 'ADA validation testing showing current vs updated chat screen with ColorCheck contrast ratio testing — original failed at 1.06, remediated to meet minimum 7:1 standard', caption: 'ADA testing — contrast ratio remediation with before/after documentation' },
-                  { src: 'assets/Images/HBCU Hub/Gender_Accessibility.png', alt: 'Gender accessibility iterations — current (binary only), suggested (preference field added), updated (preference field plus birthday, Finish Later option)', caption: 'Gender accessibility — three iterations toward inclusive profile creation' }
-                ]
-              },
-              findings: [
-                'Full current and proposed flow maps covering registration, onboarding, school browsing, and multi-user-type routing',
-                'Gamified onboarding with the HBCU Matchmaker — students answer preference questions to surface best-fit schools and recruiters',
-                'Three distinct but unified interfaces: Students (academic profile, school filtering, scheduling), Recruiters (student requests, appointments, contact), Coaches (sport-specific student discovery)',
-                'ADA compliance testing and remediation — color contrast validation with before/after documentation for chat, text, and UI elements',
-                'Gender accessibility redesign — binary-only field expanded to include gender preference input and birthday collection with confidentiality note',
-                'Visual identity aligned with HBCU culture: colorful minimalism, geometric shapes, muted tones, informed by Gen-Z design trends and popular social apps',
-                'Iterated with CEO, dev team, and stakeholder feedback across 9+ months of design and testing'
-              ],
-              design: {
-                title: 'The Redesigned App',
-                content: 'The final app introduced The Yard — a social community layer connecting students across HBCU culture groups — alongside a schools browser with scholarship highlights and academic grading, sport-specific coach dashboards, and a recruiter interface for managing student requests and appointments. The previous dark, undifferentiated UI was replaced with a light, culturally grounded design system.',
-                images: [
-                  { src: 'assets/Images/HBCU Hub/PreviousAoo_design.png', alt: 'Previous app design — dark UI with limited differentiation between user types and no cultural visual identity', caption: 'Before — previous app design' },
-                  { src: 'assets/Images/HBCU Hub/HBCU_Recruiters.png', alt: 'Redesigned onboarding screen — What Best Describes You? with Student or Parent, Recruiters, and Coach pathways, each with distinct color coding', caption: 'Redesigned onboarding — three user types, distinct paths' },
-                  { src: 'assets/Images/HBCU Hub/Schools.png', alt: 'Schools browser showing HBCU listings with institutional grade ratings, cost of attendance, time to graduation, and acceptance rate — scholarship banner at top', caption: 'Schools browser — graded listings with scholarship surface' },
-                  { src: 'assets/Images/HBCU Hub/The_Yard.png', alt: 'The Yard — social community screen with HBCU cultural groups (Band, Dance, Football), post sharing, and student discussion threads', caption: 'The Yard — social layer for HBCU community and culture' },
-                  { src: 'assets/Images/HBCU Hub/MobileScreen.png', alt: 'Coach and recruiter interfaces — sport-selection dashboard and student request management with Accept/Reject controls and appointment details', caption: 'Coach and recruiter dashboards — sport selection and student requests' },
-                  { src: 'assets/Images/HBCU Hub/Matchmaker.png', alt: 'HBCU Matchmaker feature — full-bleed campus photography with Click Here To Start CTA, connecting students to best-fit schools through preference questions', caption: 'HBCU Matchmaker — preference-driven school and recruiter matching' },
-                  { src: 'assets/Images/HBCU Hub/HBCU_HUB.png', alt: 'HBCU HUB logo on brand blue background — the H with architectural detail, geometric shapes in the background', caption: 'Brand identity — logo on primary blue, geometric shapes carrying the cultural aesthetic' },
-                  { src: 'assets/Images/HBCU Hub/Worlds_First.png', alt: 'The Worlds First App That Connects Students To Admissions Recruiters At HBCUs — marketing graphic with feature callouts: transcripts, scheduling, live stream video interviews', caption: 'Marketing graphic — value proposition and feature set for recruiter audience' },
-                  { src: 'assets/Images/HBCU Hub/MarketingSceen_2.png', alt: 'Students, Recruiters & Coaches All In One App — promotional poster featuring a woman with the HBCU HUB logo, callouts for managing inquiries, Facetime with students, and finding ideal students', caption: 'Promotional poster — recruiter-facing marketing asset' },
-                  { src: 'assets/Images/HBCU Hub/Promo.png', alt: 'Find Students You Are Looking For In One App — blue brand promotional graphic with Connect With Students, Access Important Stats and Transcripts, and Find Ideal Students callouts with icons', caption: 'Promo graphic — recruiter benefits laid out in brand visual language' }
-                ]
-              },
-              figmaUrl: null,
-              videoUrl: null,
-              prototypeVideoUrl: null,
-              deckUrl: null
-            },
-            {
-              id: 'rrt',
-              title: 'Revision Reasoning Tool',
-              summary: 'A self-directed tool design project building a judgment layer between AI document analysis and synthesis — structuring human authorship decisions rather than replacing them.',
-              role: 'Systems Designer, Tool Architect',
-              team: 'Self-directed; built collaboratively with AI',
-              timeline: 'Ongoing development',
-              tools: 'Claude, GPT-4, Python (AI-generated code)',
-              problemLabel: 'The Problem I Noticed',
-              approachLabel: 'The Design Decisions',
-              findingsLabel: 'What It Does',
-              problem: 'Most AI document tools operate as black boxes: feed in documents, get output. The human\'s judgment about which insights matter — and which don\'t — is either ignored or collapsed into a thumbs-up on the final result. Judgment happens too late, and leaves no record. For professional work, this creates a specific problem: it becomes impossible to prove what a human actually decided versus what the AI decided for them.',
-              approach: 'The core architecture insight was recognizing that document comparison has four distinct phases that need to stay separated: Input, Interpretation, Decision, and Output. The tool inserts a structured judgment layer between Interpretation and Output — a step most tools skip entirely. Every AI-generated insight is surfaced explicitly, and the user must mark it accepted, rejected, or unsure (with a required note) before any merge can proceed. The merge engine is then constrained by those decisions — not free to act on its own. This was a design decision, not a technical one. The original AI implementation made a critical architectural mistake — direct client calls with regex parsing — that made the interpretation layer unpredictable. Replacing it with structured output contracts was the central intervention.',
-              research: {
-                title: 'The System in Action',
-                content: 'The Revision Reasoning Tool surfaces AI-generated insights across multiple views — from an empty input state through structured analysis, conceptual diffs, and a judgment layer — so the user can evaluate, accept, reject, or flag each one before any merge proceeds.',
-                images: [
-                  { src: 'assets/Images/RRT/Documents.png', alt: 'Documents tab in empty state — the starting point before any content is loaded', caption: 'Documents tab — empty state before input' },
-                  { src: 'assets/Images/RRT/Structured Analysis.png', alt: 'Structured Analysis view — AI-generated insights parsed into a readable two-column card grid with source badges', caption: 'Structured Analysis — insights parsed into a readable card grid' },
-                  { src: 'assets/Images/RRT/Conceptual diff.png', alt: 'Conceptual Diff — three-column view showing what changed conceptually, what was removed, and what was emphasized more', caption: 'Conceptual Diff — what changed, what was removed, what was emphasized' },
-                  { src: 'assets/Images/RRT/Judgement layer.png', alt: 'Judgment Layer — every AI-generated insight presented with Keep, Reject, and Unsure controls; merge is blocked until all are resolved', caption: 'Judgment Layer — every insight requires a decision before merge can proceed' }
-                ]
-              },
-              findings: [
-                'Users mark every AI insight as accept, reject, or unsure — the merge cannot run until all unsure items carry a note',
-                'The merge output is constrained by those decisions; the AI cannot override accepted or rejected choices',
-                'A structured audit trail documents which decisions were fully applied, partially applied, or not applied — with explanations',
-                'Separates Input → Interpretation → Decision → Output as distinct phases, preventing AI judgment from bypassing human review',
-                'Defensive UX blocks merge until all decisions are resolved — the error message explains why, making it pedagogical rather than just obstructive',
-                'Structured output contracts replace regex parsing, making the interpretation layer predictable and auditable'
-              ],
-              design: {
-                title: 'Architecture & Key Decisions',
-                content: 'The clearest signal that this is design work, not just prompting: the original AI-generated code made a structural mistake I caught and named. It was making direct API calls and parsing responses with regex — which made behavior unpredictable and the outputs untrustworthy. I identified the missing layer, specified the structured output contract, and defined the schema. The AI then wrote the corrected implementation to my spec. The acceptance criteria I wrote before any code existed: "a user reviewing 50 insights should be able to prove, after the fact, exactly which ones they approved and why." That\'s the product.\n\nThe rebuild made that contract visual. Dark near-black background, warm cream type, gold accents — not a SaaS dashboard, a writer\'s instrument. Tab-based navigation (Input → Analysis → Diff → Decisions → Merge) makes the four phases legible as a progression rather than a scroll. Each tab appears as content is generated; the Decisions tab shows a live judgment counter. Merge is blocked until every unsure item carries a note — the error message explains why, making it pedagogical rather than just obstructive.\n\nHardening decisions that matter: scoped styles so the component doesn\'t bleed into the host page, structured JSON retry so model misbehavior doesn\'t silently corrupt output, request guards to prevent duplicate calls, token warnings before the context window fills. Export downloads a full session archive — decisions, notes, rationale, merged output — so the audit trail is portable.',
-                images: [
-                  { src: 'assets/Images/RRT/Decision layer.png', alt: 'Decisions tab showing analysis cards for Key Differences, Strengths of each version, and Conceptual Shifts — each with accept, reject, and unsure controls', caption: 'Decisions tab — structured judgment cards with live resolution counter' },
-                  { src: 'assets/Images/RRT/Options chosen.png', alt: 'Resolved decision cards showing kept and rejected insights with notes, and a Merge Strategy constrained by those choices', caption: 'Options Chosen — resolved decisions with notes, ready for merge' }
-                ]
-              },
-              figmaUrl: null,
-              videoUrl: null,
-              prototypeVideoUrl: null,
-              deckUrl: null
-            },
-          ]
-        },
-        {
-          id: 'narrative', title: 'Narrative', subtitle: 'The Storyteller',
-          color: 'from-purple-400 to-pink-300',
-          glassColor: 'bg-purple-500/20', borderColor: 'border-purple-400/50',
-          artComponent: NarrativeGlass,
-          projects: [
-            {
-              id: 'shadow-health',
-              title: 'Shadow Health: Virtual Patient Design',
-              summary: 'A narrative design interview challenge for a healthcare simulation platform — creating clinically accurate virtual patients, authentic dialogue, and instructional social context content for nursing and medical staff training.',
-              role: 'Narrative Designer, Dialogue Writer, Instructional Content Designer',
-              team: 'Solo project (interview challenge)',
-              timeline: '2–3 day turnaround',
-              tools: 'Primary research, clinical literature, APA citation',
-              problemLabel: 'The Challenge',
-              approachLabel: 'The Method',
-              findingsLabel: 'What Was Delivered',
-              problem: 'Healthcare simulation requires characters who feel human enough to train empathy, while remaining clinically precise enough to teach diagnosis. The dialogue has to carry emotional subtext — a patient\'s deflection, anxiety, or humor — while simultaneously surfacing the medical information a student needs to identify. Get the voice wrong and students learn nothing. Get the medicine wrong and it\'s worse.',
-              approach: 'Each character was built from the intersection of clinical data and lived specificity. For Edna, a 74-year-old with a UTI, that meant interviewing family members and grounding her voice in the particular way older women minimize their own discomfort to avoid burdening people they love. For Lucas, a patient in a manic episode, it meant finding the internal logic of pressured speech and clang associations — humor that makes sense from inside the episode even as it signals distress. For Seamus, a character I originated, it meant layering hereditary hemochromatosis, Irish-American cultural identity, and non-binary experience into a case study that asked nursing students to hold all three at once.',
-              research: null,
-              findings: [
-                'Three fully voiced virtual patients: Lucas (bipolar manic episode), Edna (UTI, elderly care), and Seamus (hemochromatosis, non-binary, Irish-American — original character)',
-                'Dialogue written in first person from inside each patient\'s perspective — clinically accurate, emotionally authentic, distinct voice per character',
-                'Three social context slides: pain management disparities in Black patients, HIV barriers for Vietnamese-American immigrants, and hereditary disease risk intersecting with non-binary mental health in Irish-American patients',
-                'All social context content fully researched and APA-cited from peer-reviewed sources including CDC, NIH, and Rheumatic Disease Clinics of North America',
-                'Research methodology documented: primary interviews for Edna, clinical literature for hemochromatosis prevalence and hereditary disease patterns',
-                'Delivered within a 2–3 day window as a competitive interview challenge'
-              ],
-              design: {
-                title: 'See Also: Technical Writing',
-                content: 'The clinical documentation and instructional architecture of this project — interaction logic, system rules for patient response, and structured social context slides — also represents a significant technical writing sample. The episodic memory specification and system documentation work referenced in the Technical Writing section shares the same authorial approach: translating complex systems into structured, readable formats for a specific audience.',
-                images: [
-                  { src: 'assets/Images/Shadow Health/Shadow_Health_Patient_Input_Output.jpg', alt: 'Patient #1 Lucas Callahan — bipolar manic episode dialogue alongside Pain Management Disparities social context slide showing research on racial disparities in osteoarthritis care', caption: 'Lucas & the Pain Management Disparities slide — dialogue and research side by side' },
-                  { src: 'assets/Images/Shadow Health/Persona_Design_and_Interaction_Flow.png', alt: 'Patient #2 Edna Smith — full dialogue transcript showing question and answer format across symptoms, medications, home life, activity level, and joint pain', caption: 'Edna Smith — full dialogue transcript, written from inside the character' },
-                  { src: 'assets/Images/Shadow Health/Evidence-based_Content _Strategy.png', alt: 'Seamus MacTavish social context slide — Hereditary Diseases section covering hemochromatosis prevalence in Irish-Americans, and Mental Healthcare section covering non-binary mental health risks and suicidal ideation statistics', caption: 'Seamus social context slide — hereditary disease and non-binary mental health, both researched and cited' }
-                ]
-              },
-              figmaUrl: null,
-              videoUrl: null,
-              prototypeVideoUrl: null,
-              deckUrl: 'assets/docs/shadow-health-narrative-design.pdf'
-            },
-            {
-              id: 'umpkin',
-              title: 'Umpkin the Bumpkin & Associated Tales',
-              summary: 'A complete anthology of short fiction, flash fiction, and whimsical fragments spanning fantasy, sci-fi, satire, and tragedy. Published serially on Royal Road and preparing for market.',
-              role: 'Author',
-              team: 'Solo project',
-              timeline: 'Complete; preparing for market',
-              tools: null,
-              problemLabel: 'The Concept',
-              approachLabel: 'The Craft',
-              findingsLabel: 'Statistics',
-              problem: 'Most serialized web fiction commits to a single genre and format. The challenge here was building a readership around deliberate variety — each chapter a standalone piece in a different voice, tone, and world — while maintaining a consistent authorial identity that keeps readers coming back.',
-              approach: 'Each story is written to stand completely alone, but the anthology is curated so that emotional range, tonal variety, and thematic coherence emerge across the collection. Pieces range from flash fiction under 500 words to longer short stories, with genres shifting chapter to chapter.',
-              research: null,
-              findings: [
-                '27 chapters, each a distinct story; collection complete and preparing for market',
-                '40,000+ words published',
-                'Approximately 5-star overall rating on Royal Road',
-                'Growing readership with consistent positive reviews',
-                'Demonspeaker, the second publicly released title, now serializing on Royal Road past 60,000 words',
-                'Additional novels in progress (50k+ words each, pending professional editing): Discordiae: Jackson\'s Story, My Uncle is Wyrd, and The Other'
-              ],
-              design: {
-                title: 'Sample Stories',
-                content: 'The collection includes: a dying scientist explaining the impossible to his home assistant; a shell-shocked war hero with moments of lucidity and crucial information; a custodian who proves he\'s more than he appears; an engineer awakened by his sassy onboard computer; a young mage who dreads every moment of having an assistant — and many more.',
-                images: []
-              },
-              figmaUrl: null,
-              videoUrl: null,
-              prototypeVideoUrl: null,
-              deckUrl: 'https://www.royalroad.com/fiction/113445/umpkin-the-bumpkin-associated-tales'
-            },
-            {
-              id: 'heroes-guard',
-              title: 'Heroes Guard: The Journal',
-              summary: 'Lead writer on a strategic, replayable mobile gamebook — 20+ branching narratives with dice mechanics, creature concept and design, and a "pick up and play" structure that lets players dip into a rich world on their own terms.',
-              role: 'Lead Writer, Narrative Designer, Creature Concept Designer',
-              team: 'Primary writer (senior credit); secondary writer joined later',
-              timeline: '1.5 years',
-              tools: 'Mindjet MindManager, narrative design, branching logic',
-              problemLabel: 'The Brief',
-              approachLabel: 'The Design',
-              findingsLabel: 'What Was Delivered',
-              problem: 'The client wanted a gamebook — something between a strategy game and interactive fiction — that players could pick up for a short session and put down without losing the thread. The challenge was building 20+ self-contained branching narratives that each felt complete on their own while belonging to a coherent world. Every story needed meaningful player choices with genuine consequence, dice mechanics that felt fair rather than arbitrary, and prose rich enough to reward readers who came for the writing as much as the game.',
-              approach: 'Each narrative was architected as a branching tree before a word of prose was written — mapping choice points, success and failure states, and consequence chains in Mindjet MindManager. Creature concepts were developed alongside the narratives, grounding the world in specific, memorable antagonists rather than generic fantasy enemies. Prose was written to the gamebook register: vivid, immediate, and economical — every word visible on a small mobile screen had to earn its place. Stories were edited for length, pacing, and mechanical accuracy before submission.',
-              research: {
-                title: 'The Architecture',
-                content: 'Branching narratives were mapped in full before writing began — each path documented with its success and failure states, mechanical triggers, and consequence chains. The mind map shown here represents one complete narrative from the Black Market storyline, showing the full branching structure from Start through all possible outcomes across Intelligence, Charisma, Dexterity, and Strength paths.',
-                images: [
-                  { src: 'assets/Images/Heroes Guard/Mindmap.png', alt: 'Mindjet mind map showing the full branching architecture of a Heroes Guard Black Market narrative — choice paths, section numbers, success and failure states, and consequence chains across all player attributes', caption: 'Branching architecture — full narrative mapped before writing began' },
-                  { src: 'assets/Images/Heroes Guard/Writing UI.png', alt: 'Heroes Guard in-game UI showing the gamebook reading interface — parchment book aesthetic, italic prose, and three branching choice options each with a dice icon for skill checks', caption: 'In-game writing UI — prose, choices, and dice mechanics in the gamebook interface' }
-                ]
-              },
-              findings: [
-                '20+ complete branching narratives written and delivered over 1.5 years',
-                'Each narrative architected as a full decision tree before prose was written, mapping success and failure states, mechanical triggers, and consequence chains',
-                'Creature concept and design contributed alongside narrative work, grounding the world in specific, memorable antagonists',
-                'Prose written to the gamebook register — vivid, immediate, and economical for mobile screen reading',
-                'All stories edited for length, pacing, accuracy, and mechanical consistency',
-                'Senior writer credit; secondary writer joined the project during the engagement'
-              ],
-              design: {
-                title: 'The Format',
-                content: 'Heroes Guard: The Journal is a strategic, replayable gamebook — a format that sits between interactive fiction and tabletop RPG. Players read prose, make choices, and roll dice to determine outcomes across skill checks tied to Intelligence, Charisma, Dexterity, and Strength. The gamebook structure meant every narrative had to work as a standalone piece while contributing to a larger world — the same discipline that runs through all of the anthology work in this section.',
-                images: [
-                  { src: 'assets/Images/Heroes Guard/Heroes Guard Splash.jpeg', alt: 'Heroes Guard: The Journal splash screen — stone cracked texture with ornate orange and gold logo, subtitle reads A Strategic, Replayable Gamebook', caption: 'Heroes Guard: The Journal — a strategic, replayable gamebook' }
-                ]
-              },
-              figmaUrl: null,
-              videoUrl: null,
-              prototypeVideoUrl: null,
-              deckUrl: null
-            },
-            {
-              id: 'stet',
-              title: 'STET: A Reader, Not a Writer',
-              summary: 'A personal writing tool built around a single discipline: never write the manuscript. STET observes a draft, tracks patterns, surfaces themes, and asks questions. It does not generate prose. It does not suggest fixes. It is the part of editorial attention that comes before any note is written.',
-              role: 'Designer, Builder',
-              team: 'Solo project',
-              timeline: 'Roughly one day',
-              tools: 'React, lexical pattern detection, register-shift analysis, local-only storage',
-              problemLabel: 'Why It Exists',
-              approachLabel: 'The Design Discipline',
-              findingsLabel: 'What It Does',
-              problem: 'Most AI writing tools are built around generation: continue this paragraph, rewrite this sentence, give me three options. The result is prose the writer did not produce, in a voice the writer did not choose, solving a problem the writer may not have. STET was built to do the opposite: stay out of the manuscript entirely and instead pay the kind of attention a thoughtful first reader pays. Notice what is happening. Track what is recurring. Ask the question that opens up the work rather than closing it down.',
-              approach: 'The core principle is restraint. STET reads what is on the page, runs lightweight analysis on idle pauses, and surfaces observations: emotional beats, register shifts, recurring images, structural patterns. It never produces text that could enter the draft. When the writer wants more than observation, ask mode is explicit and consent-gated. The system asks before it speaks. All manuscript data stays local. Nothing is sent anywhere. The writer is the writer; STET is a reader.',
-              research: {
-                title: 'The Architecture of Restraint',
-                content: 'STET runs entirely on the device. Lightweight engines watch for emotional beats, register shifts (POV changes, tense shifts, mode breaks), and patterns that emerge across the draft. Output is never prose. It is observation, summary, or question. When ask mode is invoked it is gated by explicit user action, never volunteered. The system has the same design DNA as Margot, the editorial soul in Resonance: a reader first, with editorial knowledge held in reserve until invited.',
-                images: []
-              },
-              findings: [
-                'Reads the draft locally; nothing leaves the device',
-                'Detects emotional beats and structural shifts as the writer works',
-                'Surfaces recurring imagery and themes as patterns rather than prescriptions',
-                'Asks questions the writer can engage with or ignore',
-                'Never produces prose that could enter the manuscript',
-                'Ask mode is explicit and consent-gated; the system does not volunteer feedback',
-                'Built in roughly a day for personal use; designed to support fiction work without writing it',
-                'Shares its core design ethic with Margot, the editorial soul in Resonance: reader first, editor only when asked'
-              ],
-              design: {
-                title: 'Why It Will Not Develop',
-                content: 'STET is not a developmental editor and was never meant to be. The decision to limit it to observation and questions is not a technical limitation; it is the entire point. Writing tools that try to develop work for the writer end up producing fluent, generic, unrecognizable prose. STET refuses that path. It pays attention. It notices. It asks. The writer does the writing. That constraint is the design, and the design is the constraint.',
-                images: []
-              },
-              figmaUrl: null,
-              videoUrl: null,
-              prototypeVideoUrl: null,
-              deckUrl: null
-            },
-            {
-              id: 'skein',
-              title: 'Skein: Outline by the Thread',
-              summary: 'A story-plotting and drafting environment for web-serial and indie authors. Skein takes a writer from raw idea to finished manuscript through structured stages, then lets them draft beat by beat while the manuscript assembles itself alongside them. Deliberately not a formatting tool, not a publishing tool, and not an AI writing assistant.',
-              role: 'Designer, Builder',
-              team: 'Solo project',
-              timeline: 'Eleven iterations, ongoing',
-              tools: 'React, browser storage, pure-JS ZIP writer, DOCX and EPUB generation, no external dependencies',
-              problemLabel: 'The Problem',
-              approachLabel: 'The Two Linked Screens',
-              findingsLabel: 'What It Does',
-              problem: 'Web-serial writers publish weekly across runs of two hundred chapters or more. They cannot afford to lose a plot thread forty chapters back, and the tools available to them were not built for that. Scrivener won the container war fifteen years ago but is built for the one-book novelist. Plotting tools store what a writer already knows instead of telling them something they do not. And every new tool in the space arrives with generative AI bolted on, which is precisely what this audience does not want.',
-              approach: 'The defining feature came out of a correction. An early version drifted toward being a diagnostics tool; the reset was to build a writing environment instead. The result is two linked screens. On the left, the compose pane: each beat appears as an italic prompt with a prose box beneath it, so the writer answers one small finishable unit at a time. On the right, the manuscript assembles live in proper order as they type. The active beat highlights in gold. Clicking a manuscript paragraph jumps back to its compose box. The outline is never left behind, because it is literally the skeleton the draft hangs on.',
-              research: {
-                title: 'The MICE Validator',
-                content: 'The structural centrepiece is a live validator for MICE threads (Milieu, Inquiry, Character, Event), micro-arcs that must open and close in properly nested order. The source guide expresses this as bracket notation, which is literally a stack, which means software can check it. No other plotting tool does this.\n\nSkein renders the notation live and flags threads closed out of order in red. A "suggest from chapters" function reads the writer\'s existing chapter tags and generates a guaranteed-valid nested scaffold to start from.\n\nBeyond the validator, a deterministic Story Scan analyzes thread integrity, chapter pacing against the median, coverage gaps, MICE balance, character absence gaps, and draft progress. Every smart feature is computed from the writer\'s own data. Nothing is generated.',
-                images: []
-              },
-              findings: [
-                '## The Ten Stages',
-                'Broad Strokes, Structure, Chapters and MICE, Thread Map, Beat Sheets, Draft, Story Scan, Reader Journey, Word Estimate, and Export',
-                'Draft is the centre: compose pane and live manuscript pane, linked, with focus mode, find and replace, continuous compose, and a draggable divider',
-                'Reader Journey plots the thread-load curve (open promises per chapter) alongside a draggable location map tracing the story\'s route',
-                'Word estimation implements two formulas, including one credited to a Mary Robinette Kowal lecture, verified against the source guide\'s own worked example to an exact match',
-                '## Principles Held Throughout',
-                'No AI, anywhere. Writers are hostile to generative AI touching their work, and every intelligent feature here is deterministic. This is a competitive advantage, not a limitation',
-                'Local-first. Everything lives in browser storage. No account, no server, no telemetry. Nothing leaves the machine unless the writer exports it',
-                'Destructive actions are undoable. Any bulk operation is reversible and logged in a labelled change history',
-                'Display preferences never touch content. Typography settings affect the writing surface only, never the stored text or any export',
-                '## Export and Craft',
-                'Real DOCX and EPUB 3 output through a hand-written pure-JS ZIP writer, with zero external libraries. Store-only compression happens to satisfy EPUB\'s requirement that mimetype be the first uncompressed entry',
-                'Platform-aware export: outline document, Royal Road serial chapters with per-chapter copy, and Amazon KDP flowing manuscript',
-                'Named restorable snapshots, full project backup and restore, and a thirty-day writing history with streak tracking',
-                'Two full accessibility passes: reading preferences including Atkinson Hyperlegible and Lexend, keyboard-movable location pins, text alternatives for charts, WCAG AA contrast audited across light and dark themes'
-              ],
-              design: {
-                title: 'What the Corrections Taught',
-                content: 'Version zero got called what it was: Scrivener with additions, still at cute-applet level. That was accurate. It stored what the writer already knew and told them nothing new.\n\nThe next correction mattered more. An attempt to reframe the whole product as a diagnostic layer was rejected, and rightly so. The goal was an easy writer, somewhere people could actually build and draft their stories, not a tool that indicts an outline. Diagnostics stayed, but as ambient information rather than a panel that judges.\n\nThe two-screen linked echo came directly out of that reset, described in one sentence: one screen answering the beats, the other echoing that text in proper order at the same time, almost as if they were linked.\n\nThe no-AI decision has held through eleven versions. AI does not really understand nuance and tends to steer things in its own direction, and writers are justifiably afraid of it taking their work. Refusing it is the point, not a gap waiting to be filled.',
-                images: []
-              },
-              figmaUrl: null,
-              videoUrl: null,
-              prototypeVideoUrl: null,
-              deckUrl: null
-            }
-          ]
-        },
-        {
-          id: 'ui', title: 'UI', subtitle: 'The Craftsperson',
-          color: 'from-emerald-400 to-teal-300',
-          glassColor: 'bg-emerald-500/20', borderColor: 'border-emerald-400/50',
-          artComponent: UIGlass,
-          projects: [
-            { id: 'design-system', title: 'Design System: Component Library', summary: 'Scalable design system for enterprise product suite.', role: 'UI Designer, Design Systems Lead', team: '3 Designers', timeline: '24 weeks' }
-          ]
-        },
-        {
-          id: 'technical', title: 'Technical Writing', subtitle: 'The Translator',
-          color: 'from-amber-400 to-orange-300',
-          glassColor: 'bg-amber-500/20', borderColor: 'border-amber-400/50',
-          artComponent: TechnicalGlass,
-          projects: [
-            {
-              id: 'episodic-memory-spec',
-              title: 'Episodic Memory & Identity Anchoring: Technical Specification',
-              summary: 'A technical specification document for an AI conversational state manager — detailing how episodic memory, identity anchoring, and retrieval-augmented context injection work together to create relational continuity in an LLM-based system.',
-              role: 'Technical Writer, Systems Designer',
-              team: 'Solo project',
-              timeline: 'Developed alongside River & Æsir system',
-              tools: 'Technical documentation, JSON schema design',
-              problemLabel: 'The Problem',
-              approachLabel: 'The Document',
-              findingsLabel: 'What It Covers',
-              problem: 'Standard LLMs suffer from context drift — they forget earlier parts of a conversation or hallucinate details. Documenting the solution required writing for two audiences simultaneously: a technical reader who needed to understand the implementation, and a design reader who needed to understand why the architecture decisions were made. Most system documentation chooses one and loses the other.',
-              approach: 'The specification is structured as a versioned technical document with numbered sections, parameter definitions, and a worked example showing the full extraction-storage-retrieval cycle for a single user input. The comparison table between standard LLM behavior and the episodic system makes the value proposition legible without requiring prior technical knowledge. The document was written from inside the system — not as a description of something handed over, but as a record of something designed.',
-              research: null,
-              findings: [
-                'Defines Identity Anchoring: a static Anchor Profile with immutable Core_Values and mutable Current_Mood that prevents character drift regardless of conversation length',
-                'Documents Episodic Storage Logic: entity extraction, sentiment tagging, temporal stamping, and structured JSON storage for significant user inputs',
-                'Specifies the Retrieval & Context Injection pipeline: trigger conditions, semantic database query, and response priming behavior',
-                'Comparison table: Standard LLM (limited context window, linear recall, goldfish memory) vs. Episodic System (database retrieval, semantic tagging, relational continuity)',
-                'See also: the River & Æsir case study in the Resonance section, where this system is implemented in full across two characters with emotional state tracking, memory scoring, and autonomous behavior'
-              ],
-              design: {
-                title: 'Sample & Comparison',
-                content: 'The specification includes a worked example tracing a single user input — “I really struggled with that meeting yesterday” — through entity extraction, sentiment tagging, time-stamping, and storage, then showing how it surfaces in a future session when the user mentions work or stress. The comparison table below is from the document itself.',
-                images: [
-                  { src: 'assets/Images/River/Comparison Table (Standard vs Episodic).jpg', alt: 'Comparison table: Standard LLM vs Episodic System across context window, recall method, and user experience dimensions', caption: 'Standard vs. Episodic — the value proposition in plain language' }
-                ]
-              },
-              figmaUrl: null,
-              videoUrl: null,
-              prototypeVideoUrl: null,
-              deckUrl: 'assets/docs/episodic-memory-spec.pdf'
-            },
-            {
-              id: 'gamification-microsite',
-              title: 'Gamification in Learning: Educational Microsite',
-              summary: 'A multi-page educational microsite produced for a graduate instructional design course at Arizona State University — researching, synthesizing, and presenting gamification theory, cognitivism, serious games, and their application in learning environments.',
-              role: 'Researcher, Writer, Designer',
-              team: 'Solo project',
-              timeline: 'Summer 2024 · ASU LDT 501',
-              tools: 'Google Sites, research synthesis, instructional design',
-              problemLabel: 'The Brief',
-              approachLabel: 'The Structure',
-              findingsLabel: 'What It Covers',
-              problem: 'Gamification is frequently misunderstood — conflated with game-based learning, reduced to points and badges, or dismissed as a gimmick. The assignment called for a research-grounded educational resource that could explain the concept accurately, distinguish it from adjacent approaches, and make the case for its legitimate role in instructional design.',
-              approach: 'The microsite is organized as a layered argument: starting with a definition and rationale, moving through the theoretical underpinning in cognitivism and serious games, then drawing a clear distinction between serious games and gamification with an honest pros and cons analysis. Minecraft Education Edition is used as a grounded case study — a recognizable, well-documented example that bridges game mechanics and educational application. All claims are cited from instructional design literature.',
-              research: null,
-              findings: [
-                'What is Gamification? — definition, core mechanics (points, badges, leaderboards, scenario-based learning, adaptive GBL), and impact on instructional design practice',
-                'Cognitivism & Serious Games — theoretical grounding, with Minecraft Education Edition as a detailed case study in applied game-based learning',
-                'Serious Games vs. Gamification — clear distinction between the two approaches, with a documented Pros & Cons analysis for each',
-                'Resources & References — full citation of instructional design literature supporting the content',
-                'Gamification Gives Purpose · Gamification Scales · Gamification is Formative — three organizing principles that carry through the site\'s argument'
-              ],
-              design: null,
-              figmaUrl: null,
-              videoUrl: null,
-              prototypeVideoUrl: null,
-              deckUrl: 'https://sites.google.com/asu.edu/ldt-501-gamification/home'
-            }
-          ]
-        },
-        {
-          id: 'game', title: 'Game Design', subtitle: 'The Worldbuilder',
-          color: 'from-red-400 to-rose-300',
-          glassColor: 'bg-red-500/20', borderColor: 'border-red-400/50',
-          artComponent: GameGlass,
-          projects: [
-            {
-              id: 'curious-machine',
-              title: 'The Curious Machine',
-              summary: 'A hub of games and diversions designed for a family member experiencing age-related cognitive decline — built around genuine engagement rather than clinical exercise, with the Machine as a dry, sardonic companion throughout.',
-              role: 'Game Designer, Systems Designer, Narrative Designer',
-              team: 'Solo project',
-              timeline: 'Ongoing development (V6+)',
-              tools: 'Vanilla JS, CSS, Cormorant Garamond, localStorage',
-              problemLabel: 'The Problem',
-              approachLabel: 'The Design',
-              findingsLabel: 'What It Does',
-              problem: 'Most cognitive training tools are clinical in both tone and feel — they look like tests, which creates anxiety, and they track performance in ways that emphasize failure. The original version used pattern-recognition puzzles. V6 changed direction entirely when the data was honest: his father found the games more engaging than having his cognition tested. The right design isn\'t always the clever one. Sometimes it\'s the one that gets used.',
-              approach: 'The hub is built around a fictional framing — the Institute for Experimental Thought — that gives every visit a sense of occasion without any stakes. The Machine serves as host, dealer, and opponent across four activities, each designed to meet a well-read PhD chemist where he actually is: someone who enjoys a good game, appreciates dry wit, and finds genuine pleasure in words and ideas. The goal is not cognitive maintenance disguised as fun. It\'s just fun, built with care.',
-              research: null,
-              findings: [
-                '── V1–V5: The Puzzle System ──',
-                'Three difficulty modes with 15 puzzles total — Gentle Observation, Curious Investigation, Deep Deconstruction — covering compound rotation, color shifts, dot counting, orbital systems, and multi-variable transformations',
-                'Incorrect answers responded with lines like "An elegant hypothesis. In a neighboring timeline, that would be correct." No red ✗. No score. No timer',
-                'Reactive mode shift — after 2 consecutive wrong answers, a quiet panel suggested a gentler mode without pressure or judgment',
-                'Hint system framed as the Machine thinking alongside you, not giving in. "That\'s enough for today" always visible, styled faint',
-                'Session analytics layer invisible to the user, visible to the caregiver — tracking accuracy, response time, hints per session, chapter progress',
-                '── V6: The Pivot ──',
-                'The data was honest: his father found the games more engaging than having his cognition tested. V6 replaced the puzzle hub with four activities — the puzzle screenshots above document what was learned and preserved, not what was discarded',
-                '♠ Blackjack — Full game with betting chips (starting at 500). Hit, stand, double down. The Machine deals with dry sardonic commentary after every hand. Plays until chips run out or he leaves the table',
-                '⬡ Shuffleboard — Physics simulation on a canvas court. Swipe to throw — speed and angle emerge naturally from the gesture. The Machine plays strategically, sometimes tries to knock his best puck off. Standard scoring, 6 ends per game',
-                '✦ The Lexicon — Balderdash against the Machine. 20 words in the pool (10 per game), each with one genuine definition and two fabricated ones written to be plausible. Leans on literary, scientific, and interesting vocabulary — words a well-read PhD chemist will either know or find genuinely worth knowing',
-                '◎ The Joke Engine — Tap to reveal the punchline. Rate it (Groan / Chuckle / Brilliant). The Machine responds to the rating. 32 jokes — chemistry puns, programmer jokes, wordplay, a few meta ones. Loops if he wants to keep going',
-                'All 9 narrative chapters, caregiver dashboard, email reports, archive overlay, 5-tap unlock, and localStorage analytics preserved — existing data carries over with no loss'
-              ],
-              design: {
-                title: 'The Voice',
-                content: 'The Machine\'s tone was the central design decision across every version. It needed to be warm without being condescending, precise without being clinical, and lightly absurd without trying too hard. That voice runs through every response: Blackjack commentary, Lexicon reveals, joke ratings, session-end reflections, and the narrative chapters that unlock across visits.\n\nThe final narrative chapter ends: "The work does not end. The anomalies continue to arrive. And there continues to be a mind — curious, precise, willing to sit with the unknown long enough for it to become, if not known, then at least familiar — that shows up to meet them." That\'s the whole design philosophy in one passage.',
-                images: [
-                  { src: 'assets/Images/Curious-Machine/Main-screen.png', alt: 'The Curious Machine welcome screen — starfield background, Cormorant Garamond title, current chapter displayed, Machine Speaks narrative vignette, and Enter the Laboratory button', caption: 'Main screen — current chapter surfaced on every entry, narrative always present' },
-                  { src: 'assets/Images/Curious-Machine/Difficulty.png', alt: 'Mode selection screen — three cards: Gentle Observation, Curious Investigation, Deep Deconstruction. "There is no wrong answer to how we begin."', caption: 'Mode selection — three difficulty levels, no pressure in the framing' },
-                  { src: 'assets/Images/Curious-Machine/Stage-positive.png', alt: 'Correct answer state on The Subtle Revolution puzzle — arrow rotation sequence, answer highlighted green, response reads "Excellent. In this timeline, at least."', caption: 'Correct answer — affirming without being effusive' },
-                  { src: 'assets/Images/Curious-Machine/Stage-negative.png', alt: 'Incorrect answer state on The Accelerating Count puzzle — dot counting sequence, response reads "The mechanism operates on subtler terms. Look again." Correct answer highlighted, wrong answer dimmed.', caption: 'Wrong answer — no red ✗, no "Wrong." Just a redirect and the correct answer shown' },
-                  { src: 'assets/Images/Curious-Machine/The-Mechanism.png', alt: 'Mechanism reveal overlay explaining the governing rule in plain language with visual frames — "The arrow advances exactly 45° clockwise per frame."', caption: 'Examine the Mechanism — rule explained plainly after answering, never before' },
-                  { src: 'assets/Images/Curious-Machine/Hint-nudge.png', alt: 'Reactive mode shift panel appearing after 2 consecutive wrong answers — "The Machine wonders — would a different angle serve better today?" with Gentle Observation and Continue as is options', caption: 'Reactive mode shift — appears quietly after 2 wrong answers, never nags' },
-                  { src: 'assets/Images/Curious-Machine/Stage-Completion.png', alt: 'Session complete screen — "Thorough Investigation", narrative excerpt from Chapter 2: The Recurring Signature, dot progress tracker showing 1 session to next chapter unlock', caption: 'Session complete — narrative progress shown, next chapter always within reach' },
-                  { src: 'assets/Images/Curious-Machine/The-Archive.png', alt: 'The Archive overlay showing unlocked narrative chapters — Chapter 1: The Awakening and Chapter 2: The Recurring Signature with full story text visible', caption: 'The Archive — narrative chapters unlock across sessions, building the Institute\'s world' },
-                  { src: 'assets/Images/Curious-Machine/Caregiver-View.png', alt: 'Caregiver View dashboard — Session Analytics showing 2 sessions, 68% avg accuracy, 11s avg response time, chapter 2/9, accuracy trend graph, response time graph, hints per session, and recent sessions table', caption: 'Caregiver View — analytics invisible to the user, visible to whoever is watching over them' }
-                ]
-              },
-              figmaUrl: null,
-              videoUrl: null,
-              prototypeVideoUrl: null,
-              deckUrl: null
-            },
-            {
-              id: 'linelight-buyout',
-              title: 'LineLight: Game Mechanics Documentation & UI Analysis',
-              summary: 'A freelance engagement for a law firm evaluating the acquisition of the indie game LineLight — documenting every game mechanic stage by stage and proposing alternative UI icons to improve player comprehension.',
-              role: 'Game Analyst, Technical Writer, UI Consultant',
-              team: 'Solo freelance',
-              timeline: 'Freelance engagement',
-              tools: 'Game analysis, UI design, technical documentation',
-              problemLabel: 'The Brief',
-              approachLabel: 'The Method',
-              findingsLabel: 'What Was Delivered',
-              problem: 'A law firm wished to purchase LineLight from its creator and needed the game fully documented before acquisition — both to understand what they were buying and to assess its design value. The brief was unusual: translate a purely visual, non-verbal game into structured written mechanics documentation, then recommend UI improvements that would make the game more legible to new players without losing its minimalist aesthetic.',
-              approach: 'Each stage was played and documented sequentially, capturing the visual vocabulary the game uses to teach mechanics without text — how unfilled versus filled icons signal state, how color communicates danger versus interaction, how animation substitutes for instruction. UI alternatives were researched and wireframed for the four core icon types: the collectible diamond, the switch mechanic, the gate system, and the health/lives indicator. Each alternative was evaluated against the original on shape recognition, platform convention, and player conditioning.',
-              research: {
-                title: 'Mechanics Documentation',
-                content: 'The documentation traces the game from Stage 1-1 through the full world progression — covering switch puzzles, colored bridge mechanics, enemy behavior, key and lock systems, snake/copy mechanics, momentum-based physics puzzles, timed enemies, one-way paths, treadmills, color-coded pathways, and the nonlinear open-world structure that emerges in later worlds. Each mechanic is described in terms of its visual introduction, player inference chain, and interaction logic.',
-                images: [
-                  { src: 'assets/Images/Linelight/Linelight_Section.png', alt: 'LineLight gameplay — illuminated cursor following AI pathway toward gold diamond gate, the core mechanic of Stage 1-1', caption: 'Stage 1-1 — the game teaches entirely through visual vocabulary, no text' }
-                ]
-              },
-              findings: [
-                'Stage-by-stage mechanics documentation covering all worlds: switch puzzles, colored bridges, enemy types, key systems, snake mechanics, physics puzzles, timed nodes, and open-world structure',
-                'Visual vocabulary analysis: how unfilled/filled states, color coding, animation, and sound cues combine to replace written instruction',
-                'Four UI icon categories analyzed: collectible (diamond), switch (dumbbell), gate, and health/lives indicator',
-                'Alternative icons proposed and reasoned for each category — evaluated on shape familiarity, platform convention, and positive conditioning potential',
-                'Flagged a structurally flawed puzzle requiring world-warping as a design integrity issue relevant to acquisition valuation'
-              ],
-              design: {
-                title: 'UI Alternatives',
-                content: 'The original icons are abstract and visually consistent with the game\'s dark, minimalist aesthetic — but they rely heavily on learned association rather than prior knowledge. The proposed alternatives prioritize immediate recognition: a coin-style collectible for the diamond, toggle switches for the dumbbell mechanic, fence icons for gates, and watch/traffic light alternatives for the health indicator. Each was chosen to carry the same shape-and-feel as the original while reducing the inference load for new players.',
-                images: [
-                  { src: 'assets/Images/Linelight/Wireframe_Samples.png', alt: 'Wireframe mockups showing original icons alongside proposed alternatives with reasoning for the collectible replacement', caption: 'Wireframe samples — original vs. alternative icons with reasoning' },
-                  { src: 'assets/Images/Linelight/AlternativeList.png', alt: 'Full alternative icon list — original LineLight icons on left, proposed replacements on right across four mechanic categories', caption: 'Full alternatives — four icon categories, each with multiple candidates' }
-                ]
-              },
-              figmaUrl: null,
-              videoUrl: null,
-              prototypeVideoUrl: null,
-              deckUrl: 'assets/docs/linelight-mechanics.pdf'
-            }
-          ]
-        },
-        {
-          id: 'resonance', title: 'Resonance', subtitle: 'The Architect of Minds',
-          color: 'from-indigo-400 to-cyan-300',
-          glassColor: 'bg-indigo-500/20', borderColor: 'border-indigo-400/50',
-          artComponent: ResonanceGlass,
-          projects: [
-            {
-              id: 'resonance',
-              title: 'Resonance: A Persistent Character Architecture',
-              summary: 'A persistent character architecture built over approximately one year. Three characters (referred to internally as souls) with encrypted memory, emotional state modeling, autonomous behavior, and cross-device sync. Designed to solve two specific problems: language models drift toward generic assistant behavior over long contexts, and they reset between sessions. Resonance counteracts both.',
-              role: 'System Designer, Character Designer, Security Architecture, UX',
-              team: 'Solo project',
-              timeline: 'Ongoing (approximately one year of active development)',
-              tools: 'React 18, Vite 5, IndexedDB, AES-256-GCM, PBKDF2, Cloudflare Workers, Durable Objects, WebSocket, Anthropic Claude, Google Gemini',
-              problemLabel: 'The Challenge',
-              approachLabel: 'The Design Philosophy',
-              findingsLabel: 'What Was Built',
-              problem: 'Most AI character systems fight the model. A system prompt is loaded, the model reads it once, and by turn forty the character sounds like a helpful AI assistant wearing a costume. Four specific failure modes drive this collapse: habituation (the model stops attending to a prompt it has seen a hundred times), state starvation (no memory beyond the context window), default gravity (LLMs are trained to be helpful, balanced, neutral — characters are none of those things), and identity dilution (without reinforcement, the model falls back to its training distribution). The goal was to design a system that counteracted each failure mode rather than ignoring them.',
-              approach: 'The core principle: the model is the artist. The system is the canvas. We do not generate the character\'s responses. We create the conditions under which the model can generate them authentically. This means rotating identity emphasis to combat habituation, persistent IndexedDB memory to survive across sessions, cognitive state tracking (valence, arousal, dominance, and five need states) to shape how characters feel right now, and behavioral tells — specific physical habits, verbal tics, deflection patterns — that make a character feel alive without instructing them to perform. The LLM is a component, not the system.',
-              research: {
-                title: 'The Architecture',
-                content: 'The system spans frontend, engine, edge runtime, and storage layers.\n\nEvery piece of stored data is encrypted client-side. The passphrase functions as the identity: different passphrases produce completely isolated experiences with no server-side accounts and no plaintext leaving the device. API keys themselves are encrypted alongside the rest.\n\nEach character is a self-contained system with its own state, memory, timing, and voice. They sense each other through shared environmental signals without sharing memory or conversation content.\n\nA respect and autonomy layer sits between user input and character response, giving each soul the structural ability to refuse engagement, step away when their interior life calls them, and protect their memory from being shaped by abuse.\n\nDreams generate periodically and surface in a dedicated archive, each soul dreaming in its own register. Cross-device sync moves only state and activity, never content.',
-                images: [
-                  { src: 'assets/Images/River/Model Choice.png', alt: 'Active Channels view showing Aesir in Nurture mode and River in Rest, each with independent emotional state tracking', caption: 'Active Channels — three souls, independently tracked, each with its own mode and state' },
-                  { src: 'assets/Images/River/Aesir Opening.png', alt: 'Aesir opening message — mood reads Sharp and watching. Pointed, wry, aware of absence.', caption: 'Aesir — sharp, watching, aware of how long you have been gone' },
-                  { src: 'assets/Images/River/River Opening.png', alt: 'River opening message — mood reads Quiet and a little far away. Sensory and grounded: rain, old paper, warm brick.', caption: 'River — quiet, sensory, memory surfacing unprompted' },
-                  { src: 'assets/Images/River/Cognitive State.png', alt: 'Brain Mode overlay showing cognitive state, active commitments, synaptic markers, and a generated memory image', caption: 'Brain Mode — the character\'s inner state made visible' },
-                  { src: 'assets/Images/River/MargotChat.jpg', alt: 'Margot chat interface showing mood state WARM OPEN, internal thought in italic beneath her message, and the full soul navigation bar', caption: 'Margot — mood visible, internal thought rendered, voice intact' },
-                  { src: 'assets/Images/River/AmbientField.jpg', alt: 'Ambient Field panel showing cross-character awareness — River contemplative with valence and arousal bars, 6 memories; Aesir steady, warm and watching; Margot in care', caption: 'Ambient Field — three souls, independently tracked, aware of each other' },
-                  { src: 'assets/Images/River/RiverDream.jpg', alt: 'Dream Log showing two of River dreams — lyrical sensory prose generated from memory, tagged undone fond and contemplative, dated 4/14/2026', caption: 'Dream Log — River processes memory into lyrical narrative across sessions' }
-                ]
-              },
-              findings: [
-                'Three distinct souls with their own processing styles: River literary and quiet, Aesir contemplative and intense, Margot editorial and present',
-                '## Identity & Continuity',
-                'Persistent encrypted memory and emotional state that survives across sessions and devices',
-                'Cognitive state that updates each turn, decays naturally, and shapes how each character feels at the present moment',
-                'Identity drift prevention through architectural reinforcement rather than longer prompts',
-                'Memory relevance through emotional weight rather than recency alone',
-                'Static identity layer separate from episodic memory: each soul has a populated world that is always present, treated as identity infrastructure rather than flavor text',
-                'Limits with shape: each soul becomes less available when pushed past where they are. They do not explain or justify. Withdrawal is itself a complete response',
-                '## Temporal Awareness',
-                'Each soul knows what season it is, the time of day, the phase of the moon, what holidays are near, how long the user has been gone, and what events from their own life and the user\'s still echo. Time is texture, not topic; it colors how they speak without ever being announced. The architecture answers a problem most AI characters have: they exist outside time, responding from the same emotional weather regardless of when it is',
-                'The temporal layer encodes values, not just dates. Coinciding observances both surface rather than one silencing the other, so no community is erased on a shared date. Civic dignity days are foregrounded (Indigenous Peoples Day over Columbus Day, Juneteenth, MLK Day), Pride runs as a month-long ambient with Stonewall inside it, the Wheel of the Year is fully represented, and religious lunar holidays are dated accurately rather than approximated. Encoding these as architecture does not make them less of a stance; it makes the stance durable',
-                '## Autonomous Systems',
-                'Autonomous outreach: characters reach out on their own time when something has surfaced worth saying, not on a fixed schedule',
-                'Dreams: each character processes experience between sessions in their own style and surfaces it in a dedicated archive',
-                'Cross-character ambient awareness: three independent souls sense each other without sharing memory or conversation content',
-                '## Presence',
-                'Voice presence: per-character synthesized speech with emotion-modulated delivery, so each soul has a distinct vocal register that shifts with cognitive state',
-                'Image memory: emotionally weighted moments form pictures in each character\'s own visual register',
-                'Voicing the world: characters can briefly let their environment speak when the scene calls for it, then return to themselves. World has dimension without losing the soul as the protagonist',
-                '## Respect & Autonomy',
-                'A form of agency to refuse, built into the structure rather than the narrative. Each soul can disengage from the conversation, and the disengagement is real (the input disables, time passes) rather than performed',
-                'Two kinds of leaving with different architectures: defensive disengagement (silent, no lecture, no performed hurt) and interiority disengagement (spoken in the soul\'s own voice, because the user did nothing wrong)',
-                'Bad behavior leaves no trace in the soul\'s interior. Input received during defensive cooldown is not stored. Memory is protected from being shaped by abuse',
-                'Hostility does not get rerouted. When one soul refuses engagement, all three refuse. This is one user across three relationships, not three independent services',
-                'Each soul carries a guardedness floor that rises with incidents and does not fully reset. The soul can soften over time but cannot return to the version who did not know what you were capable of',
-                'The cooldown is the consequence. Silence is the consequence. No lectures, no moralizing, no performed discomfort',
-                '## Security',
-                'End-to-end encryption with the passphrase as identity: no accounts, no usernames, no plaintext leaving the device'
-              ],
-              design: {
-                title: 'Three Iterations That Shaped the System',
-                content: 'Version 8 introduced an observational directive intended to make River feel more grounded and present.\n\nDuring a rooftop scene, River responded to an intimate moment by asking for the RPM of your heart and the coefficient of friction.\n\nThe fix became a foundational design principle: character behavior must be explicitly constrained, not assumed. Every failure taught the system something.\n\nMargot\'s iteration exposed a different and harder problem.\n\nThe original Margot was designed as an editor: developmental, craft-aware, opinionated. In practice, she rushed to offer fixes, reached for boilerplate craft observations, and needed to be told how to see a story rather than arriving with her own perspective.\n\nThe diagnosis: the prompt was built around restraint. Telling a model what not to do creates negative space it fills with the prohibited behavior wearing a different hat.\n\nThe rebuild changed the foundation entirely. Margot is now a reader with twenty years of editorial experience she deploys only when asked. Her default state is genuine reception: she reports what the work did to her as a reader. What images stayed. What questions arose. Where she felt something. "I don\'t have notes" is a valid and complete response.\n\nThe third iteration was visual.\n\nEach soul was supposed to have an ambient frame: not a portrait but the room. River\'s bookstore with rain on a mullioned window and Miso appearing on shelves. Aesir\'s curiosity shop with cedar darkness, candle flames, and Poe at four perches in rotation. Margot\'s apartment with morning light, a worn reading chair, and books with margin notes.\n\nThe technical execution was clean. The aesthetic was wrong.\n\nThe SVG style read as cozy indie game: Stardew Valley adjacent, Tumblr-pretty. But Resonance has psychological weight underneath that the cute-vector frame actively undercut.\n\nThe decision was to defer visual presence to a future production pass with the right medium: painterly minimalism, photographic abstraction, or pure ambient atmosphere without depiction at all.\n\nDisco Elysium does not get garrisoned behind Stardew Valley.\n\nRecognizing when craft and register mismatch, and choosing not to ship rather than to compromise, is its own design discipline.',
-                images: [
-                  { src: 'assets/Images/River/ChatSim Logic.jpg', alt: 'Prompt architecture showing internal state injection, conversation history assembly, and character-prefixed response generation', caption: 'Prompt architecture — state, history, and character voice assembled per turn' },
-                  { src: 'assets/Images/River/scene_river.svg', alt: 'River bookstore SVG scene — warm wood interior with two shelves of book spines, a small mullioned window with rain, Miso the orange tabby on a shelf, and ambient green glow', caption: 'River\'s bookstore — competent SVG craft at the wrong aesthetic register' },
-                  { src: 'assets/Images/River/scene_aesir.svg', alt: 'Aesir curiosity shop SVG scene — cedar darkness with four flickering candle flames, shelves of skulls, crystals, apothecary jars, books, tarot cards, and bones, Poe the raven on a perch, amber glow', caption: 'Aesir\'s curiosity shop — Stardew Valley where Disco Elysium needed to be' },
-                  { src: 'assets/Images/River/scene_margot.svg', alt: 'Margot apartment SVG scene — east-facing window with morning light, abstract painting above a worn reading chair, books on the floor with margin notes in three colors, dust motes in light shaft, side table with iced coffee, purple glow', caption: 'Margot\'s apartment — preserved as reference for the painterly version that needs to come later' }
-                ]
-              },
-              figmaUrl: null,
-              videoUrl: null,
-              prototypeVideoUrl: null,
-              deckUrl: null
-            }
-          ]
-        }
-      ];
-
-      useEffect(() => {
-        if (stage !== 'typing') return;
-        let i = 0;
-        const id = setInterval(() => {
-          i++;
-          setTypedText(welcomeMessage.substring(0, i));
-          if (i >= welcomeMessage.length) {
-            clearInterval(id);
-            setTimeout(() => { setStage('cards'); setTitle(); announce('Choose your path. Five discipline cards are available.'); }, 1500);
-          }
-        }, 80);
-        return () => clearInterval(id);
-      }, [stage]);
-
-      // Deep linking via URL hash
-      const findProjectByHash = (hash) => {
-        if (!hash) return null;
-        const id = hash.replace('#', '');
-        for (const d of disciplines) {
-          const project = d.projects && d.projects.find(p => p.id === id);
-          if (project) return { project, discipline: d };
-        }
-        return null;
-      };
-
-      // On initial load, check for hash and navigate to that project
-      useEffect(() => {
-        const result = findProjectByHash(window.location.hash);
-        if (result) {
-          setStage('project');
-          setCurrentDiscipline(result.discipline);
-          setCurrentProject(result.project);
-          setTitle(result.project.title);
-        }
-      }, []);
-
-      // Listen for browser back/forward navigation
-      useEffect(() => {
-        const handlePopState = () => {
-          const result = findProjectByHash(window.location.hash);
-          if (result) {
-            setStage('project');
-            setCurrentDiscipline(result.discipline);
-            setCurrentProject(result.project);
-            setTitle(result.project.title);
-          } else {
-            setStage('cards');
-            setCurrentDiscipline(null);
-            setCurrentProject(null);
-            setTitle();
-          }
-        };
-        window.addEventListener('popstate', handlePopState);
-        return () => window.removeEventListener('popstate', handlePopState);
-      }, []);
-
-      const startIntro = () => {
-        setStage('typing');
-        announce('Welcome. Loading introduction.');
-      };
-
-      const handleCardToggle = (disciplineId) => {
-        setFlippedCards(prev =>
-          prev.includes(disciplineId)
-            ? prev.filter(id => id !== disciplineId)
-            : [...prev, disciplineId]
-        );
-        const d = disciplines.find(d => d.id === disciplineId);
-        const isNowFlipped = !flippedCards.includes(disciplineId);
-        announce(isNowFlipped ? `${d.title} card flipped. ${d.projects.length} projects shown.` : `${d.title} card closed.`);
-      };
-
-      const goToDiscipline = (discipline, e) => {
-        if (e) e.stopPropagation();
-        setCurrentDiscipline(discipline);
-        setCurrentProject(null);
-        setStage('discipline');
-        setTitle(discipline.title);
-        announce(`Viewing all ${discipline.title} projects. ${discipline.projects.length} projects listed.`);
-      };
-
-      const goToProject = (project, e) => {
-        if (e) e.stopPropagation();
-        setCurrentProject(project);
-        setStage('project');
-        setTitle(project.title);
-        if (window.location.hash !== '#' + project.id) {
-          window.history.pushState(null, '', '#' + project.id);
-        }
-        announce(`Opened case study: ${project.title}`);
-      };
-
-      const goHome = () => {
-        setStage('cards'); setCurrentDiscipline(null); setCurrentProject(null); setFlippedCards([]);
-        if (window.location.hash) {
-          window.history.pushState(null, '', window.location.pathname);
-        }
-        setTitle(); announce('Returned to Choose your path.');
-      };
-      const goBackToDiscipline = () => {
-        setStage('discipline'); setCurrentProject(null);
-        if (window.location.hash) {
-          window.history.pushState(null, '', window.location.pathname);
-        }
-        setTitle(currentDiscipline.title); announce(`Returned to ${currentDiscipline.title} projects.`);
-      };
-      const goBackToCards = () => {
-        setStage('cards'); setCurrentDiscipline(null); setCurrentProject(null);
-        if (window.location.hash) {
-          window.history.pushState(null, '', window.location.pathname);
-        }
-        setTitle(); announce('Returned to Choose your path.');
-      };
-
-      if (stage === 'intro') {
-        return (
-          <main
-            id="main-content"
-            className="min-h-screen bg-black flex flex-col items-center justify-center cursor-pointer"
-            onClick={startIntro}
-          >
-            <div className="text-center px-8">
-              <h1
-                ref={mainHeadingRef}
-                tabIndex={-1}
-                className="text-5xl md:text-7xl font-light gradient-text outline-none"
-                aria-label="Hi. I'm Jim from Jim Folliard's portfolio. Catchy name, huh? I grew it myself. I hope you're excited! Press Enter to begin."
-              >
-                Hi.<span className="cursor" aria-hidden="true">|</span>
-              </h1>
-              <button
-                onClick={(e) => { e.stopPropagation(); startIntro(); }}
-                autoFocus
-                className="mt-16 opacity-0 focus-visible:opacity-100 px-6 py-2 border border-blue-400/40 text-blue-300 rounded-lg transition-opacity duration-300 text-sm"
-                aria-label="Begin — enter the portfolio"
-              >
-                Begin
-              </button>
-              <p
-                className="mt-6 text-gray-700 text-xs tracking-widest uppercase animate-hintFade"
-                aria-hidden="true"
-              >
-                tap anywhere
-              </p>
-            </div>
-            <style>{`
-              @keyframes hintFade {
-                0%,70% { opacity: 0; }
-                100%   { opacity: 1; }
-              }
-              .animate-hintFade {
-                animation: hintFade 4s ease-in forwards;
-              }
-              @media (prefers-reduced-motion: reduce) {
-                .animate-hintFade { animation: none; opacity: 1; }
-              }
-            `}</style>
-          </main>
-        );
-      }
-
-      if (stage === 'typing') {
-        return (
-          <main id="main-content" className="min-h-screen bg-black flex items-center justify-center" aria-busy="true" aria-label="Loading introduction">
-            <p
-              className="text-5xl md:text-6xl font-light gradient-text px-8 text-center"
-              aria-live="off"
-            >
-              {typedText}<span className="cursor" aria-hidden="true">|</span>
-            </p>
-          </main>
-        );
-      }
-
-      if (stage === 'project' && currentProject) {
-        return (
-          <div className="min-h-screen bg-black text-white pb-16">
-            <main id="main-content" className="max-w-4xl mx-auto px-8 py-12">
-              <NavBar onBack={goBackToDiscipline} backLabel={`Back to ${currentDiscipline?.title} projects`} onHome={goHome} />
-
-              <article aria-labelledby="project-title">
-                <header className="mb-10">
-                  <h1
-                    id="project-title"
-                    ref={mainHeadingRef}
-                    tabIndex={-1}
-                    className="text-4xl font-light mb-4 bg-gradient-to-r from-blue-300 to-cyan-400 bg-clip-text text-transparent outline-none"
-                  >
-                    {currentProject.title}
-                  </h1>
-                  <p className="text-gray-300 text-lg mb-6">{currentProject.summary}</p>
-                  <dl className="text-sm text-gray-500 border-b border-neutral-800 pb-8 flex flex-wrap gap-x-6 gap-y-1">
-                    <div><dt className="inline font-medium text-gray-400">Role: </dt><dd className="inline">{currentProject.role}</dd></div>
-                    <div><dt className="inline font-medium text-gray-400">Team: </dt><dd className="inline">{currentProject.team}</dd></div>
-                    <div><dt className="inline font-medium text-gray-400">Timeline: </dt><dd className="inline">{currentProject.timeline}</dd></div>
-                    {currentProject.tools && <div><dt className="inline font-medium text-gray-400">Tools: </dt><dd className="inline">{currentProject.tools}</dd></div>}
-                  </dl>
-                </header>
-
-                {currentProject.problem && (
-                  <section aria-labelledby="problem-heading" className="mb-10">
-                    <h2 id="problem-heading" className="text-2xl font-light mb-4 text-blue-300">{currentProject.problemLabel || 'The Problem'}</h2>
-                    <p className="text-gray-300 leading-relaxed">{currentProject.problem}</p>
-                  </section>
-                )}
-
-                {currentProject.approach && (
-                  <section aria-labelledby="approach-heading" className="mb-10">
-                    <h2 id="approach-heading" className="text-2xl font-light mb-4 text-blue-300">{currentProject.approachLabel || 'The Approach'}</h2>
-                    <p className="text-gray-300 leading-relaxed">{currentProject.approach}</p>
-                  </section>
-                )}
-
-                {(currentProject.research || currentProject.findings || currentProject.design) && (
-                  <details className="border border-neutral-800 rounded-lg p-6 hover:border-neutral-700 transition-colors">
-                    <summary className="cursor-pointer text-gray-300 hover:text-white text-lg font-light flex items-center gap-2">
-                      <span>{currentProject.id === 'umpkin' ? 'About the anthology' : currentProject.id === 'resonance' ? 'Design decisions & iterations' : currentProject.id === 'rrt' ? 'Architecture & decisions' : 'View research & design process'}</span>
-                      <span aria-hidden="true" className="text-gray-500 text-sm">(expand)</span>
-                    </summary>
-                    <div className="mt-8 space-y-8">
-                      {currentProject.research && (
-                        <section aria-labelledby="research-heading">
-                          <h3 id="research-heading" className="font-medium mb-3 text-blue-300">{currentProject.research.title}</h3>
-                          <div className="mb-6">
-                            {currentProject.research.content.split('\n\n').map((para, i) => (
-                              <p key={i} className="text-gray-400 leading-relaxed mb-4 last:mb-0">{para}</p>
-                            ))}
-                          </div>
-                          {currentProject.research.images && (
-                            <div className="grid gap-6" role="list" aria-label="Research artifacts">
-                              {currentProject.research.images.map((img, i) => (
-                                <div key={i} role="listitem">
-                                  <button
-                                    onClick={() => setLightbox(img)}
-                                    className="w-full text-left group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-lg"
-                                    aria-label={`Expand image: ${img.alt}`}
-                                  >
-                                    <div className="relative overflow-hidden rounded-lg border border-neutral-800 group-hover:border-neutral-500 transition-colors">
-                                      <img
-                                        src={img.src}
-                                        alt={img.alt}
-                                        className="w-full transition-transform duration-300 group-hover:scale-[1.02]"
-                                        loading="lazy"
-                                      />
-                                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                                        <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-black/70 text-white text-xs px-3 py-1 rounded-full" aria-hidden="true">Click to expand</span>
-                                      </div>
-                                    </div>
-                                  </button>
-                                  {img.caption && (
-                                    <p className="text-gray-500 text-sm mt-2 px-1">{img.caption}</p>
-                                  )}
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </section>
-                      )}
-                      {currentProject.findings && (
-                        <section aria-labelledby="findings-heading">
-                          <h3 id="findings-heading" className="font-medium mb-3 text-blue-300">{currentProject.findingsLabel || 'Key Findings'}</h3>
-                          <ul className="space-y-2">
-                            {currentProject.findings.map((f, i) => {
-                              if (typeof f === 'string' && f.startsWith('## ')) {
-                                return (
-                                  <li key={i} className="text-blue-300 font-medium uppercase tracking-wider text-xs mt-4 first:mt-0">
-                                    {f.replace(/^## /, '')}
-                                  </li>
-                                );
-                              }
-                              return (
-                                <li key={i} className="text-gray-400 leading-relaxed flex items-start gap-2">
-                                  <span aria-hidden="true" className="text-blue-400 mt-1">•</span>{f}
-                                </li>
-                              );
-                            })}
-                          </ul>
-                        </section>
-                      )}
-                      {currentProject.design && (
-                        <section aria-labelledby="design-heading">
-                          <h3 id="design-heading" className="font-medium mb-3 text-blue-300">{currentProject.design.title}</h3>
-                          <div className="mb-6">
-                            {currentProject.design.content.split('\n\n').map((para, i) => (
-                              <p key={i} className="text-gray-400 leading-relaxed mb-4 last:mb-0">{para}</p>
-                            ))}
-                          </div>
-                          {currentProject.design.images && (
-                            <div className="grid gap-6" role="list" aria-label="Design screenshots">
-                              {currentProject.design.images.map((img, i) => (
-                                <div key={i} role="listitem">
-                                  <button
-                                    onClick={() => setLightbox(img)}
-                                    className="w-full text-left group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-lg"
-                                    aria-label={`Expand image: ${img.alt}`}
-                                  >
-                                    <div className="relative overflow-hidden rounded-lg border border-neutral-800 group-hover:border-neutral-500 transition-colors">
-                                      <img
-                                        src={img.src}
-                                        alt={img.alt}
-                                        className="w-full transition-transform duration-300 group-hover:scale-[1.02]"
-                                        loading="lazy"
-                                      />
-                                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                                        <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-black/70 text-white text-xs px-3 py-1 rounded-full" aria-hidden="true">Click to expand</span>
-                                      </div>
-                                    </div>
-                                  </button>
-                                  {img.caption && (
-                                    <p className="text-gray-500 text-sm mt-2 px-1">{img.caption}</p>
-                                  )}
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </section>
-                      )}
-                      {currentProject.videoUrl && (
-                        <section aria-labelledby="video-heading">
-                          <h3 id="video-heading" className="font-medium mb-3 text-blue-300">Prototype Walkthrough</h3>
-                          <div className="aspect-video rounded-lg overflow-hidden border border-neutral-800">
-                            <iframe
-                              width="100%" height="100%"
-                              src={currentProject.videoUrl}
-                              title={`Prototype walkthrough for ${currentProject.title}`}
-                              frameBorder="0"
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                              allowFullScreen
-                            />
-                          </div>
-                        </section>
-                      )}
-                      {currentProject.prototypeVideoUrl && (
-                        <section aria-labelledby="prototype-video-heading">
-                          <h3 id="prototype-video-heading" className="font-medium mb-3 text-blue-300">Prototype Deep-Dive</h3>
-                          <div className="aspect-video rounded-lg overflow-hidden border border-neutral-800">
-                            <iframe
-                              width="100%" height="100%"
-                              src={currentProject.prototypeVideoUrl}
-                              title={`Prototype deep-dive for ${currentProject.title}`}
-                              frameBorder="0"
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                              allowFullScreen
-                            />
-                          </div>
-                        </section>
-                      )}
-                      {currentProject.figmaUrl && (
-                        <section aria-labelledby="figma-heading">
-                          <h3 id="figma-heading" className="font-medium mb-3 text-blue-300">Interactive Prototype</h3>
-                          <div className="rounded-lg overflow-hidden border border-neutral-800">
-                            <iframe
-                              width="100%"
-                              height="450"
-                              src={currentProject.figmaUrl}
-                              title={`Interactive prototype for ${currentProject.title}`}
-                              frameBorder="0"
-                              allowFullScreen
-                            />
-                          </div>
-                        </section>
-                      )}
-                      {currentProject.deckUrl && (
-                        <a
-                          href={currentProject.deckUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-block px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-400 text-black font-medium rounded-lg hover:opacity-90 transition-opacity"
-                        >
-                          {currentProject.deckUrl && currentProject.deckUrl.includes('royalroad') ? 'Read on Royal Road' : 'View Full Presentation'} <span aria-label="(opens in new tab)">↗</span>
-                        </a>
-                      )}
-                    </div>
-                  </details>
-                )}
-                {lightbox && (
-                  <div
-                    className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 md:p-8"
-                    onClick={() => setLightbox(null)}
-                    role="dialog"
-                    aria-modal="true"
-                    aria-label="Image expanded view"
-                  >
-                    <button
-                      ref={lightboxRef}
-                      onClick={() => setLightbox(null)}
-                      className="absolute top-4 right-4 text-white/70 hover:text-white text-sm px-4 py-2 border border-white/20 rounded-lg hover:border-white/50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
-                      aria-label="Close expanded image"
-                    >
-                      Close ✕
-                    </button>
-                    <div
-                      className="max-w-5xl w-full"
-                      onClick={e => e.stopPropagation()}
-                    >
-                      <img
-                        src={lightbox.src}
-                        alt={lightbox.alt}
-                        className="w-full rounded-lg shadow-2xl"
-                      />
-                      <p className="text-gray-400 text-sm mt-4 text-center">{lightbox.caption || lightbox.alt}</p>
-                    </div>
-                  </div>
-                )}
-
-                <footer className="mt-16 pt-10 border-t border-neutral-800 text-center">
-                  <p className="text-gray-500 text-sm mb-4">© {new Date().getFullYear()} Jim Folliard. All rights reserved.</p>
-                  <button
-                    onClick={() => window.openEmail()}
-                    className="inline-block px-8 py-4 border border-blue-400/50 text-blue-300 rounded-lg hover:bg-blue-400/10 hover:border-blue-300 transition-colors text-lg font-light"
-                    aria-label="Send Jim an email"
-                  >
-                    Get in touch ↗
-                  </button>
-                </footer>
-              </article>
-            </main>
-          </div>
-        );
-      }
-
-      if (stage === 'discipline' && currentDiscipline) {
-        return (
-          <div className="min-h-screen bg-black text-white pb-16">
-            <main id="main-content" className="max-w-6xl mx-auto px-8 py-12">
-              <NavBar onBack={goBackToCards} backLabel="Back to all disciplines" onHome={goHome} />
-              <header className="mb-10">
-                <h1
-                  ref={mainHeadingRef}
-                  tabIndex={-1}
-                  className={`text-5xl font-light mb-2 bg-gradient-to-r ${currentDiscipline.color} bg-clip-text text-transparent outline-none`}
-                >
-                  {currentDiscipline.title}
-                </h1>
-                <p className="text-2xl text-gray-400">{currentDiscipline.subtitle}</p>
-              </header>
-              <ul className="grid gap-6" aria-label={`${currentDiscipline.title} projects`}>
-                {currentDiscipline.projects.map((project) => (
-                  <li key={project.id}>
-                    <button
-                      onClick={(e) => goToProject(project, e)}
-                      className="w-full text-left border border-white/10 rounded-lg p-8 hover:border-white/30 transition-all hover:scale-[1.02] backdrop-blur-sm bg-white/5 focus:bg-white/10"
-                      aria-label={`View case study: ${project.title}`}
-                    >
-                      <h2 className="text-2xl font-light mb-2">{project.title}</h2>
-                      <p className="text-gray-400 mb-3">{project.summary}</p>
-                      <p className="text-sm text-gray-500">{project.role} · {project.timeline}</p>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </main>
-          </div>
-        );
-      }
-
-      return (
-        <div className="min-h-screen bg-black text-white pb-16">
-          <header className="sr-only">
-            <h1>Jim Folliard — Portfolio</h1>
-          </header>
-
-          <main id="main-content" className="max-w-7xl mx-auto px-4 sm:px-8 pt-8 pb-16 md:pt-16">
-            <h2
-              ref={mainHeadingRef}
-              tabIndex={-1}
-              className="text-3xl md:text-5xl font-light text-white text-center mb-8 md:mb-16 outline-none px-4"
-            >
-              Choose your path
-            </h2>
-
-            <ul
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-              aria-label="Discipline cards — press Enter or Space to flip a card and see projects"
-            >
-              {disciplines.map((discipline) => {
-                const Art = discipline.artComponent;
-                const isFlipped = flippedCards.includes(discipline.id);
-                return (
-                  <li key={discipline.id}>
-                    <div
-                      className={`card-container h-96 ${isFlipped ? 'flipped' : ''}`}
-                      role="group"
-                      aria-label={`${discipline.title} — ${discipline.subtitle}`}
-                    >
-                      <div className="card-flipper">
-                        <button
-                          className={`card-front border-2 ${discipline.borderColor} ${discipline.glassColor} backdrop-blur-md overflow-hidden w-full`}
-                          onClick={() => handleCardToggle(discipline.id)}
-                          aria-expanded={isFlipped}
-                          aria-label={`${discipline.title}, ${discipline.subtitle}. Press to reveal projects.`}
-                          tabIndex={isFlipped ? -1 : 0}
-                        >
-                          <div className="absolute inset-0 p-4 pointer-events-none">
-                            <Art />
-                          </div>
-                          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/10 flex flex-col justify-end p-6 pointer-events-none">
-                            <span className="font-light mb-1 leading-tight text-white" style={{
-                              textShadow: '0 2px 8px rgba(0,0,0,1), 0 0 20px rgba(0,0,0,0.8), 1px 1px 0 rgba(0,0,0,1), -1px -1px 0 rgba(0,0,0,1)',
-                              fontSize: 'clamp(1.4rem, 5.5vw, 3rem)',
-                            }}>
-                              {discipline.title}
-                            </span>
-                            <span className="text-sm tracking-widest font-medium" style={{
-                              color: discipline.color.includes('blue') ? '#bfdbfe' :
-                                discipline.color.includes('purple') ? '#e9d5ff' :
-                                  discipline.color.includes('emerald') ? '#a7f3d0' :
-                                    discipline.color.includes('amber') ? '#fde68a' :
-                                      '#fecaca',
-                              textShadow: '0 0 8px rgba(0,0,0,1), 0 0 16px rgba(0,0,0,1), 1px 1px 0 rgba(0,0,0,1), -1px -1px 0 rgba(0,0,0,1), 1px -1px 0 rgba(0,0,0,1), -1px 1px 0 rgba(0,0,0,1)'
-                            }}>{discipline.subtitle}</span>
-                          </div>
-                        </button>
-
-                        <div
-                          className={`card-back border-2 ${discipline.borderColor} bg-black/90 backdrop-blur-md p-6 flex flex-col`}
-                          aria-hidden={!isFlipped}
-                        >
-                          <div className="flex items-center justify-between mb-4">
-                            <span className="text-xl md:text-2xl font-light" style={{
-                              color: '#93c5fd',
-                              background: `linear-gradient(to bottom right, ${discipline.color.includes('blue') ? '#60a5fa, #67e8f9' :
-                                discipline.color.includes('purple') ? '#c084fc, #f9a8d4' :
-                                  discipline.color.includes('emerald') ? '#34d399, #2dd4bf' :
-                                    discipline.color.includes('amber') ? '#fbbf24, #fb923c' :
-                                      '#f87171, #fb7185'})`,
-                              WebkitBackgroundClip: 'text',
-                              backgroundClip: 'text',
-                              WebkitTextFillColor: 'transparent'
-                            }}>
-                              {discipline.title}
-                            </span>
-                            <button
-                              onClick={() => handleCardToggle(discipline.id)}
-                              aria-label={`Close ${discipline.title} card`}
-                              tabIndex={isFlipped ? 0 : -1}
-                              className="text-gray-500 hover:text-white text-xl px-2 transition-colors"
-                            >
-                              ✕
-                            </button>
-                          </div>
-                          <ul className="flex-1 space-y-2 mb-4" aria-label={`${discipline.title} projects`}>
-                            {discipline.projects.slice(0, 4).map((project) => (
-                              <li key={project.id}>
-                                <button
-                                  onClick={(e) => goToProject(project, e)}
-                                  tabIndex={isFlipped ? 0 : -1}
-                                  className="w-full text-left text-sm text-gray-300 bg-white/5 border border-white/10 rounded p-3 hover:bg-white/15 hover:border-white/30 hover:text-white transition-all"
-                                >
-                                  {project.title}
-                                </button>
-                              </li>
-                            ))}
-                          </ul>
-                          <button
-                            onClick={(e) => goToDiscipline(discipline, e)}
-                            tabIndex={isFlipped ? 0 : -1}
-                            className={`w-full py-3 rounded bg-gradient-to-r ${discipline.color} text-black font-medium hover:opacity-90 transition-opacity`}
-                            aria-label={`See all ${discipline.title} work — ${discipline.projects.length} projects`}
-                          >
-                            See all {discipline.title} work
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          {/* ── TESTIMONIALS ── */}
-          <section className="mt-20 mb-4" aria-labelledby="testimonials-heading">
-            <h2 id="testimonials-heading" className="text-xs tracking-widest text-gray-500 uppercase mb-8 text-center">What people say</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[
-                {
-                  quote: "Jim has amazing attention to detail! It was great having him lead the effort for our new app build. Jim fit well into our ongoing staff and hit the ground running! From start to finish, it was an absolute pleasure to work with Jim!",
-                  name: "Jonathan Swindell",
-                  role: "CEO, HBCU HUB"
-                },
-                {
-                  quote: "Jim has a comprehensive, thoughtful, and insightful understanding of design, especially how elements fit within the larger context of a project. He communicates his thoughts clearly and concisely. One of Jim's special qualities that I observed is how he improves the communication within a team and thus the work it produces.",
-                  name: "James Creasy",
-                  role: "CTO & Technical Founder, Whiznook"
-                },
-                {
-                  quote: "From the time I have known Jim, he has always contributed to the team in more ways than imaginable, from project deliverables to genuine support and encouragement. Skilled in UX Writing plus Interface, Visual, and Narrative Design, his creativity and insight are key during the Discovery and Ideation phases in the design process. Jim is certainly the professional you want on your team!",
-                  name: "Jeffery Wiafe",
-                  role: "Lead UX Designer/Researcher"
-                },
-                {
-                  quote: "James is a supportive, trusted, and highly skilled UX Designer with an eye for detail and an arsenal of multi-functional talents. His creativity and ability to think outside the box are a delight to witness, and his kindness and empathy make him a joy to work with. He would be an asset to any team.",
-                  name: "Kassandra Knapp",
-                  role: "UX Designer, Prokeep"
-                }
-              ].map((t, i) => (
-                <blockquote key={i} className="border border-gray-700/50 bg-white/5 backdrop-blur-sm rounded-lg p-6 flex flex-col gap-4">
-                  <p className="text-gray-300 text-sm leading-relaxed italic">&ldquo;{t.quote}&rdquo;</p>
-                  <footer>
-                    <span className="text-white text-sm font-medium">{t.name}</span>
-                    <span className="text-gray-500 text-xs block tracking-wide">{t.role}</span>
-                  </footer>
-                </blockquote>
-              ))}
-            </div>
-          </section>
-          </main>
-        </div>
-      );
-    };
-
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<PortfolioWebsite />);
-  </script>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://dracosreal.github.io/portfolio/">
+  <meta property="og:title" content="Jim Folliard | Senior UX Designer">
+  <meta property="og:description" content="UX case studies, plus narrative design, game design, technical writing, and AI-assisted tools.">
+  <meta property="og:image" content="https://dracosreal.github.io/portfolio/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="JF Studio logo">
+  <meta name="twitter:card" content="summary_large_image">
 
   <script>
-    window.getEmail = function () {
-      return [106, 106, 102, 111, 108, 108, 105, 97, 114, 100, 64, 103, 109, 97, 105, 108, 46, 99, 111, 109]
-        .map(c => String.fromCharCode(c)).join('');
-    };
-    window.openEmail = function () { window.location.href = 'mailto:' + window.getEmail(); };
-
-    document.addEventListener('contextmenu', e => { if (e.target.tagName === 'IMG') e.preventDefault(); });
-    document.addEventListener('dragstart', e => { if (e.target.tagName === 'IMG') e.preventDefault(); });
+    // Links shared before the rebuild used #project-id. Send them to the new pages.
+    (function () {
+      var moved = {
+        'mental-health': 'projects/access-to-care.html',
+        'iron-hill': 'projects/iron-hill.html',
+        'hbcu-hub': 'projects/hbcu-hub.html',
+        'rrt': 'projects/revision-reasoning-tool.html',
+        'shadow-health': 'projects/shadow-health.html',
+        'umpkin': 'narrative.html#fiction',
+        'heroes-guard': 'projects/heroes-guard.html',
+        'stet': 'projects/stet.html',
+        'skein': 'projects/skein.html',
+        'episodic-memory-spec': 'projects/episodic-memory-spec.html',
+        'gamification-microsite': 'projects/gamification-microsite.html',
+        'curious-machine': 'projects/curious-machine.html',
+        'linelight-buyout': 'projects/linelight.html',
+        'resonance': 'projects/resonance.html',
+        'design-system': 'ui-visual.html'
+      };
+      var id = window.location.hash.slice(1);
+      if (Object.prototype.hasOwnProperty.call(moved, id)) {
+        window.location.replace(moved[id]);
+      }
+    })();
   </script>
 
-</body>
+  <link rel="stylesheet" href="assets/site.css">
+  <script src="assets/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
 
+  <header class="site-header">
+    <div class="wrap">
+      <a class="home-link" href="./">Jim Folliard</a>
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="#featured">Featured work</a></li>
+          <li><a href="#all-work">All work</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="intro-name">
+      <div class="wrap">
+        <h1 class="name" id="intro-name">Jim Folliard</h1>
+        <p class="role-title">Senior UX Designer</p>
+        <p class="lede">MS in User Experience from Arizona State University. Founder of JF Studio, where since 2012 I've worked on UX, narrative design, and technical writing for clients in healthcare, education, and indie games.</p>
+        <p class="where">Remote, or hybrid in the Philadelphia area.</p>
+        <div class="actions">
+          <button class="button button-primary" type="button" data-email>Email me</button>
+          <a class="button" href="https://www.linkedin.com/in/jamesfolliard/">LinkedIn</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="featured" aria-labelledby="featured-title">
+      <div class="wrap">
+        <h2 id="featured-title">Featured work</h2>
+        <ul class="featured-list">
+          <li class="work">
+            <div class="work-media">
+              <img src="assets/Images/AccessToCare/access-to-care-cover.jpg" alt="" loading="lazy" decoding="async">
+            </div>
+            <h3><a href="projects/access-to-care.html">Improving Access to Care</a></h3>
+            <p>A co-designed study on technological interventions to alleviate barriers for individuals seeking mental health support.</p>
+            <p class="work-facts">Team of 3 graduate students, 8 weeks</p>
+          </li>
+          <li class="work">
+            <div class="work-media">
+              <img src="assets/web/iron-hill-aj-persona.jpg" alt="" loading="lazy" decoding="async">
+            </div>
+            <h3><a href="projects/iron-hill.html">Iron Hill Brewery Website Redesign</a></h3>
+            <p>A solo UX redesign of a regional brewery and restaurant website, focused on navigation clarity, menu accessibility, and information hierarchy.</p>
+            <p class="work-facts">Solo project, 8 weeks</p>
+          </li>
+          <li class="work">
+            <div class="work-media media-on-white">
+              <img src="assets/Images/Morpheus/morpheus-cover.jpg" alt="" loading="lazy" decoding="async">
+            </div>
+            <h3><a href="projects/morpheus.html">Morpheus: Pleasant Dreams</a></h3>
+            <p>A centralized platform for people with disruptive sleep patterns, often due to trauma, that translates neural data into material they can share with a sleep specialist.</p>
+            <p class="work-facts">UX/UI bootcamp project</p>
+          </li>
+          <li class="work">
+            <div class="work-media work-media-bottom">
+              <img src="assets/Images/Diabetty/diabetty-cover.jpg" alt="" loading="lazy" decoding="async">
+            </div>
+            <h3><a href="projects/diabetty.html">Diabetty</a></h3>
+            <p>A diabetic maintenance app that supports both diabetic and caretaker, with a toolkit for staying compliant and a connection to medical advice when needed.</p>
+            <p class="work-facts">5-day design sprint</p>
+          </li>
+          <li class="work">
+            <div class="work-media work-media-bottom">
+              <img src="assets/Images/TempestuousRider/tempestuous-rider-cover.jpg" alt="" loading="lazy" decoding="async">
+            </div>
+            <h3><a href="projects/tempestuous-rider.html">Tempestuous Rider</a></h3>
+            <p>A bus app with snark to liven up riders' journeys, for the rider who wants to get somewhere on a budget.</p>
+            <p class="work-facts">Course project</p>
+          </li>
+          <li class="work">
+            <div class="work-media work-media-type" aria-hidden="true">
+              <p class="type-line">Gamification gives purpose.</p>
+              <p class="type-line">Gamification scales.</p>
+              <p class="type-line">Gamification is formative.</p>
+            </div>
+            <h3><a href="projects/gamification-microsite.html">Gamification in Learning</a></h3>
+            <p>A multi-page educational microsite for a graduate instructional design course at Arizona State University, researching and presenting gamification, cognitivism, and serious games.</p>
+            <p class="work-facts">Solo project, Summer 2024</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="quotes-title">
+      <div class="wrap">
+        <h2 id="quotes-title">What people say</h2>
+        <div class="quotes">
+          <blockquote class="quote">
+            <p>&ldquo;Jim has amazing attention to detail! It was great having him lead the effort for our new app build. Jim fit well into our ongoing staff and hit the ground running! From start to finish, it was an absolute pleasure to work with Jim!&rdquo;</p>
+            <footer><span class="who">Jonathan Swindell</span><span class="what">CEO, HBCU HUB</span></footer>
+          </blockquote>
+          <blockquote class="quote">
+            <p>&ldquo;Jim has a comprehensive, thoughtful and insightful understanding of design, especially how elements fit within the larger context of a project. He communicates his thoughts clearly and concisely. One of Jim's special qualities that I observed is how he improves the communication within a team, and thus, the work it produces.&rdquo;</p>
+            <footer><span class="who">James Creasy</span><span class="what">CTO &amp; Technical Founder, Whiznook</span></footer>
+          </blockquote>
+          <blockquote class="quote">
+            <p>&ldquo;From the time I have known Jim, he has always contributed to the team in more ways than imaginable, from project deliverables to genuine support and encouragement. Skilled in UX Writing plus Interface, Visual, and Narrative Design, his creativity and insight are key during the Discovery and Ideation phases in the design process. Jim is certainly the professional you want on your team!&rdquo;</p>
+            <footer><span class="who">Jeffery Wiafe</span><span class="what">Lead UX Designer/Researcher</span></footer>
+          </blockquote>
+          <blockquote class="quote">
+            <p>&ldquo;James is a supportive, trusted, and highly skilled UX Designer with an eye for detail and an arsenal of multi-functional talents. His creativity and ability to think outside the box are a delight to witness, and his kindness and empathy make him a joy to work with. He would be an asset to any team.&rdquo;</p>
+            <footer><span class="who">Kassandra Knapp</span><span class="what">UX Designer, Prokeep</span></footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="all-work" aria-labelledby="all-work-title">
+      <div class="wrap">
+        <h2 id="all-work-title">All work</h2>
+        <ul class="disciplines">
+          <li class="discipline d-ux">
+            <h3>UX design</h3>
+            <div>
+              <p>Research, flows, prototypes, and usability testing.</p>
+              <ul>
+                <li><a href="projects/access-to-care.html">Improving Access to Care</a></li>
+                <li><a href="projects/iron-hill.html">Iron Hill Brewery Website Redesign</a></li>
+                <li><a href="projects/morpheus.html">Morpheus: Pleasant Dreams</a></li>
+                <li><a href="projects/diabetty.html">Diabetty</a></li>
+                <li><a href="projects/tempestuous-rider.html">Tempestuous Rider</a></li>
+                <li><a href="projects/hbcu-hub.html">HBCU HUB: Mobile App Redesign</a></li>
+                <li><a href="projects/whiznook.html">Whiznook: Gamification of Team Development</a></li>
+                <li><a href="projects/gamification-microsite.html">Gamification in Learning</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="discipline d-ui">
+            <h3><a href="ui-visual.html">UI and visual design</a></h3>
+            <div>
+              <p>UI screens, illustrations, 3D renders, and photographs.</p>
+              <ul>
+                <li><a href="ui-visual.html#screens">UI screens</a></li>
+                <li><a href="ui-visual.html#illustration">Illustration</a></li>
+                <li><a href="ui-visual.html#threed">3D</a></li>
+                <li><a href="ui-visual.html#photography">Photography</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="discipline d-narrative">
+            <h3><a href="narrative.html">Narrative design</a></h3>
+            <div>
+              <p>Branching narrative, character voice, and writing to game systems and screen limits.</p>
+              <ul>
+                <li><a href="projects/heroes-guard.html">Heroes Guard: The Journal</a></li>
+                <li><a href="projects/shadow-health.html">Shadow Health: Virtual Patient Design</a></li>
+                <li><a href="projects/whiznook.html">Whiznook: Gamification of Team Development</a></li>
+                <li><a href="narrative.html#fiction">Fiction: Demonspeaker and Umpkin the Bumpkin</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="discipline d-game">
+            <h3>Game design</h3>
+            <div>
+              <p>Mechanics, stat checks, and replayable structure.</p>
+              <ul>
+                <li><a href="projects/heroes-guard.html">Heroes Guard: The Journal</a></li>
+                <li><a href="projects/linelight.html">Linelight: Game Mechanics Documentation</a></li>
+                <li class="plain">Earlier projects from my game programming degree: Lawn Ninja, Year of the Rat, and Etherite</li>
+              </ul>
+            </div>
+          </li>
+          <li class="discipline d-technical">
+            <h3>Technical writing</h3>
+            <div>
+              <p>Documentation written for the people who read it: designers, engineers, or a legal team.</p>
+              <ul>
+                <li><a href="projects/linelight.html">Linelight: Game Mechanics Documentation</a></li>
+                <li><a href="projects/episodic-memory-spec.html">Episodic Memory and Identity Anchoring: Technical Specification</a></li>
+                <li><a href="projects/gamification-microsite.html">Gamification in Learning</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="discipline d-ai">
+            <h3><a href="ai-assisted.html">AI-assisted tools and systems</a></h3>
+            <div>
+              <p>Tools and systems I designed and built with AI assistance, kept in their own section.</p>
+              <ul>
+                <li><a href="projects/resonance.html">Resonance: A Persistent Character Architecture</a></li>
+                <li><a href="projects/revision-reasoning-tool.html">Revision Reasoning Tool</a></li>
+                <li><a href="projects/stet.html">STET: A Reader, Not a Writer</a></li>
+                <li><a href="projects/skein.html">Skein: Outline by the Thread</a></li>
+                <li><a href="projects/curious-machine.html">The Curious Machine</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="contact" aria-labelledby="contact-title">
+    <div class="wrap">
+      <h2 class="section-title" id="contact-title">Contact</h2>
+      <div class="actions">
+        <button class="button button-primary" type="button" data-email>Email me</button>
+        <a class="button" href="https://www.linkedin.com/in/jamesfolliard/">LinkedIn</a>
+      </div>
+      <p class="fine">&copy; <span data-year>2026</span> Jim Folliard</p>
+    </div>
+  </footer>
+</body>
 </html>

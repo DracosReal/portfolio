@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skein: Outline by the Thread | Jim Folliard</title>
+  <meta name="description" content="A story-plotting and drafting environment for web-serial and indie authors, with a live MICE thread validator and linked compose and manuscript panes. The product has no AI features, by design.">
+
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://dracosreal.github.io/portfolio/projects/skein.html">
+  <meta property="og:title" content="Skein: Outline by the Thread | Jim Folliard">
+  <meta property="og:description" content="A story-plotting and drafting environment for web-serial and indie authors, with a live MICE thread validator and linked compose and manuscript panes. The product has no AI features, by design.">
+  <meta property="og:image" content="https://dracosreal.github.io/portfolio/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="home-link" href="../">Jim Folliard</a>
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="../#featured">Featured work</a></li>
+          <li><a href="../#all-work">All work</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="wrap">
+      <p class="crumbs"><a href="../ai-assisted.html">Back to AI-assisted tools and systems</a></p>
+
+      <header class="project-header">
+        <h1>Skein: Outline by the Thread</h1>
+        <p class="project-summary">A story-plotting and drafting environment for web-serial and indie authors. Skein takes a writer from raw idea to finished manuscript through structured stages, then lets them draft beat by beat while the manuscript assembles itself alongside them. Deliberately not a formatting tool, not a publishing tool, and not an AI writing assistant.</p>
+        <p class="ai-note">Built with AI assistance; the product itself has no AI features, by design. Part of the <a href="../ai-assisted.html">AI-assisted tools and systems</a> section.</p>
+        <dl class="facts">
+          <div><dt>Role</dt><dd>Designer, builder</dd></div>
+          <div><dt>Team</dt><dd>Solo project</dd></div>
+          <div><dt>Timeline</dt><dd>Eleven iterations, ongoing</dd></div>
+          <div><dt>Tools</dt><dd>React, browser storage, a pure-JS ZIP writer, DOCX and EPUB generation, no external dependencies</dd></div>
+        </dl>
+      </header>
+
+      <section class="project-section" aria-labelledby="problem">
+        <h2 id="problem">The problem</h2>
+        <div class="prose">
+          <p>Web-serial writers publish weekly across runs of two hundred chapters or more. They cannot afford to lose a plot thread forty chapters back, and the tools available to them were not built for that.</p>
+          <p>Scrivener won the container war fifteen years ago but is built for the one-book novelist. Plotting tools store what a writer already knows instead of telling them something they do not. And every new tool in the space arrives with generative AI bolted on, which is precisely what this audience does not want.</p>
+        </div>
+      </section>
+
+      <section class="project-section" aria-labelledby="screens">
+        <h2 id="screens">The two linked screens</h2>
+        <div class="prose">
+          <p>The defining feature came out of a correction. An early version drifted toward being a diagnostics tool; the reset was to build a writing environment instead.</p>
+          <p>The result is two linked screens. On the left, the compose pane: each beat appears as an italic prompt with a prose box beneath it, so the writer answers one small finishable unit at a time. On the right, the manuscript assembles live in proper order as they type.</p>
+          <p>The active beat highlights in gold. Clicking a manuscript paragraph jumps back to its compose box. The outline is never left behind, because it is literally the skeleton the draft hangs on.</p>
+        </div>
+      </section>
+
+      <section class="project-section" aria-labelledby="mice">
+        <h2 id="mice">The MICE validator</h2>
+        <div class="prose">
+          <p>The structural centerpiece is a live validator for MICE threads (Milieu, Inquiry, Character, Event), micro-arcs that must open and close in properly nested order. The source guide expresses this as bracket notation, which is literally a stack, which means software can check it. No other plotting tool does this.</p>
+          <p>Skein renders the notation live and flags threads closed out of order in red. A "suggest from chapters" function reads the writer's existing chapter tags and generates a guaranteed-valid nested scaffold to start from.</p>
+          <p>Beyond the validator, a deterministic Story Scan analyzes thread integrity, chapter pacing against the median, coverage gaps, MICE balance, character absence gaps, and draft progress. Every smart feature is computed from the writer's own data. Nothing is generated.</p>
+        </div>
+      </section>
+
+      <section class="project-section" aria-labelledby="does">
+        <h2 id="does">What it does</h2>
+
+        <h3>The ten stages</h3>
+        <ul class="findings">
+          <li>Broad Strokes, Structure, Chapters and MICE, Thread Map, Beat Sheets, Draft, Story Scan, Reader Journey, Word Estimate, and Export</li>
+          <li>Draft is the center: compose pane and live manuscript pane, linked, with focus mode, find and replace, continuous compose, and a draggable divider</li>
+          <li>Reader Journey plots the thread-load curve (open promises per chapter) alongside a draggable location map tracing the story's route</li>
+          <li>Word estimation implements two formulas, including one credited to a Mary Robinette Kowal lecture, verified against the source guide's own worked example to an exact match</li>
+        </ul>
+
+        <h3>Principles held throughout</h3>
+        <ul class="findings">
+          <li>No AI in the product. Writers are hostile to generative AI touching their work, and every intelligent feature here is deterministic. This is a competitive advantage, not a limitation</li>
+          <li>Local-first. Everything lives in browser storage. No account, no server, no telemetry. Nothing leaves the machine unless the writer exports it</li>
+          <li>Destructive actions are undoable. Any bulk operation is reversible and logged in a labeled change history</li>
+          <li>Display preferences never touch content. Typography settings affect the writing surface only, never the stored text or any export</li>
+        </ul>
+
+        <h3>Export and craft</h3>
+        <ul class="findings">
+          <li>Real DOCX and EPUB 3 output through a hand-written pure-JS ZIP writer, with zero external libraries. Store-only compression happens to satisfy EPUB's requirement that the mimetype be the first uncompressed entry</li>
+          <li>Platform-aware export: an outline document, Royal Road serial chapters with per-chapter copy, and an Amazon KDP flowing manuscript</li>
+          <li>Named restorable snapshots, full project backup and restore, and a thirty-day writing history with streak tracking</li>
+          <li>Two full accessibility passes: reading preferences including Atkinson Hyperlegible and Lexend, keyboard-movable location pins, text alternatives for charts, and WCAG AA contrast audited across light and dark themes</li>
+        </ul>
+      </section>
+
+      <section class="project-section" aria-labelledby="corrections">
+        <h2 id="corrections">What the corrections taught</h2>
+        <div class="prose">
+          <p>Version zero got called what it was: Scrivener with additions, still at cute-applet level. That was accurate. It stored what the writer already knew and told them nothing new.</p>
+          <p>The next correction mattered more. An attempt to reframe the whole product as a diagnostic layer was rejected, and rightly so. The goal was an easy writer, somewhere people could actually build and draft their stories, not a tool that indicts an outline. Diagnostics stayed, but as ambient information rather than a panel that judges.</p>
+          <p>The two-screen linked echo came directly out of that reset, described in one sentence: one screen answering the beats, the other echoing that text in proper order at the same time, almost as if they were linked.</p>
+          <p>The no-AI decision has held through eleven versions. AI does not really understand nuance and tends to steer things in its own direction, and writers are justifiably afraid of it taking their work. Refusing it is the point, not a gap waiting to be filled.</p>
+        </div>
+      </section>
+
+      <nav class="next-project" aria-label="Next project">
+        <p>Next in AI-assisted tools and systems</p>
+        <a href="stet.html">STET: A Reader, Not a Writer</a>
+      </nav>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="contact" aria-labelledby="contact-title">
+    <div class="wrap">
+      <h2 class="section-title" id="contact-title">Contact</h2>
+      <div class="actions">
+        <button class="button button-primary" type="button" data-email>Email me</button>
+        <a class="button" href="https://www.linkedin.com/in/jamesfolliard/">LinkedIn</a>
+      </div>
+      <p class="fine">&copy; <span data-year>2026</span> Jim Folliard</p>
+    </div>
+  </footer>
+</body>
+</html>
